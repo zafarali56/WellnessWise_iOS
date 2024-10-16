@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E14F5B82CB979050094EF6C /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E14F5B72CB979050094EF6C /* LoginScreen.swift */; };
 		9EEF18502CB6B6E800AA8D5B /* wellnesswiseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEF184F2CB6B6E800AA8D5B /* wellnesswiseApp.swift */; };
 		9EEF18522CB6B6E800AA8D5B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEF18512CB6B6E800AA8D5B /* ContentView.swift */; };
 		9EEF18542CB6B6EB00AA8D5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9EEF18532CB6B6EB00AA8D5B /* Assets.xcassets */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9E14F5B72CB979050094EF6C /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		9EEF184C2CB6B6E800AA8D5B /* wellnesswise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wellnesswise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EEF184F2CB6B6E800AA8D5B /* wellnesswiseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wellnesswiseApp.swift; sourceTree = "<group>"; };
 		9EEF18512CB6B6E800AA8D5B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -71,6 +73,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9E14F5B52CB978AC0094EF6C /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				9E14F5B72CB979050094EF6C /* LoginScreen.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		9E14F5B62CB978C40094EF6C /* Data */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
 		9EEF18432CB6B6E800AA8D5B = {
 			isa = PBXGroup;
 			children = (
@@ -94,6 +111,8 @@
 		9EEF184E2CB6B6E800AA8D5B /* wellnesswise */ = {
 			isa = PBXGroup;
 			children = (
+				9E14F5B62CB978C40094EF6C /* Data */,
+				9E14F5B52CB978AC0094EF6C /* Screens */,
 				9EEF184F2CB6B6E800AA8D5B /* wellnesswiseApp.swift */,
 				9EEF18512CB6B6E800AA8D5B /* ContentView.swift */,
 				9EEF18532CB6B6EB00AA8D5B /* Assets.xcassets */,
@@ -259,6 +278,7 @@
 			files = (
 				9EEF18522CB6B6E800AA8D5B /* ContentView.swift in Sources */,
 				9EEF18502CB6B6E800AA8D5B /* wellnesswiseApp.swift in Sources */,
+				9E14F5B82CB979050094EF6C /* LoginScreen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
