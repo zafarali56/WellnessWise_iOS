@@ -57,7 +57,7 @@ struct LoginScreen: View {
                 }
                 Spacer()
                 NavigationLink {
-                    Text("sign up")
+                    SignUpScreen()
                 } label:{
                     Text("Don't have an account? Sign up")
                         .fontDesign(Font.Design.rounded)
