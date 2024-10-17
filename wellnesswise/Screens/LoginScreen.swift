@@ -8,22 +8,33 @@
 import SwiftUI
 
 struct LoginScreen: View {
+
     @State private var email: String = ""
     @State private var password: String = ""
+  
     var body: some View {
         NavigationStack {
             VStack {
                 Image(.whitetheme)
                     .resizable()
                     .scaledToFit()
-                Form{
+                VStack(alignment: .center){
+                   
                     TextField(
                         "Email",
                         text:$email
                     )
+                    .textInputAutocapitalization(.never)
+                    .disableAutocorrection(true)
+    
+                
                     SecureField (
                         "Password",
-                        text:  $password)
+                        text:  $password
+                    )
+                    .disableAutocorrection(true)
+                    .textInputAutocapitalization(.never)
+                  
                     NavigationLink {
                         Text("Forgot password")
                     } label:{
@@ -31,7 +42,8 @@ struct LoginScreen: View {
                             .font(.footnote)
                             .fontWeight(.semibold)
                     }
-                }
+                }.textFieldStyle(.roundedBorder).padding()
+               
                 Button {
                 }
                 label: {
@@ -42,6 +54,15 @@ struct LoginScreen: View {
                         .frame(width: 350, height: 50)
                         .background(.black)
                         .clipShape(.capsule)
+                }
+                Spacer()
+                NavigationLink {
+                    Text("sign up")
+                } label:{
+                    Text("Don't have an account? Sign up")
+                        .fontDesign(Font.Design.rounded)
+                        .font(.footnote)
+                        .fontWeight(.semibold)
                 }
             }
         }
