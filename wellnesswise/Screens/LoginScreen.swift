@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct LoginScreen: View {
-
+    
     @State private var email: String = ""
     @State private var password: String = ""
-  
+    
     var body: some View {
         NavigationStack {
             VStack {
@@ -19,22 +19,22 @@ struct LoginScreen: View {
                     .resizable()
                     .scaledToFit()
                 VStack(alignment: .center){
-                   
+                    
                     TextField(
                         "Email",
                         text:$email
                     )
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
-    
-                
+                    
+                    
                     SecureField (
                         "Password",
                         text:  $password
                     )
                     .disableAutocorrection(true)
                     .textInputAutocapitalization(.never)
-                  
+                    
                     NavigationLink {
                         Text("Forgot password")
                     } label:{
@@ -43,7 +43,7 @@ struct LoginScreen: View {
                             .fontWeight(.semibold)
                     }
                 }.textFieldStyle(.roundedBorder).padding()
-               
+                
                 Button {
                 }
                 label: {

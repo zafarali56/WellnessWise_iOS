@@ -18,59 +18,67 @@ struct SignUpScreen: View {
     
     var body: some View {
         NavigationStack() {
-  
+            Text("Create account").font(.title2)
+            
             VStack() {
                 VStack(alignment: .center, spacing: 15){
 
-                    Text ("Create a new account").font(.largeTitle).fontDesign(Font.Design.rounded)
                     TextField(
                         "Email",
                         text:$email
                     )
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
+                    .font(.title3)
                     
                     TextField (
                         "Full Name",
                         text:$fullName
                     )
                     .autocorrectionDisabled(true)
+                    .font(.title3)
+                    
                     
                     TextField (
                         "Age",
                         text: $age
                     )
                     .keyboardType(.numberPad)
+                    .font(.title3)
                     
                     TextField (
                         "Weight (kg)",
                         text: $weight
                     )
                     .keyboardType(.numberPad)
-                    
+                    .font(.title3)
                     
                     TextField (
                         "Height (cm)",
                         text: $height
                     )
                     .keyboardType(.numberPad)
+                    .font(.title3)
+                    
+                    
                     
                     Picker (selection: $gender, label : Text ("Gender")) {
                         Text("Male").tag(1)
                         Text("Female").tag(2)
                     }.pickerStyle(.palette)
                     
-                    
                     SecureField(
                         "Create a Password",
                         text: $password
                     )
                     .autocorrectionDisabled(true)
-                  
+                    .font(.title3)
+                    
+                    
                     Button {
                         
                     }
-  
+                    
                     label: {
                         Text("Create account")
                             .font(.subheadline)
@@ -82,7 +90,7 @@ struct SignUpScreen: View {
                     }
                     
                 }.textFieldStyle(.roundedBorder).padding(25)
-                   Spacer()
+                Spacer()
                 
             }
             NavigationLink {
@@ -95,7 +103,7 @@ struct SignUpScreen: View {
                 
             }
         }
-
+        
     }
 }
 
