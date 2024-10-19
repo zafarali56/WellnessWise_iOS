@@ -22,7 +22,7 @@ struct SignUpScreen: View {
             
             VStack() {
                 VStack(alignment: .center, spacing: 15){
-
+                    
                     TextField(
                         "Email",
                         text:$email
@@ -60,8 +60,6 @@ struct SignUpScreen: View {
                     .keyboardType(.numberPad)
                     .font(.title3)
                     
-                    
-                    
                     Picker (selection: $gender, label : Text ("Gender")) {
                         Text("Male").tag(1)
                         Text("Female").tag(2)
@@ -84,7 +82,7 @@ struct SignUpScreen: View {
                             .font(.subheadline)
                             .fontWeight(.semibold)
                             .foregroundStyle(.white)
-                            .frame(width: 350, height: 50)
+                            .frame(width:250, height: 50)
                             .background(.black)
                             .clipShape(.capsule)
                     }

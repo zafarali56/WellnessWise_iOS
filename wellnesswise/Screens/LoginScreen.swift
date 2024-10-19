@@ -26,14 +26,14 @@ struct LoginScreen: View {
                     )
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
-                    
+                    .font(.title3)
                     
                     SecureField (
                         "Password",
                         text:  $password
                     )
-                    .disableAutocorrection(true)
-                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled(true)
+                    .font(.title3)
                     
                     NavigationLink {
                         Text("Forgot password")
@@ -51,7 +51,7 @@ struct LoginScreen: View {
                         .font(.subheadline)
                         .fontWeight(.semibold)
                         .foregroundStyle(.white)
-                        .frame(width: 350, height: 50)
+                        .frame(width:250, height: 50)
                         .background(.black)
                         .clipShape(.capsule)
                 }
@@ -64,7 +64,7 @@ struct LoginScreen: View {
                         .font(.footnote)
                         .fontWeight(.semibold)
                 }
-            }
+            }.textFieldStyle(.roundedBorder).padding(25)
         }
     }
 }

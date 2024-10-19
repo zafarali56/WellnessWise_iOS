@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		9E14F5B82CB979050094EF6C /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E14F5B72CB979050094EF6C /* LoginScreen.swift */; };
+		9E511B432CC37FE10072A470 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9E511B422CC37FE10072A470 /* FirebaseAuth */; };
+		9E511B452CC37FE10072A470 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9E511B442CC37FE10072A470 /* FirebaseCore */; };
+		9E511B472CC37FE10072A470 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 9E511B462CC37FE10072A470 /* FirebaseDatabase */; };
+		9E511B492CC37FE10072A470 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9E511B482CC37FE10072A470 /* FirebaseFirestore */; };
+		9E511B4B2CC37FE10072A470 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 9E511B4A2CC37FE10072A470 /* FirebaseFunctions */; };
 		9E7BFF7B2CC149A200253D36 /* SignUpScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7BFF7A2CC149A200253D36 /* SignUpScreen.swift */; };
 		9EEF18502CB6B6E800AA8D5B /* wellnesswiseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEF184F2CB6B6E800AA8D5B /* wellnesswiseApp.swift */; };
 		9EEF18522CB6B6E800AA8D5B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEF18512CB6B6E800AA8D5B /* ContentView.swift */; };
@@ -55,6 +60,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9E511B472CC37FE10072A470 /* FirebaseDatabase in Frameworks */,
+				9E511B492CC37FE10072A470 /* FirebaseFirestore in Frameworks */,
+				9E511B4B2CC37FE10072A470 /* FirebaseFunctions in Frameworks */,
+				9E511B452CC37FE10072A470 /* FirebaseCore in Frameworks */,
+				9E511B432CC37FE10072A470 /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,6 +255,9 @@
 				Base,
 			);
 			mainGroup = 9EEF18432CB6B6E800AA8D5B;
+			packageReferences = (
+				9E511B412CC37FE10072A470 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 9EEF184D2CB6B6E800AA8D5B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -610,6 +623,45 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9E511B412CC37FE10072A470 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9E511B422CC37FE10072A470 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9E511B412CC37FE10072A470 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		9E511B442CC37FE10072A470 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9E511B412CC37FE10072A470 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		9E511B462CC37FE10072A470 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9E511B412CC37FE10072A470 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		9E511B482CC37FE10072A470 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9E511B412CC37FE10072A470 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		9E511B4A2CC37FE10072A470 /* FirebaseFunctions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9E511B412CC37FE10072A470 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFunctions;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9EEF18442CB6B6E800AA8D5B /* Project object */;
 }
