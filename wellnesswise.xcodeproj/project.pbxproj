@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		9E14F5B82CB979050094EF6C /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E14F5B72CB979050094EF6C /* LoginScreen.swift */; };
+		9E1BA6422CC5443F00DFDD3B /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1BA6412CC5443F00DFDD3B /* SignUpViewModel.swift */; };
+		9E1BA6442CC5444C00DFDD3B /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1BA6432CC5444C00DFDD3B /* LoginViewModel.swift */; };
+		9E1BA6462CC571C300DFDD3B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9E1BA6452CC571C300DFDD3B /* GoogleService-Info.plist */; };
 		9E511B432CC37FE10072A470 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 9E511B422CC37FE10072A470 /* FirebaseAuth */; };
 		9E511B452CC37FE10072A470 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 9E511B442CC37FE10072A470 /* FirebaseCore */; };
 		9E511B472CC37FE10072A470 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 9E511B462CC37FE10072A470 /* FirebaseDatabase */; };
@@ -42,6 +45,9 @@
 
 /* Begin PBXFileReference section */
 		9E14F5B72CB979050094EF6C /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
+		9E1BA6412CC5443F00DFDD3B /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		9E1BA6432CC5444C00DFDD3B /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		9E1BA6452CC571C300DFDD3B /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9E7BFF7A2CC149A200253D36 /* SignUpScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpScreen.swift; sourceTree = "<group>"; };
 		9EEF184C2CB6B6E800AA8D5B /* wellnesswise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wellnesswise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EEF184F2CB6B6E800AA8D5B /* wellnesswiseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wellnesswiseApp.swift; sourceTree = "<group>"; };
@@ -101,6 +107,15 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		9E1BA6402CC5441B00DFDD3B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				9E1BA6412CC5443F00DFDD3B /* SignUpViewModel.swift */,
+				9E1BA6432CC5444C00DFDD3B /* LoginViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		9E7BFF7C2CC17A9D00253D36 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -131,6 +146,7 @@
 		9EEF184E2CB6B6E800AA8D5B /* wellnesswise */ = {
 			isa = PBXGroup;
 			children = (
+				9E1BA6402CC5441B00DFDD3B /* ViewModel */,
 				9E7BFF7C2CC17A9D00253D36 /* Components */,
 				9E14F5B62CB978C40094EF6C /* Data */,
 				9E14F5B52CB978AC0094EF6C /* Screens */,
@@ -138,6 +154,7 @@
 				9EEF18512CB6B6E800AA8D5B /* ContentView.swift */,
 				9EEF18532CB6B6EB00AA8D5B /* Assets.xcassets */,
 				9EEF18552CB6B6EB00AA8D5B /* Preview Content */,
+				9E1BA6452CC571C300DFDD3B /* GoogleService-Info.plist */,
 			);
 			path = wellnesswise;
 			sourceTree = "<group>";
@@ -276,6 +293,7 @@
 			files = (
 				9EEF18572CB6B6EB00AA8D5B /* Preview Assets.xcassets in Resources */,
 				9EEF18542CB6B6EB00AA8D5B /* Assets.xcassets in Resources */,
+				9E1BA6462CC571C300DFDD3B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,6 +320,8 @@
 			files = (
 				9EEF18522CB6B6E800AA8D5B /* ContentView.swift in Sources */,
 				9EEF18502CB6B6E800AA8D5B /* wellnesswiseApp.swift in Sources */,
+				9E1BA6442CC5444C00DFDD3B /* LoginViewModel.swift in Sources */,
+				9E1BA6422CC5443F00DFDD3B /* SignUpViewModel.swift in Sources */,
 				9E14F5B82CB979050094EF6C /* LoginScreen.swift in Sources */,
 				9E7BFF7B2CC149A200253D36 /* SignUpScreen.swift in Sources */,
 			);
