@@ -71,17 +71,7 @@ struct SignUpScreen: View {
 					
 					
 					Button {
-						Auth
-							.auth()
-							.createUser(
-								withEmail: viewModel.email,
-								password: viewModel.password
-							) {
-							result , error in
-							if let  error = error {
-								print("login Error", error.localizedDescription)
-							}
-						}
+						viewModel.signup()
 					}
 					label: {
 						Text("Create account")
