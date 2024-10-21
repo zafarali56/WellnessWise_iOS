@@ -22,21 +22,23 @@ class SignUpViewModel : ObservableObject {
 	
 	@Published var errorMessage : String = ""
 	@Published	var isSignupSuccessful : Bool = false
+	@Published var isLoading : Bool = false
 	
 	func validate () -> Bool
 	{
-		if !email.isEmpty && !fullName.isEmpty && !age.isEmpty && !weight.isEmpty && !height.isEmpty && !password.isEmpty {
+		if email.isEmpty && fullName.isEmpty && age.isEmpty && weight.isEmpty && height.isEmpty && password.isEmpty {
 			errorMessage = "Please fill in all the fields"
 			return false
 		}
 		if !isValidEmail (email) {
 			errorMessage = "Please enter valid email"
+			return false
 		}
 		
 		if password.count < 6 {
 			errorMessage = "Password must be 6 Character or long"
+			return false
 		}
-		
 		errorMessage = ""
 		return true
 		
@@ -46,16 +48,23 @@ class SignUpViewModel : ObservableObject {
 		let emailPred =  NSPredicate(format:"SELF MATCHES %@", emailRegEx)
 		return emailPred.evaluate(with: email)
 	}
+	
+	
 	func signup () {
 		guard validate () else {
 			return
 		}
+		isLoading = true
+		errorMessage = ""
 		Auth.auth().createUser(withEmail: email, password: password){[weak self] result, error in
 			guard let self = self else {return}
 			if let error = error {
 				self.errorMessage = error.localizedDescription
+				self.isLoading = false
+
 				return
 			}
+			
 			if let user = result?.user {
 				let userData : [String: Any] = [
 					"fullName" :self.fullName,
@@ -64,7 +73,9 @@ class SignUpViewModel : ObservableObject {
 					"weight" : self.weight,
 					"gender" : self.gender
 				]
-				Firestore.firestore().collection("users").document(user.uid).setData(userData) { error in
+				Firestore.firestore().collection("users").document(user.uid).setData(userData) {[weak self ] error in
+					guard let self = self else {return}
+					self.isLoading = false
 					if let error = error {
 						self.errorMessage = error.localizedDescription
 						self.isSignupSuccessful = false
@@ -75,8 +86,9 @@ class SignUpViewModel : ObservableObject {
 				}
 			}
 			
-
+			
 		}
 		
 	}
+	
 }

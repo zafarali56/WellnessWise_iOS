@@ -17,6 +17,7 @@
 		9E511B492CC37FE10072A470 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9E511B482CC37FE10072A470 /* FirebaseFirestore */; };
 		9E511B4B2CC37FE10072A470 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 9E511B4A2CC37FE10072A470 /* FirebaseFunctions */; };
 		9E7BFF7B2CC149A200253D36 /* SignUpScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7BFF7A2CC149A200253D36 /* SignUpScreen.swift */; };
+		9EE597192CC6284C00B3DF14 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE597182CC6284C00B3DF14 /* HomeScreen.swift */; };
 		9EEF18502CB6B6E800AA8D5B /* wellnesswiseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEF184F2CB6B6E800AA8D5B /* wellnesswiseApp.swift */; };
 		9EEF18522CB6B6E800AA8D5B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEF18512CB6B6E800AA8D5B /* ContentView.swift */; };
 		9EEF18542CB6B6EB00AA8D5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9EEF18532CB6B6EB00AA8D5B /* Assets.xcassets */; };
@@ -49,6 +50,7 @@
 		9E1BA6432CC5444C00DFDD3B /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		9E1BA6452CC571C300DFDD3B /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9E7BFF7A2CC149A200253D36 /* SignUpScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpScreen.swift; sourceTree = "<group>"; };
+		9EE597182CC6284C00B3DF14 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		9EEF184C2CB6B6E800AA8D5B /* wellnesswise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wellnesswise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EEF184F2CB6B6E800AA8D5B /* wellnesswiseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wellnesswiseApp.swift; sourceTree = "<group>"; };
 		9EEF18512CB6B6E800AA8D5B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			children = (
 				9E14F5B72CB979050094EF6C /* LoginScreen.swift */,
 				9E7BFF7A2CC149A200253D36 /* SignUpScreen.swift */,
+				9EE597182CC6284C00B3DF14 /* HomeScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 			files = (
 				9EEF18522CB6B6E800AA8D5B /* ContentView.swift in Sources */,
 				9EEF18502CB6B6E800AA8D5B /* wellnesswiseApp.swift in Sources */,
+				9EE597192CC6284C00B3DF14 /* HomeScreen.swift in Sources */,
 				9E1BA6442CC5444C00DFDD3B /* LoginViewModel.swift in Sources */,
 				9E1BA6422CC5443F00DFDD3B /* SignUpViewModel.swift in Sources */,
 				9E14F5B82CB979050094EF6C /* LoginScreen.swift in Sources */,

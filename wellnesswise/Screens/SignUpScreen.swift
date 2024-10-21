@@ -12,68 +12,83 @@ import FirebaseAuth
 
 struct SignUpScreen: View {
 	@StateObject private var viewModel = SignUpViewModel()
+	@State private var isLoading = false
 	
 	var body: some View {
 		NavigationStack() {
-			Text("Create account").font(.title2)
-			
 			VStack() {
-				VStack(alignment: .center, spacing: 15){
-					
-					TextField(
-						"Email",
-						text:$viewModel.email
-					)
-					.textInputAutocapitalization(.never)
-					.disableAutocorrection(true)
-					.font(.title3)
-					
-					TextField (
-						"Full Name",
-						text:$viewModel.fullName
-					)
-					.autocorrectionDisabled(true)
-					.font(.title3)
-					
-					
-					TextField (
-						"Age",
-						text: $viewModel.age
-					)
-					.keyboardType(.numberPad)
-					.font(.title3)
-					
-					TextField (
-						"Weight (kg)",
-						text: $viewModel.weight
-					)
-					.keyboardType(.numberPad)
-					.font(.title3)
-					
-					TextField (
-						"Height (cm)",
-						text: $viewModel.height
-					)
-					.keyboardType(.numberPad)
-					.font(.title3)
-					
-					Picker (selection: $viewModel.gender, label : Text ("Gender")) {
-						Text("Male").tag(1)
-						Text("Female").tag(2)
-					}.pickerStyle(.palette)
-					
-					SecureField(
-						"Create a Password",
-						text: $viewModel.password
-					)
-					.autocorrectionDisabled(true)
-					.font(.title3)
-					
-					
-					Button {
-						viewModel.signup()
+				Text("Create account").font(.title2)
+				Form{
+					Section(header: Text("Personal information")){
+						TextField(
+							"Email",
+							text:$viewModel.email
+						)
+						.textInputAutocapitalization(.never)
+						.disableAutocorrection(true)
+						.font(.title3)
+						
+						TextField (
+							"Full Name",
+							text:$viewModel.fullName
+						)
+						.autocorrectionDisabled(true)
+						.font(.title3)
+						
+						
+						TextField (
+							"Age",
+							text: $viewModel.age
+						)
+						.keyboardType(.numberPad)
+						.font(.title3)
+						
+						TextField (
+							"Weight (kg)",
+							text: $viewModel.weight
+						)
+						.keyboardType(.numberPad)
+						.font(.title3)
+						
+						TextField (
+							"Height (cm)",
+							text: $viewModel.height
+						)
+						.keyboardType(.numberPad)
+						.font(.title3)
+						
+						Picker (selection: $viewModel.gender, label : Text ("Gender")) {
+							Text("Male").tag(1)
+							Text("Female").tag(2)
+						}.pickerStyle(.palette)
+						
+						SecureField(
+							"Create a Password",
+							text: $viewModel.password
+						)
+						.autocorrectionDisabled(true)
+						.font(.title3)
+						
+						
+						
+						
 					}
-					label: {
+					
+				}
+				if !viewModel.errorMessage.isEmpty {
+					Text(viewModel.errorMessage)
+						.foregroundStyle(.red)
+						.font(.footnote)
+						.padding()
+				}
+				Button (action:{
+					viewModel.signup()
+				}){
+					if viewModel.isLoading{
+						ProgressView()
+					}
+					else {
+						
 						Text("Create account")
 							.font(.subheadline)
 							.fontWeight(.semibold)
@@ -82,26 +97,26 @@ struct SignUpScreen: View {
 							.background(.black)
 							.clipShape(.capsule)
 					}
-					
-				}.textFieldStyle(.roundedBorder).padding(25)
-				Spacer()
+				}
+				.disabled(isLoading)
+				NavigationLink {
+					LoginScreen()
+				} label:
+				{
+					Text("Already have account? Login")
+						.font(.footnote)
+						.fontWeight(.semibold)
+				}
 				
 			}
-			NavigationLink {
-				LoginScreen()
-			} label:
-			{
-				Text("Already have account? Login")
-					.font(.footnote)
-					.fontWeight(.semibold)
-				
+			.navigationDestination(isPresented: $viewModel.isSignupSuccessful){
+				HomeScreen()
 			}
+			
 		}
 		
 	}
-	
 }
-
 #Preview {
 	SignUpScreen()
 }
