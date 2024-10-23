@@ -18,7 +18,7 @@ class SignUpViewModel : ObservableObject {
 	@Published var height: String = ""
 	@Published var gender: Int = 1
 	@Published var password: String = ""
-	
+	@Published var dmail: String = ""
 	
 	@Published var errorMessage : String = ""
 	@Published	var isSignupSuccessful : Bool = false
@@ -34,7 +34,6 @@ class SignUpViewModel : ObservableObject {
 			errorMessage = "Please enter valid email"
 			return false
 		}
-		
 		if password.count < 6 {
 			errorMessage = "Password must be 6 Character or long"
 			return false
@@ -49,7 +48,6 @@ class SignUpViewModel : ObservableObject {
 		return emailPred.evaluate(with: email)
 	}
 	
-	
 	func signup () {
 		guard validate () else {
 			return
@@ -61,7 +59,6 @@ class SignUpViewModel : ObservableObject {
 			if let error = error {
 				self.errorMessage = error.localizedDescription
 				self.isLoading = false
-
 				return
 			}
 			
@@ -85,8 +82,6 @@ class SignUpViewModel : ObservableObject {
 					}
 				}
 			}
-			
-			
 		}
 		
 	}

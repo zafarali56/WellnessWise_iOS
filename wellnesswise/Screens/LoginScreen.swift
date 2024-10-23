@@ -8,10 +8,7 @@
 import SwiftUI
 
 struct LoginScreen: View {
-    
-    @State private var email: String = ""
-    @State private var password: String = ""
-    
+	@StateObject private var viewModel = LoginViewModel()
     var body: some View {
         NavigationStack {
             VStack {
@@ -22,7 +19,7 @@ struct LoginScreen: View {
                     
                     TextField(
                         "Email",
-                        text:$email
+						text:$viewModel.email
                     )
                     .textInputAutocapitalization(.never)
                     .disableAutocorrection(true)
@@ -30,7 +27,7 @@ struct LoginScreen: View {
                     
                     SecureField (
                         "Password",
-                        text:  $password
+						text:  $viewModel.password
                     )
                     .autocorrectionDisabled(true)
                     .font(.title3)
@@ -43,18 +40,27 @@ struct LoginScreen: View {
                             .fontWeight(.semibold)
                     }
                 }.textFieldStyle(.roundedBorder).padding()
-                
-                Button {
-                }
-                label: {
-                    Text("Login")
-                        .font(.subheadline)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(.white)
-                        .frame(width:250, height: 50)
-                        .background(.black)
-                        .clipShape(.capsule)
-                }
+				if !viewModel.errorMessage.isEmpty {
+					Text(viewModel.errorMessage)
+						.foregroundStyle(.red)
+						.font(.footnote)
+						.padding()
+				}
+				Button (action:{
+					viewModel.login()
+				}){
+					if viewModel.isLoading {
+						ProgressView()
+					}
+					else{ Text("Login")
+							.font(.subheadline)
+							.fontWeight(.semibold)
+							.foregroundStyle(.white)
+							.frame(width:250, height: 50)
+							.background(.black)
+							.clipShape(.capsule)
+					}
+				}.disabled(viewModel.isLoading)
                 Spacer()
                 NavigationLink {
                     SignUpScreen()
@@ -65,6 +71,11 @@ struct LoginScreen: View {
                         .fontWeight(.semibold)
                 }
             }.textFieldStyle(.roundedBorder).padding(25)
+				.navigationDestination(
+					isPresented: $viewModel.isLoginSuccessful
+				){
+					HomeScreen()
+				}
         }
     }
 }

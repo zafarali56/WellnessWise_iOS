@@ -12,7 +12,7 @@ import FirebaseAuth
 
 struct SignUpScreen: View {
 	@StateObject private var viewModel = SignUpViewModel()
-	@State private var isLoading = false
+
 	
 	var body: some View {
 		NavigationStack() {
@@ -34,7 +34,6 @@ struct SignUpScreen: View {
 						)
 						.autocorrectionDisabled(true)
 						.font(.title3)
-						
 						
 						TextField (
 							"Age",
@@ -68,10 +67,6 @@ struct SignUpScreen: View {
 						)
 						.autocorrectionDisabled(true)
 						.font(.title3)
-						
-						
-						
-						
 					}
 					
 				}
@@ -88,7 +83,6 @@ struct SignUpScreen: View {
 						ProgressView()
 					}
 					else {
-						
 						Text("Create account")
 							.font(.subheadline)
 							.fontWeight(.semibold)
@@ -98,7 +92,7 @@ struct SignUpScreen: View {
 							.clipShape(.capsule)
 					}
 				}
-				.disabled(isLoading)
+				.disabled(viewModel.isLoading)
 				NavigationLink {
 					LoginScreen()
 				} label:
