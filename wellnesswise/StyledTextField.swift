@@ -6,6 +6,7 @@ struct StyledTextField: View {
 	@State var text: String
 	var isSecure: Bool = false
 	@FocusState private var isFocused: Bool
+	var isNumber: Bool = false
 	var body: some View {
 		VStack (alignment: .leading, spacing : 4 )
 		{
@@ -18,12 +19,21 @@ struct StyledTextField: View {
 				if isSecure {
 					SecureField(placeholder , text: $text)
 				}
+					
+				if isNumber {
+					TextField(placeholder, text: $text)
+						.keyboardType(.numberPad)
+				}
+				
 				else {
 					TextField (placeholder, text: $text)
 				}
+				
 			}.textFieldStyle(PlainTextFieldStyle())
 				.font(.body)
 				.focused($isFocused)
+			
+			
 			
 			if !text.isEmpty {
 				Button(action: {

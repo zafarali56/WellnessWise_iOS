@@ -20,53 +20,54 @@ struct SignUpScreen: View {
 				Text("Create account").font(.title2)
 				Form{
 					Section(header: Text("Personal information")){
-						TextField(
-							"Email",
-							text:$viewModel.email
-						)
-						.textInputAutocapitalization(.never)
-						.disableAutocorrection(true)
-						.font(.title3)
 						
-						TextField (
-							"Full Name",
-							text:$viewModel.fullName
+						StyledTextField(
+							title: "Email",
+							placeholder: "Please enter your email",
+							text: viewModel.email
 						)
-						.autocorrectionDisabled(true)
-						.font(.title3)
 						
-						TextField (
-							"Age",
-							text: $viewModel.age
-						)
-						.keyboardType(.numberPad)
-						.font(.title3)
 						
-						TextField (
-							"Weight (kg)",
-							text: $viewModel.weight
+						StyledTextField(
+							title: "Name",
+							placeholder: "Please enter your full name",
+							text: viewModel.fullName
 						)
-						.keyboardType(.numberPad)
-						.font(.title3)
+
 						
-						TextField (
-							"Height (cm)",
-							text: $viewModel.height
+						StyledTextField(
+							title: "Age",
+							placeholder: "Please enter your age",
+							text: viewModel.age,
+							isNumber: true
 						)
-						.keyboardType(.numberPad)
-						.font(.title3)
+						StyledTextField(
+							title: "Weight",
+							placeholder: "Please enter your weight (kg)",
+							text: viewModel.weight,
+							isNumber: true
+						)
+						
+						StyledTextField(
+							title: "Height",
+							placeholder: "Please enter your height (cm)",
+							text: viewModel.height,
+							isNumber: true
+						)
+						
+					
 						
 						Picker (selection: $viewModel.gender, label : Text ("Gender")) {
 							Text("Male").tag(1)
 							Text("Female").tag(2)
 						}.pickerStyle(.palette)
 						
-						SecureField(
-							"Create a Password",
-							text: $viewModel.password
+						StyledTextField(
+							title: "Password",
+							placeholder: "Please create your password",
+							text: viewModel.password,
+							isSecure: true
 						)
-						.autocorrectionDisabled(true)
-						.font(.title3)
 					}
 					
 				}
