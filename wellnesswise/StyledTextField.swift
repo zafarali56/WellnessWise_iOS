@@ -3,7 +3,7 @@ import SwiftUI
 struct StyledTextField: View {
 	let title: String
 	let placeholder: String
-	@State var text: String
+	@Binding var text: String
 	var isSecure: Bool = false
 	@FocusState private var isFocused: Bool
 	var isNumber: Bool = false
@@ -18,15 +18,19 @@ struct StyledTextField: View {
 			Group{
 				if isSecure {
 					SecureField(placeholder , text: $text)
+						.autocorrectionDisabled()
+	
 				}
-					
-				if isNumber {
-					TextField(placeholder, text: $text)
+				
+				else if isNumber {
+					TextField (placeholder , text: $text)
+						.autocorrectionDisabled()
 						.keyboardType(.numberPad)
 				}
 				
 				else {
 					TextField (placeholder, text: $text)
+						.autocorrectionDisabled()
 				}
 				
 			}.textFieldStyle(PlainTextFieldStyle())
@@ -60,56 +64,7 @@ struct StyledTextField: View {
 					))
 		}
 		
-		//Error message
-		
-		if let errorMessage = validateInput () {
-			Text(errorMessage)
-				.font(.caption)
-				.foregroundStyle(.red)
-				.padding(.top, 4)
-				.padding(.leading, 4)
-		}
-
 	}
-	private func validateInput() -> String? {
-		return nil
-	}
-}
-
-#Preview {
-	StyledTextField(title: "", placeholder: "", text: "")
-}
-
-struct StyledTextFieldPreview: View {
-	@State private var text1 = ""
-	@State private var text2 = ""
-	@State private var secureText = ""
 	
-	var body: some View {
-		VStack(spacing: 20) {
-			StyledTextField(
-				title: "Email",
-				placeholder: "Enter your email",
-				text: text1
-			)
-			
-			StyledTextField(
-				title: "Username",
-				placeholder: "Enter username",
-				text: text2
-			)
-			
-			StyledTextField(
-				title: "Password",
-				placeholder: "Enter password",
-				text: secureText,
-				isSecure: true
-			)
-		}
-		.padding()
-	}
-}
-
-#Preview {
-	StyledTextFieldPreview()
+	
 }

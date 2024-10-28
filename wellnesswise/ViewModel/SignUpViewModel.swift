@@ -18,7 +18,6 @@ class SignUpViewModel : ObservableObject {
 	@Published var height: String = ""
 	@Published var gender: Int = 1
 	@Published var password: String = ""
-	@Published var dmail: String = ""
 	
 	@Published var errorMessage : String = ""
 	@Published	var isSignupSuccessful : Bool = false
@@ -26,7 +25,7 @@ class SignUpViewModel : ObservableObject {
 	
 	func validate () -> Bool
 	{
-		if email.isEmpty && fullName.isEmpty && age.isEmpty && weight.isEmpty && height.isEmpty && password.isEmpty {
+		if email.isEmpty || fullName.isEmpty || age.isEmpty || weight.isEmpty || height.isEmpty || password.isEmpty {
 			errorMessage = "Please fill in all the fields"
 			return false
 		}

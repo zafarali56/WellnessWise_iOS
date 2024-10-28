@@ -24,34 +24,32 @@ struct SignUpScreen: View {
 						StyledTextField(
 							title: "Email",
 							placeholder: "Please enter your email",
-							text: viewModel.email
+							text: $viewModel.email
 						)
-						
 						
 						StyledTextField(
 							title: "Name",
 							placeholder: "Please enter your full name",
-							text: viewModel.fullName
+							text: $viewModel.fullName
 						)
 
 						
 						StyledTextField(
 							title: "Age",
 							placeholder: "Please enter your age",
-							text: viewModel.age,
-							isNumber: true
+							text: $viewModel.age
 						)
 						StyledTextField(
 							title: "Weight",
 							placeholder: "Please enter your weight (kg)",
-							text: viewModel.weight,
+							text: $viewModel.weight,
 							isNumber: true
 						)
 						
 						StyledTextField(
 							title: "Height",
 							placeholder: "Please enter your height (cm)",
-							text: viewModel.height,
+							text: $viewModel.height,
 							isNumber: true
 						)
 						
@@ -65,7 +63,7 @@ struct SignUpScreen: View {
 						StyledTextField(
 							title: "Password",
 							placeholder: "Please create your password",
-							text: viewModel.password,
+							text: $viewModel.password,
 							isSecure: true
 						)
 					}
