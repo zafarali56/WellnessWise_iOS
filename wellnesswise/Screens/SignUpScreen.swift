@@ -45,16 +45,12 @@ struct SignUpScreen: View {
 							text: $viewModel.weight,
 							isNumber: true
 						)
-						
 						StyledTextField(
 							title: "Height",
 							placeholder: "Please enter your height (cm)",
 							text: $viewModel.height,
 							isNumber: true
 						)
-						
-					
-						
 						Picker (selection: $viewModel.gender, label : Text ("Gender")) {
 							Text("Male").tag(1)
 							Text("Female").tag(2)

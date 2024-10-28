@@ -15,22 +15,18 @@ struct LoginScreen: View {
                 Image(.whitetheme)
                     .resizable()
                     .scaledToFit()
-                VStack(alignment: .center){
+				VStack(alignment: .leading){
                     
-                    TextField(
-                        "Email",
-						text:$viewModel.email
-                    )
-                    .textInputAutocapitalization(.never)
-                    .disableAutocorrection(true)
-                    .font(.title3)
+					StyledTextField(
+						title: "Email",
+						placeholder: "Please enter your email",
+						text: $viewModel.email)
                     
-                    SecureField (
-                        "Password",
-						text:  $viewModel.password
-                    )
-                    .autocorrectionDisabled(true)
-                    .font(.title3)
+					StyledTextField(
+						title: "Password",
+						placeholder: "Please enter your password",
+						text: $viewModel.password,
+						isSecure: true)
                     
                     NavigationLink {
                         Text("Forgot password")
