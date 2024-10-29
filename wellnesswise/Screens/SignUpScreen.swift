@@ -52,8 +52,8 @@ struct SignUpScreen: View {
 							isNumber: true
 						)
 						Picker (selection: $viewModel.gender, label : Text ("Gender")) {
-							Text("Male").tag(1)
-							Text("Female").tag(2)
+							Text("Male").tag("Male")
+							Text("Female").tag("Female")
 						}.pickerStyle(.palette)
 						
 						StyledTextField(
