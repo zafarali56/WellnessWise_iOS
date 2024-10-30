@@ -23,17 +23,14 @@ struct SignUpScreen: View {
 						
 						StyledTextField(
 							title: "Email",
-							placeholder: "Please enter your email",
+							placeholder: "Enter your email",
 							text: $viewModel.email
 						)
-						
 						StyledTextField(
 							title: "Name",
-							placeholder: "Please enter your full name",
+							placeholder: "Enter your full name",
 							text: $viewModel.fullName
 						)
-
-						
 						StyledTextField(
 							title: "Age",
 							placeholder: "Please enter your age",
@@ -41,13 +38,13 @@ struct SignUpScreen: View {
 						)
 						StyledTextField(
 							title: "Weight",
-							placeholder: "Please enter your weight (kg)",
+							placeholder: "(kg)",
 							text: $viewModel.weight,
 							isNumber: true
 						)
 						StyledTextField(
 							title: "Height",
-							placeholder: "Please enter your height (cm)",
+							placeholder: "(cm)",
 							text: $viewModel.height,
 							isNumber: true
 						)
@@ -58,7 +55,7 @@ struct SignUpScreen: View {
 						
 						StyledTextField(
 							title: "Password",
-							placeholder: "Please create your password",
+							placeholder: "Please create strong password",
 							text: $viewModel.password,
 							isSecure: true
 						)
@@ -96,7 +93,6 @@ struct SignUpScreen: View {
 						.font(.footnote)
 						.fontWeight(.semibold)
 				}
-				
 			}
 			.navigationDestination(isPresented: $viewModel.isSignupSuccessful){
 				HomeScreen()
