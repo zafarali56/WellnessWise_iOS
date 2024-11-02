@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HealthAssesmentScreen: View {
 	@StateObject private var viewModel = HealthAssesmentViewModel()
-    var body: some View {
+	var body: some View {
 		VStack{
 			Text("Health Assessment").font(.title2)
 			Form {
@@ -34,7 +34,7 @@ struct HealthAssesmentScreen: View {
 							Text("No").tag("no")
 						}
 					
-					Picker (selection: $viewModel.previousSurgeries, label: Text ("Preview surgeries"))
+					Picker (selection: $viewModel.previousSurgeries, label: Text ("Previous surgeries"))
 					{
 						Text("Yes").tag ("yes")
 						Text("No").tag ("no")
@@ -46,12 +46,40 @@ struct HealthAssesmentScreen: View {
 						Text("No").tag("no")
 					}
 				}
-				
+				Section(header : Text("Life style habits"))
+				{
+					Picker (selection: $viewModel.smoke, label: Text("Do you smoke?")){
+						Text("Yes").tag("yes")
+						Text("No").tag("No")
+					}
+					
+					Section {
+						VStack(alignment: .leading) {
+							Text("Please select alcohol consumption level")
+							Picker(
+								"",
+								selection: $viewModel.selectedAlcholoLevel
+							) {
+								ForEach(
+									viewModel.AlcholoConsumptionLevel,
+									id: \.self
+								) { strength in
+									Text(strength)
+								}
+							}
+							.pickerStyle(.wheel)
+							.frame(height: 80)
+						}
+						
+					}
+				}
 			}
 		}
-    }
+	}
+	
 }
 
+
 #Preview {
-    HealthAssesmentScreen()
+	HealthAssesmentScreen()
 }

@@ -19,7 +19,8 @@ class HealthAssesmentViewModel : ObservableObject {
 	
 	//LifeStyle habits
 	@Published var smoke : String = ""
-	@Published var alcoholConsumptionLevel : String = ""
+	@Published var selectedAlcholoLevel = "None"
+	let AlcholoConsumptionLevel = ["None", "Light", "Moderate", "Heavy", "Very Heavy"]
 	@Published var physicalActivity : String = ""
 	@Published var dietQuality : String = ""
 	@Published var sleepHour : String = ""
