@@ -21,8 +21,13 @@ class HealthAssesmentViewModel : ObservableObject {
 	@Published var smoke : String = ""
 	@Published var selectedAlcholoLevel = "None"
 	let AlcholoConsumptionLevel = ["None", "Light", "Moderate", "Heavy", "Very Heavy"]
-	@Published var physicalActivity : String = ""
-	@Published var dietQuality : String = ""
+	@Published var selectedPhysicalActivityLevel = "Active"
+	let physicalActivityLevel = ["Sedentary", "Light", "Moderate", "Active", "Very Active"]
+	
+	
+	@Published var selctedDietQuality : String = "Good"
+	let dietQualityLevel = ["Poor", "Fair", "Good", "Very Good", "Excellent"]
+	
 	@Published var sleepHour : String = ""
 	
 	//Envirnomental Factors

@@ -72,6 +72,46 @@ struct HealthAssesmentScreen: View {
 						}
 						
 					}
+					
+					Section {
+						VStack(alignment: .leading) {
+							Text("Please select physical level")
+							Picker(
+								"",
+								selection: $viewModel.selectedPhysicalActivityLevel
+							) {
+								ForEach(
+									viewModel.physicalActivityLevel,
+									id: \.self
+								) { strength in
+									Text(strength)
+								}
+							}
+							.pickerStyle(.wheel)
+							.frame(height: 80)
+						}
+						
+					}
+					
+					Section {
+						VStack(alignment: .leading) {
+							Text("Please select diet quality level")
+							Picker(
+								"",
+								selection: $viewModel.selctedDietQuality
+							) {
+								ForEach(
+									viewModel.dietQualityLevel,
+									id: \.self
+								) { strength in
+									Text(strength)
+								}
+							}
+							.pickerStyle(.wheel)
+							.frame(height: 80)
+						}
+						
+					}
 				}
 			}
 		}
