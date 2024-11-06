@@ -15,105 +15,26 @@ struct HealthAssesmentScreen: View {
 			Form {
 				Section(header: Text("Medical history") )
 				{
-					Picker(selection: $viewModel.familyDiabetes, label: Text("Family history of Diabetes"))
-					{
-						Text("Yes").tag ("yes")
-						Text("No").tag ("no")
-					}
+					createTogglePicker(
+						title: "Family history of Diabetes",
+						binding: $viewModel
+							.familyDiabetes)
 					
-					Picker(
-						selection: $viewModel.heartDisease, label: Text("Family history of heart disease"))
-					{
-						Text ("Yes").tag("yes")
-						Text("No").tag ("no")
-					}
-					
-					Picker (
-						selection : $viewModel.familyHistoryCancer , label: Text("Family history of cancer")) {
-							Text("Yes").tag("yes")
-							Text("No").tag("no")
-						}
-					
-					Picker (selection: $viewModel.previousSurgeries, label: Text ("Previous surgeries"))
-					{
-						Text("Yes").tag ("yes")
-						Text("No").tag ("no")
-					}
-					
-					Picker (selection: $viewModel.choricDiseases, label: Text("Chronic diseases"))
-					{
-						Text("Yes").tag("yes")
-						Text("No").tag("no")
-					}
 				}
 				Section(header : Text("Life style habits"))
 				{
-					Picker (selection: $viewModel.smoke, label: Text("Do you smoke?")){
-						Text("Yes").tag("yes")
-						Text("No").tag("No")
-					}
 					
-					Section {
-						VStack(alignment: .leading) {
-							Text("Please select alcohol consumption level")
-							Picker(
-								"",
-								selection: $viewModel.selectedAlcholoLevel
-							) {
-								ForEach(
-									viewModel.AlcholoConsumptionLevel,
-									id: \.self
-								) { strength in
-									Text(strength)
-								}
-							}
-							.pickerStyle(.wheel)
-							.frame(height: 80)
-						}
 						
 					}
-					
-					Section {
-						VStack(alignment: .leading) {
-							Text("Please select physical level")
-							Picker(
-								"",
-								selection: $viewModel.selectedPhysicalActivityLevel
-							) {
-								ForEach(
-									viewModel.physicalActivityLevel,
-									id: \.self
-								) { strength in
-									Text(strength)
-								}
-							}
-							.pickerStyle(.wheel)
-							.frame(height: 80)
-						}
-						
-					}
-					
-					Section {
-						VStack(alignment: .leading) {
-							Text("Please select diet quality level")
-							Picker(
-								"",
-								selection: $viewModel.selctedDietQuality
-							) {
-								ForEach(
-									viewModel.dietQualityLevel,
-									id: \.self
-								) { strength in
-									Text(strength)
-								}
-							}
-							.pickerStyle(.wheel)
-							.frame(height: 80)
-						}
-						
-					}
+
 				}
 			}
+		}
+	
+	private func createTogglePicker (title: String, binding : Binding<String>) -> some View {
+		Picker(title, selection: binding) {
+			Text ("Yes").tag("yes")
+			Text("No").tag("no")
 		}
 	}
 	
