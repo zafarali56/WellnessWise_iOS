@@ -62,30 +62,35 @@ struct SignUpScreen: View {
 					
 				}
 				.navigationTitle("Create account")
-				
+				.toolbar {
+					ToolbarItem(placement: .bottomBar) {
+						Button (action:{
+							viewModel.signup()
+						}){
+							if viewModel.isLoading{
+								ProgressView()
+							}
+							else {
+								Text("Create an account")
+									.font(.subheadline)
+									.fontWeight(.semibold)
+									.foregroundStyle(.white)
+									.frame(width:250, height: 50)
+									.background(.black)
+									.clipShape(.capsule)
+							}
+						}
+						.disabled(viewModel.isLoading)
+						
+					}
+				}
 				if !viewModel.errorMessage.isEmpty {
 					Text(viewModel.errorMessage)
 						.foregroundStyle(.red)
 						.font(.footnote)
 						.padding()
 				}
-				Button (action:{
-					viewModel.signup()
-				}){
-					if viewModel.isLoading{
-						ProgressView()
-					}
-					else {
-						Text("Create account")
-							.font(.subheadline)
-							.fontWeight(.semibold)
-							.foregroundStyle(.white)
-							.frame(width:250, height: 50)
-							.background(.black)
-							.clipShape(.capsule)
-					}
-				}
-				.disabled(viewModel.isLoading)
+
 				NavigationLink {
 					LoginScreen()
 				} label:
