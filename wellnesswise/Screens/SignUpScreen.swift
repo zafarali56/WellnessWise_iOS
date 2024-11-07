@@ -17,7 +17,6 @@ struct SignUpScreen: View {
 	var body: some View {
 		NavigationStack() {
 			VStack() {
-				Text("Create account").font(.title2)
 				Form{
 					Section(header: Text("Personal information")){
 						
@@ -62,6 +61,8 @@ struct SignUpScreen: View {
 					}
 					
 				}
+				.navigationTitle("Create account")
+				
 				if !viewModel.errorMessage.isEmpty {
 					Text(viewModel.errorMessage)
 						.foregroundStyle(.red)
