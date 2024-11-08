@@ -1,91 +1,130 @@
-//
-//  HealthAssesmentViewModel.swift
-//  wellnesswise
-//
-//  Created by Zafar Ali on 29/10/2024.
-//
-
 import Foundation
 import FirebaseAuth
 import FirebaseFirestore
+import SwiftUI
 
-class HealthAssesmentViewModel : ObservableObject {
+class HealthAssessmentViewModel: ObservableObject {
+	// MARK: - Medical History
+	@Published var familyDiabetes: String = "no"
+	@Published var heartDisease: String = "no"
+	@Published var familyHistoryCancer: String = "no"
+	@Published var previousSurgeries: String = "no"
+	@Published var chronicDiseases: String = "no"
 	
-	//Medical History
-	@Published var familyDiabetes : String = "no"
-	@Published var heartDisease : String = "no"
-	@Published var familyHistoryCancer : String = "no"
-	@Published var previousSurgeries : String = "no"
-	@Published var chronicDiseases : String = "no"
+	// MARK: - Lifestyle Habits
+	@Published var smoke: String = "no"
+	@Published var selectedAlcoholLevel = "None"
+	let alcoholConsumptionLevels = ["None", "Light", "Moderate", "Heavy", "Very Heavy"]
 	
-	//LifeStyle habits
-	@Published var smoke : String = "no"
-	@Published var selectedAlcholoLevel = "None"
-	let AlcholoConsumptionLevel = ["None", "Light", "Moderate", "Heavy", "Very Heavy"]
+	@Published var selectedActivityLevel = "Moderate"
+	let physicalActivityLevels = ["Sedentary", "Light", "Moderate", "Active", "Very Active"]
 	
-	@Published var selectedPhysicalActivityLevel = "Moderate"
-	let physicalActivityLevel = ["Sedentary", "Light", "Moderate", "Active", "Very Active"]
+	@Published var selectedDietQuality: String = "Good"
+	let dietQualityLevels = ["Poor", "Fair", "Good", "Very Good", "Excellent"]
 	
+	@Published var sleepHours: Double = 7.0
+	let sleepHoursRange = 4.0...12.0
 	
-	@Published var selectedDietQuality : String = "Good"
-	let dietQualityLevel = ["Poor", "Fair", "Good", "Very Good", "Excellent"]
+	// MARK: - Environmental Factors
+	@Published var airQualityIndex: Double = 50.0
+	let airQualityIndexRange = 1.0...500.0
 	
-	@Published var sleepHour : String = ""
+	@Published var selectedPollutantExposure: String = "Low"
+	let pollutantExposureLevels = ["Low", "Moderate", "High", "Very High"]
 	
-	//Envirnomental Factors
-	@Published var airQuality : String = ""
-	@Published var pollutantExposure : String = ""
+	// MARK: - Additional Information
+	@Published var selectedStressLevel: String = "Moderate"
+	let stressLevels = ["Low", "Mild", "Moderate", "High", "Severe"]
 	
-	//Additional Information
-	@Published var stressLevel : String = ""
-	@Published var AccessToHealthCare : String = ""
+	@Published var selectedHealthcareAccess: String = "Moderate"
+	let healthcareAccessLevels = ["Poor", "Limited", "Moderate", "Good", "Excellent"]
 	
-	
+	// MARK: - State
 	@Published var isLoading = false
 	@Published var errorMessage = ""
-	@Published var isAssesmentCompleted = false
+	@Published var isAssessmentCompleted = false
 	
+	// MARK: - Helper Methods
+	func getAirQualityColor() -> Color {
+		switch airQualityIndex {
+		case 0...50:
+			return .green
+		case 51...100:
+			return .yellow
+		case 101...150:
+			return .orange
+		case 151...200:
+			return .red
+		case 201...300:
+			return .purple
+		default:
+			return .brown
+		}
+	}
 	
-	func submitAssesment () {
+	func getAirQualityDescription() -> String {
+		switch airQualityIndex {
+		case 0...50:
+			return "Good: Safe for most people"
+		case 51...100:
+			return "Moderate: Acceptable"
+		case 101...150:
+			return "Unhealthy for Sensitive Groups"
+		case 151...200:
+			return "Unhealthy: Everyone may experience effects"
+		case 201...300:
+			return "Very Unhealthy: Health warnings"
+		default:
+			return "Hazardous: Health alert"
+		}
+	}
+	
+	// MARK: - Data Submission
+	func submitAssessment() {
 		guard let userId = Auth.auth().currentUser?.uid else {
 			errorMessage = "User not authenticated"
 			return
 		}
 		
-		var isLoading = true
-		
+		isLoading = true
 		
 		let assessmentData: [String: Any] = [
 			"medicalHistory": [
-				"familyDiabetes" : familyDiabetes,
-				"heartDisease" : heartDisease,
-				"familyHistoryCancer" : familyHistoryCancer,
-				"previousSurgeries" : previousSurgeries,
-				"chronicDiseases" : chronicDiseases
+				"familyDiabetes": familyDiabetes,
+				"heartDisease": heartDisease,
+				"familyHistoryCancer": familyHistoryCancer,
+				"previousSurgeries": previousSurgeries,
+				"chronicDiseases": chronicDiseases
 			],
-			
-			"lifeStyleHabits" : [
-				"smoke" : smoke,
-				"alcoholLevel" : selectedAlcholoLevel,
-				"physicalActivityLevel" : physicalActivityLevel,
-				"dietQuality" : selectedDietQuality
+			"lifestyleHabits": [
+				"smoke": smoke,
+				"alcoholLevel": selectedAlcoholLevel,
+				"physicalActivityLevel": selectedActivityLevel,
+				"dietQuality": selectedDietQuality,
+				"sleepHours": sleepHours
 			],
-			"timeStamp": FieldValue.serverTimestamp()
+			"environmentalFactors": [
+				"airQualityIndex": airQualityIndex,
+				"pollutantExposure": selectedPollutantExposure
+			],
+			"additionalInformation": [
+				"stressLevel": selectedStressLevel,
+				"healthcareAccess": selectedHealthcareAccess
+			],
+			"timestamp": FieldValue.serverTimestamp()
 		]
+		
 		Firestore.firestore().collection("users")
 			.document(userId)
-			.collection("assesments")
-			.addDocument(data: assessmentData) {[weak self] error in
+			.collection("assessments")
+			.addDocument(data: assessmentData) { [weak self] error in
 				self?.isLoading = false
 				
-				if let error = error{
+				if let error = error {
 					self?.errorMessage = error.localizedDescription
-				}
-				else {
-					self?.isAssesmentCompleted = true
+				} else {
+					self?.isAssessmentCompleted = true
 				}
 			}
 	}
-	
 }
-

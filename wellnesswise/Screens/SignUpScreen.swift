@@ -101,7 +101,7 @@ struct SignUpScreen: View {
 				}
 			}
 			.navigationDestination(isPresented: $viewModel.isSignupSuccessful){
-				HomeScreen()
+				HealthDataScreen()
 			}
 			
 		}
