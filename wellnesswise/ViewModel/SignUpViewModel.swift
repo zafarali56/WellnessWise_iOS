@@ -16,7 +16,8 @@ class SignUpViewModel : ObservableObject {
 	@Published var age : String = ""
 	@Published var weight: String = ""
 	@Published var height: String = ""
-	@Published var gender: String = ""
+	@Published var gender: String = "Male"
+	let genderType = ["Male", "Female"]
 	@Published var password: String = ""
 	
 	@Published var errorMessage : String = ""

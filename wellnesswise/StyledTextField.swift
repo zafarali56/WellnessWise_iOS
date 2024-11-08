@@ -19,6 +19,9 @@ struct StyledTextField: View {
 				if isSecure {
 					SecureField(placeholder , text: $text)
 						.autocorrectionDisabled()
+						.textInputAutocapitalization(
+							TextInputAutocapitalization
+								.never)
 	
 				}
 				
@@ -31,6 +34,9 @@ struct StyledTextField: View {
 				else {
 					TextField (placeholder, text: $text)
 						.autocorrectionDisabled()
+						.textInputAutocapitalization(
+							TextInputAutocapitalization
+								.never)
 				}
 				
 			}.textFieldStyle(PlainTextFieldStyle())

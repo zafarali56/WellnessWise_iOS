@@ -10,6 +10,7 @@ struct HealthAssessmentScreen: View {
 				.toolbar {
 					ToolbarItem(placement: .bottomBar) {
 							SubmitButton(viewModel: viewModel)
+							.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
 	
 					}
 				}
@@ -21,7 +22,9 @@ struct HealthAssessmentScreen: View {
 						ProgressView()
 					}
 				}
-		}
+		}.navigationDestination(isPresented: $viewModel.isAssessmentCompleted){
+			HomeScreen()
+		}.navigationBarBackButtonHidden()
 	}
 }
 

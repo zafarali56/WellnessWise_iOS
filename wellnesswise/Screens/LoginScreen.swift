@@ -72,6 +72,8 @@ struct LoginScreen: View {
 				){
 					HomeScreen()
 				}
+				.navigationBarBackButtonHidden()
+			
         }
     }
 }

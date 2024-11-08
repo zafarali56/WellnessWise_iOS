@@ -47,9 +47,13 @@ struct SignUpScreen: View {
 							text: $viewModel.height,
 							isNumber: true
 						)
-						Picker (selection: $viewModel.gender, label : Text ("Gender")) {
-							Text("Male").tag("Male")
-							Text("Female").tag("Female")
+						Picker (
+							"Select Gender",selection: $viewModel.gender
+						) {
+							ForEach(viewModel.genderType, id: \.self)
+							{
+								Text($0)
+							}
 						}.pickerStyle(.palette)
 						
 						StyledTextField(
@@ -64,24 +68,33 @@ struct SignUpScreen: View {
 				.navigationTitle("Create account")
 				.toolbar {
 					ToolbarItem(placement: .bottomBar) {
-						Button (action:{
-							viewModel.signup()
-						}){
-							if viewModel.isLoading{
-								ProgressView()
+						VStack(spacing: 1) { // Add spacing between elements
+							Button(action: {
+								viewModel.signup()
+							}) {
+								if viewModel.isLoading {
+									ProgressView()
+								} else {
+									Text("Create an account")
+										.font(.subheadline)
+										.fontWeight(.semibold)
+										.foregroundStyle(.white)
+										.frame(width: 250, height: 40)
+										.background(.black)
+										.clipShape(.capsule)
+								}
 							}
-							else {
-								Text("Create an account")
-									.font(.subheadline)
+							.disabled(viewModel.isLoading)
+							
+							NavigationLink {
+								LoginScreen()
+							} label: {
+								Text("Already have account? Login")
+									.font(.footnote)
 									.fontWeight(.semibold)
-									.foregroundStyle(.white)
-									.frame(width:250, height: 50)
-									.background(.black)
-									.clipShape(.capsule)
 							}
 						}
-						.disabled(viewModel.isLoading)
-						
+						.frame(maxWidth: .infinity)
 					}
 				}
 				if !viewModel.errorMessage.isEmpty {
@@ -91,18 +104,12 @@ struct SignUpScreen: View {
 						.padding()
 				}
 
-				NavigationLink {
-					LoginScreen()
-				} label:
-				{
-					Text("Already have account? Login")
-						.font(.footnote)
-						.fontWeight(.semibold)
-				}
+				
 			}
 			.navigationDestination(isPresented: $viewModel.isSignupSuccessful){
-				HealthDataScreen()
+				HealthAssessmentScreen()
 			}
+			.navigationBarBackButtonHidden()
 			
 		}
 		
