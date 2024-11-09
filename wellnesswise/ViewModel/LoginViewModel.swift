@@ -1,65 +1,75 @@
-//
-//  LoginViewModel.swift
-//  wellnesswise
-//
-//  Created by Zafar Ali on 20/10/2024.
-//
-
 import Foundation
 import Firebase
 import FirebaseAuth
 
-class LoginViewModel : ObservableObject {
-	@Published var email : String = ""
-	@Published var password : String = ""
+class LoginViewModel: ObservableObject {
+	@Published var email = ""
+	@Published var password = ""
 	
-	@Published var errorMessage : String = ""
-	@Published var isLoading : Bool = false
-	@Published var isLoginSuccessful : Bool = false
+	@Published var errorMessage = ""
+	@Published var isLoading = false
+	@Published var isLoginSuccessful = false
 	
-	func validate () -> Bool {
-		if email.isEmpty && password.isEmpty {
-			errorMessage = "Fill in all the fields"
-			return false
-		}
-		if !validEmail(email){
-			errorMessage = "Invalid email"
-			return false
-		}
-		if password.count < 6 {
-			errorMessage = "Password must be 6 character or long"
-			return false
-		}
-		errorMessage = ""
-		return true
-	}
-	
-	private func validEmail (_ email : String) -> Bool {
+	var isValidEmail: Bool? {
+		if email.isEmpty { return nil }
 		let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-		let emailPred =  NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+		let emailPred = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
 		return emailPred.evaluate(with: email)
 	}
 	
-	func login () {
-		guard validate() else {
-		return
+	var isValidPassword: Bool? {
+		if password.isEmpty { return nil }
+		return password.count >= 6
+	}
+	
+	var isFormValid: Bool {
+		isValidEmail == true && isValidPassword == true
+	}
+	
+	func login() {
+		guard isFormValid else {
+			errorMessage = "Please fill in all fields correctly"
+			return
 		}
 		
 		isLoading = true
 		errorMessage = ""
-		Auth.auth().signIn(withEmail: email, password: password){
-		[weak self] result, error in
-			guard let self = self else {return}
-			self.isLoading = false
-			if let error = error {
-				self.errorMessage = error.localizedDescription
-				self.isLoginSuccessful = false
-			}
-			else {
-				self.isLoginSuccessful = true
+		
+		Auth.auth().signIn(withEmail: email, password: password) { [weak self] result, error in
+			guard let self = self else { return }
+			
+			DispatchQueue.main.async {
+				self.isLoading = false
+				
+				if let error = error {
+					self.errorMessage = self.handleAuthError(error)
+				} else {
+					self.isLoginSuccessful = true
+				}
 			}
 		}
-		
-		
 	}
+	
+	private func handleAuthError(_ error: Error) -> String {
+			let nsError = error as NSError
+			
+			switch nsError.code {
+			case AuthErrorCode.wrongPassword.rawValue:
+				return "Incorrect password. Please try again."
+			case AuthErrorCode.invalidEmail.rawValue:
+				return "Invalid email address."
+			case AuthErrorCode.userNotFound.rawValue:
+				return "No account found with this email."
+			case AuthErrorCode.networkError.rawValue:
+				return "Network error. Please check your connection."
+			case AuthErrorCode.emailAlreadyInUse.rawValue:
+				return "This email is already registered."
+			case AuthErrorCode.weakPassword.rawValue:
+				return "Password is too weak. Please use a stronger password."
+			case AuthErrorCode.tooManyRequests.rawValue:
+				return "Too many attempts. Please try again later."
+			default:
+				return "An error occurred. Please try again."
+			}
+		}
 }
