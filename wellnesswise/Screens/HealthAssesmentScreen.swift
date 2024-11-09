@@ -26,7 +26,7 @@ struct HealthAssessmentScreen: View {
 	}
 }
 
-struct FormContent: View {
+private struct FormContent: View {
 	@ObservedObject var viewModel: HealthAssessmentViewModel
 	
 	var body: some View {

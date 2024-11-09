@@ -1,120 +1,242 @@
-//
-//  SignUpScreen.swift
-//  wellnesswise
-//
-//  Created by Zafar Ali on 17/10/2024.
-//
-
 import SwiftUI
 import Firebase
 import FirebaseAuth
 
-
 struct SignUpScreen: View {
 	@StateObject private var viewModel = SignUpViewModel()
-
 	
 	var body: some View {
-		NavigationStack() {
-			VStack() {
-				Form{
-					Section(header: Text("Personal information")){
-						
-						StyledTextField(
-							title: "Email",
-							placeholder: "Enter your email",
-							text: $viewModel.email
-						)
-						StyledTextField(
-							title: "Name",
-							placeholder: "Enter your full name",
-							text: $viewModel.fullName
-						)
-						StyledTextField(
-							title: "Age",
-							placeholder: "Please enter your age",
-							text: $viewModel.age
-						)
-						StyledTextField(
-							title: "Weight",
-							placeholder: "(kg)",
-							text: $viewModel.weight,
-							isNumber: true
-						)
-						StyledTextField(
-							title: "Height",
-							placeholder: "(cm)",
-							text: $viewModel.height,
-							isNumber: true
-						)
-						Picker (
-							"Select Gender",selection: $viewModel.gender
-						) {
-							ForEach(viewModel.genderType, id: \.self)
-							{
-								Text($0)
-							}
-						}.pickerStyle(.palette)
-						
-						StyledTextField(
-							title: "Password",
-							placeholder: "Please create strong password",
-							text: $viewModel.password,
-							isSecure: true
-						)
-					}
+		NavigationStack {
+			ScrollView {
+				VStack(spacing: 20) {
+					// Form Content
+					FormContent(viewModel: viewModel)
 					
+					// Error Message
+					ErrorView(message: viewModel.errorMessage)
 				}
-				.navigationTitle("Create account")
-				.toolbar {
-					ToolbarItem(placement: .bottomBar) {
-						VStack(spacing: 1) { // Add spacing between elements
-							Button(action: {
-								viewModel.signup()
-							}) {
-								if viewModel.isLoading {
-									ProgressView()
-								} else {
-									Text("Create an account")
-										.font(.subheadline)
-										.fontWeight(.semibold)
-										.foregroundStyle(.white)
-										.frame(width: 250, height: 40)
-										.background(.black)
-										.clipShape(.capsule)
-								}
-							}
-							.disabled(viewModel.isLoading)
-							
-							NavigationLink {
-								LoginScreen()
-							} label: {
-								Text("Already have account? Login")
-									.font(.footnote)
-									.fontWeight(.semibold)
-							}
-						}
-						.frame(maxWidth: .infinity)
-					}
-				}
-				if !viewModel.errorMessage.isEmpty {
-					Text(viewModel.errorMessage)
-						.foregroundStyle(.red)
-						.font(.footnote)
-						.padding()
-				}
-
-				
+				.padding()
 			}
-			.navigationDestination(isPresented: $viewModel.isSignupSuccessful){
+			.navigationTitle("Create Account")
+			.navigationBarTitleDisplayMode(.large)
+			.toolbar {
+				ToolbarItem(placement: .bottomBar) {
+					BottomBarContent(viewModel: viewModel)
+				}
+			}
+			.navigationDestination(isPresented: $viewModel.isSignupSuccessful) {
 				HealthAssessmentScreen()
 			}
 			.navigationBarBackButtonHidden()
-			
 		}
-		
 	}
 }
+
+// MARK: - Supporting Views
+private struct FormContent: View {
+	@ObservedObject var viewModel: SignUpViewModel
+	
+	var body: some View {
+		VStack(spacing: 16) {
+			Section {
+				StyledTextField(
+					title: "Email",
+					placeholder: "Enter your email",
+					text: $viewModel.email,
+					isValid: viewModel.isValidEmail
+				)
+				
+				StyledTextField(
+					title: "Full Name",
+					placeholder: "Enter your full name",
+					text: $viewModel.fullName,
+					isValid: !viewModel.fullName.isEmpty
+				)
+				
+				HStack(spacing: 12) {
+					StyledTextField(
+						title: "Age",
+						placeholder: "Years",
+						text: $viewModel.age,
+						isNumber: true,
+						isValid: viewModel.isValidAge
+					)
+					.frame(maxWidth: .infinity)
+					
+					GenderPicker(selection: $viewModel.gender)
+						.frame(maxWidth: .infinity)
+				}
+				
+				HStack(spacing: 12) {
+					StyledTextField(
+						title: "Weight",
+						placeholder: "kg",
+						text: $viewModel.weight,
+						isNumber: true,
+						isValid: !viewModel.weight.isEmpty
+					)
+					.frame(maxWidth: .infinity)
+					
+					StyledTextField(
+						title: "Height",
+						placeholder: "cm",
+						text: $viewModel.height,
+						isNumber: true,
+						isValid: !viewModel.height.isEmpty
+					)
+					.frame(maxWidth: .infinity)
+				}
+				
+				StyledTextField(
+					title: "Password",
+					placeholder: "Create a strong password",
+					text: $viewModel.password,
+					isSecure: true,
+					isValid: viewModel.isValidPassword
+				)
+				
+				if !viewModel.password.isEmpty {
+					PasswordStrengthIndicator(password: viewModel.password)
+				}
+			}
+		}
+		.padding(.horizontal)
+	}
+}
+
+private struct BottomBarContent: View {
+	@ObservedObject var viewModel: SignUpViewModel
+	
+	var body: some View {
+		VStack(spacing: 8) {
+			// Sign Up Button
+			Button(action: { viewModel.signup() }) {
+				if viewModel.isLoading {
+					ProgressView()
+						.tint(.white)
+				} else {
+					Text("Create Account")
+
+						.font(.headline)
+						.fontWeight(.semibold)
+						.foregroundStyle(.white)
+						.frame(maxWidth: .infinity)
+						.frame(height: 30)
+	
+				}
+			}
+			.buttonStyle(.borderedProminent)
+			.clipShape(.capsule)
+			.tint(.black)
+			.disabled(viewModel.isLoading || viewModel.isFormValid)
+			
+			// Login Link
+			NavigationLink {
+				LoginScreen()
+			} label: {
+				Text("Already have an account? Login")
+					.font(.subheadline)
+					.fontWeight(.medium)
+					.padding(.bottom, 10)
+			}
+		}
+		.padding(.horizontal, 20)
+	}
+}
+
+private struct GenderPicker: View {
+	@Binding var selection: String
+	let options = ["Male", "Female"]
+	
+	var body: some View {
+		VStack(alignment: .leading, spacing: 4) {
+			Text("Gender")
+				.font(.subheadline)
+				.foregroundStyle(.secondary)
+			
+			Picker("Gender", selection: $selection) {
+				ForEach(options, id: \.self) { option in
+					Text(option).tag(option)
+				}
+			}
+			.pickerStyle(.menu)
+			.frame(maxWidth: .infinity)
+			.frame(height: 45)
+			.background {
+				RoundedRectangle(cornerRadius: 10)
+					.fill(.ultraThinMaterial)
+			}
+		}
+	}
+}
+
+private struct PasswordStrengthIndicator: View {
+	let password: String
+	
+	private var strength: Double {
+		let hasUppercase = password.contains(where: { $0.isUppercase })
+		let hasLowercase = password.contains(where: { $0.isLowercase })
+		let hasNumbers = password.contains(where: { $0.isNumber })
+		let hasSpecialCharacters = password.contains(where: { "!@#$%^&*(),.?\":{}|<>".contains($0) })
+		
+		var strength = 0.0
+		if hasUppercase { strength += 0.25 }
+		if hasLowercase { strength += 0.25 }
+		if hasNumbers { strength += 0.25 }
+		if hasSpecialCharacters { strength += 0.25 }
+		
+		return strength
+	}
+	
+	private var color: Color {
+		switch strength {
+		case 0.0..<0.5: return .red
+		case 0.5..<0.75: return .orange
+		default: return .green
+		}
+	}
+	
+	var body: some View {
+		VStack(alignment: .leading, spacing: 4) {
+			GeometryReader { geometry in
+				Rectangle()
+					.fill(color)
+					.frame(width: geometry.size.width * strength)
+					.animation(.spring, value: strength)
+			}
+			.frame(height: 4)
+			.background(Color.gray.opacity(0.2))
+			.clipShape(RoundedRectangle(cornerRadius: 2))
+			
+			Text(strengthText)
+				.font(.caption)
+				.foregroundStyle(color)
+		}
+	}
+	
+	private var strengthText: String {
+		switch strength {
+		case 0.0..<0.5: return "Weak password"
+		case 0.5..<0.75: return "Moderate password"
+		default: return "Strong password"
+		}
+	}
+}
+
+private struct ErrorView: View {
+	let message: String
+	
+	var body: some View {
+		if !message.isEmpty {
+			Text(message)
+				.font(.footnote)
+				.foregroundStyle(.red)
+				.padding(.horizontal)
+				.padding(.top, 4)
+		}
+	}
+}
+
 #Preview {
 	SignUpScreen()
 }

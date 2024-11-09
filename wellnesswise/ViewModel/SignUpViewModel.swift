@@ -10,52 +10,56 @@ import Firebase
 import FirebaseAuth
 import Combine
 
-class SignUpViewModel : ObservableObject {
-	@Published var email: String = ""
-	@Published var fullName: String = ""
-	@Published var age : String = ""
-	@Published var weight: String = ""
-	@Published var height: String = ""
-	@Published var gender: String = "Male"
-	let genderType = ["Male", "Female"]
-	@Published var password: String = ""
+class SignUpViewModel: ObservableObject {
+	@Published var email = ""
+	@Published var fullName = ""
+	@Published var age = ""
+	@Published var weight = ""
+	@Published var height = ""
+	@Published var gender = "Male"
+	@Published var password = ""
 	
-	@Published var errorMessage : String = ""
-	@Published	var isSignupSuccessful : Bool = false
-	@Published var isLoading : Bool = false
+	@Published var errorMessage = ""
+	@Published var isLoading = false
+	@Published var isSignupSuccessful = false
 	
-	func validate () -> Bool
-	{
-		if email.isEmpty || fullName.isEmpty || age.isEmpty || weight.isEmpty || height.isEmpty || password.isEmpty {
-			errorMessage = "Please fill in all the fields"
-			return false
-		}
-		if !isValidEmail (email) {
-			errorMessage = "Please enter valid email"
-			return false
-		}
-		if password.count < 6 {
-			errorMessage = "Password must be 6 Character or long"
-			return false
-		}
-		errorMessage = ""
-		return true
-		
-	}
-	private func isValidEmail (_ email : String) -> Bool {
+	var isValidEmail: Bool {
 		let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-		let emailPred =  NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+		let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
 		return emailPred.evaluate(with: email)
 	}
 	
-	func signup () {
-		guard validate () else {
+	var isValidAge: Bool {
+		guard let ageInt = Int(age) else { return false }
+		return ageInt >= 18 && ageInt <= 120
+	}
+	
+	var isValidPassword: Bool {
+		password.count >= 8
+	}
+	
+	var isFormValid: Bool {
+		isValidEmail &&
+		!fullName.isEmpty &&
+		isValidAge &&
+		!weight.isEmpty &&
+		!height.isEmpty &&
+		!gender.isEmpty &&
+		isValidPassword
+	}
+	
+	func signup() {
+		guard isFormValid else {
+			errorMessage = "Please fill in all fields correctly"
 			return
 		}
+		
 		isLoading = true
 		errorMessage = ""
-		Auth.auth().createUser(withEmail: email, password: password){[weak self] result, error in
-			guard let self = self else {return}
+		
+		Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
+			guard let self = self else { return }
+			
 			if let error = error {
 				self.errorMessage = error.localizedDescription
 				self.isLoading = false
@@ -63,27 +67,26 @@ class SignUpViewModel : ObservableObject {
 			}
 			
 			if let user = result?.user {
-				let userData : [String: Any] = [
-					"fullName" :self.fullName,
-					"age" : self.age,
-					"height" : self.height,
-					"weight" : self.weight,
-					"gender" : self.gender
+				let userData: [String: Any] = [
+					"fullName": self.fullName,
+					"age": self.age,
+					"weight": self.weight,
+					"height": self.height,
+					"gender": self.gender,
+					"createdAt": FieldValue.serverTimestamp()
 				]
-				Firestore.firestore().collection("users").document(user.uid).setData(userData) {[weak self ] error in
-					guard let self = self else {return}
+				
+				Firestore.firestore().collection("users").document(user.uid).setData(userData) { [weak self] error in
+					guard let self = self else { return }
 					self.isLoading = false
+					
 					if let error = error {
 						self.errorMessage = error.localizedDescription
-						self.isSignupSuccessful = false
-					}
-					else {
+					} else {
 						self.isSignupSuccessful = true
 					}
 				}
 			}
 		}
-		
 	}
-	
 }
