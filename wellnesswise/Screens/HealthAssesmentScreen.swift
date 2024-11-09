@@ -10,8 +10,6 @@ struct HealthAssessmentScreen: View {
 				.toolbar {
 					ToolbarItem(placement: .bottomBar) {
 							SubmitButton(viewModel: viewModel)
-							.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-	
 					}
 				}
 				.overlay {
@@ -28,7 +26,6 @@ struct HealthAssessmentScreen: View {
 	}
 }
 
-// MARK: - Form Sections
 struct FormContent: View {
 	@ObservedObject var viewModel: HealthAssessmentViewModel
 	
@@ -69,10 +66,29 @@ struct LifestyleHabitsSection: View {
 			createTogglePicker(title: "Do you smoke?",
 							 binding: $viewModel.smoke)
 			
-			AlcoholConsumptionPicker(viewModel: viewModel)
-			PhysicalActivityPicker(viewModel: viewModel)
-			DietQualityPicker(viewModel: viewModel)
+			CustomPicker(
+				headerText: "Alcohol consumption level:",
+				pickerText: "Select level",
+				options: viewModel.alcoholConsumptionLevels,
+				selected: $viewModel.selectedAlcoholLevel)
+		
+			CustomPicker(
+				headerText: "Physical activity level:",
+				pickerText: "Select level",
+				options: viewModel.physicalActivityLevels,
+				selected: $viewModel.selectedActivityLevel
+			)
+			
+			
+			CustomPicker(
+				headerText: "Diet quality levels:",
+				pickerText: "Select quality",
+				options: viewModel.dietQualityLevels,
+				selected: $viewModel.selectedDietQuality
+			)
+			
 			SleepHoursSlider(viewModel: viewModel)
+			
 		}
 	}
 }
@@ -83,7 +99,12 @@ struct EnvironmentalFactorsSection: View {
 	var body: some View {
 		Section("Environmental Factors") {
 			AirQualitySlider(viewModel: viewModel)
-			PollutantExposurePicker(viewModel: viewModel)
+			CustomPicker(
+				headerText: "Exposure to pollutants",
+				pickerText: "Select level",
+				options: viewModel.pollutantExposureLevels,
+				selected: $viewModel.selectedPollutantExposure
+			)
 		}
 	}
 }
@@ -93,102 +114,27 @@ struct AdditionalInformationSection: View {
 	
 	var body: some View {
 		Section("Additional Information") {
-			StressLevelPicker(viewModel: viewModel)
-			HealthcareAccessPicker(viewModel: viewModel)
+			CustomPicker(
+				headerText: "Stress levels",
+				pickerText: "Select level",
+				options: viewModel.stressLevels,
+				selected: $viewModel.selectedStressLevel
+			)
+			CustomPicker(
+				headerText: "Acccess to healthcare",
+				pickerText: "Select Quality",
+				options: viewModel.healthcareAccessLevels,
+				selected: $viewModel.selectedHealthcareAccess
+			)
 		}
 	}
 }
 
-// MARK: - Picker Components
-struct AlcoholConsumptionPicker: View {
-	@ObservedObject var viewModel: HealthAssessmentViewModel
-	
-	var body: some View {
-		VStack(alignment: .leading) {
-			Text("Alcohol consumption level")
-			Picker("Select level", selection: $viewModel.selectedAlcoholLevel) {
-				ForEach(viewModel.alcoholConsumptionLevels, id: \.self) {
-					Text($0)
-				}
-			}
-		}
-	}
-}
 
-struct PhysicalActivityPicker: View {
-	@ObservedObject var viewModel: HealthAssessmentViewModel
-	
-	var body: some View {
-		VStack(alignment: .leading) {
-			Text("Physical activity level")
-			Picker("Select level", selection: $viewModel.selectedActivityLevel) {
-				ForEach(viewModel.physicalActivityLevels, id: \.self) {
-					Text($0)
-				}
-			}
-		}
-	}
-}
 
-struct DietQualityPicker: View {
-	@ObservedObject var viewModel: HealthAssessmentViewModel
-	
-	var body: some View {
-		VStack(alignment: .leading) {
-			Text("Diet quality")
-			Picker("Select quality", selection: $viewModel.selectedDietQuality) {
-				ForEach(viewModel.dietQualityLevels, id: \.self) {
-					Text($0)
-				}
-			}
-		}
-	}
-}
 
-struct PollutantExposurePicker: View {
-	@ObservedObject var viewModel: HealthAssessmentViewModel
-	
-	var body: some View {
-		VStack(alignment: .leading) {
-			Text("Exposure to pollutants")
-			Picker("Select level", selection: $viewModel.selectedPollutantExposure) {
-				ForEach(viewModel.pollutantExposureLevels, id: \.self) {
-					Text($0)
-				}
-			}
-		}
-	}
-}
 
-struct StressLevelPicker: View {
-	@ObservedObject var viewModel: HealthAssessmentViewModel
-	
-	var body: some View {
-		VStack(alignment: .leading) {
-			Text("Stress Level")
-			Picker("Select level", selection: $viewModel.selectedStressLevel) {
-				ForEach(viewModel.stressLevels, id: \.self) {
-					Text($0)
-				}
-			}
-		}
-	}
-}
 
-struct HealthcareAccessPicker: View {
-	@ObservedObject var viewModel: HealthAssessmentViewModel
-	
-	var body: some View {
-		VStack(alignment: .leading) {
-			Text("Access to healthcare")
-			Picker("Select level", selection: $viewModel.selectedHealthcareAccess) {
-				ForEach(viewModel.healthcareAccessLevels, id: \.self) {
-					Text($0)
-				}
-			}
-		}
-	}
-}
 
 struct SleepHoursSlider: View {
 	@ObservedObject var viewModel: HealthAssessmentViewModel

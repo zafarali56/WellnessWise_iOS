@@ -21,6 +21,7 @@
 		9E7DCE752CD159740032AF2F /* HealthDataScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7DCE742CD159740032AF2F /* HealthDataScreen.swift */; };
 		9E7DCE772CD1598E0032AF2F /* HealthAssesmentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7DCE762CD1598E0032AF2F /* HealthAssesmentViewModel.swift */; };
 		9E7DCE792CD1599C0032AF2F /* HealthDataViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7DCE782CD1599C0032AF2F /* HealthDataViewModel.swift */; };
+		9EA583B92CDF28EB00222E46 /* CustomPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA583B82CDF28EB00222E46 /* CustomPicker.swift */; };
 		9EBE0B4A2CC8CA1E00350D6C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EBE0B492CC8CA1E00350D6C /* GoogleService-Info.plist */; };
 		9EE597192CC6284C00B3DF14 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE597182CC6284C00B3DF14 /* HomeScreen.swift */; };
 		9EEF18502CB6B6E800AA8D5B /* wellnesswiseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEF184F2CB6B6E800AA8D5B /* wellnesswiseApp.swift */; };
@@ -61,6 +62,7 @@
 		9E7DCE742CD159740032AF2F /* HealthDataScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthDataScreen.swift; sourceTree = "<group>"; };
 		9E7DCE762CD1598E0032AF2F /* HealthAssesmentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthAssesmentViewModel.swift; sourceTree = "<group>"; };
 		9E7DCE782CD1599C0032AF2F /* HealthDataViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthDataViewModel.swift; sourceTree = "<group>"; };
+		9EA583B82CDF28EB00222E46 /* CustomPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomPicker.swift; path = wellnesswise/CustomPicker.swift; sourceTree = SOURCE_ROOT; };
 		9EBE0B492CC8CA1E00350D6C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9EE597182CC6284C00B3DF14 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		9EEF184C2CB6B6E800AA8D5B /* wellnesswise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wellnesswise.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -143,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				9E2820AE2CCA7DF500CABA49 /* StyledTextField.swift */,
+				9EA583B82CDF28EB00222E46 /* CustomPicker.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -347,6 +350,7 @@
 				9EEFE8672CDA9FC000A47133 /* VerificationScreen.swift in Sources */,
 				9E7DCE752CD159740032AF2F /* HealthDataScreen.swift in Sources */,
 				9EEF18502CB6B6E800AA8D5B /* wellnesswiseApp.swift in Sources */,
+				9EA583B92CDF28EB00222E46 /* CustomPicker.swift in Sources */,
 				9EEFE8652CDA9FA300A47133 /* ProfileScreen.swift in Sources */,
 				9EE597192CC6284C00B3DF14 /* HomeScreen.swift in Sources */,
 				9E1BA6442CC5444C00DFDD3B /* LoginViewModel.swift in Sources */,
