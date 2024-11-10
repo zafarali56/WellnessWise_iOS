@@ -19,7 +19,7 @@ class LoginViewModel: ObservableObject {
 	
 	var isValidPassword: Bool? {
 		if password.isEmpty { return nil }
-		return password.count >= 6
+		return password.count >= 8
 	}
 	
 	var isFormValid: Bool {

@@ -128,7 +128,7 @@ private struct BottomBarContent: View {
 			.buttonStyle(.borderedProminent)
 			.clipShape(.capsule)
 			.tint(.black)
-			.disabled(viewModel.isLoading || viewModel.isFormValid)
+			.disabled(viewModel.isLoading || !viewModel.isFormValid)
 			
 			// Login Link
 			NavigationLink {
@@ -191,7 +191,8 @@ private struct PasswordStrengthIndicator: View {
 	private var color: Color {
 		switch strength {
 		case 0.0..<0.5: return .red
-		case 0.5..<0.75: return .orange
+		case 0.5..<0.6: return .orange
+		case 0.6..<0.8: return .yellow
 		default: return .green
 		}
 	}
@@ -217,7 +218,8 @@ private struct PasswordStrengthIndicator: View {
 	private var strengthText: String {
 		switch strength {
 		case 0.0..<0.5: return "Weak password"
-		case 0.5..<0.75: return "Moderate password"
+		case 0.5..<0.6: return "Moderate password"
+		case 0.6..<0.8: return "Safe password"
 		default: return "Strong password"
 		}
 	}

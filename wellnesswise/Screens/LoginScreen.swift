@@ -63,7 +63,7 @@ private struct ActionSection: View {
 			.clipShape(.capsule)
 			.buttonStyle(.borderedProminent)
 			.tint(.black)
-			.disabled(viewModel.isLoading || viewModel.isFormValid)
+			.disabled(viewModel.isLoading || !viewModel.isFormValid)
 			
 			// Sign Up Link
 			NavigationLink {

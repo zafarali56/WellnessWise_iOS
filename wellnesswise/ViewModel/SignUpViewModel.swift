@@ -42,10 +42,20 @@ class SignUpViewModel: ObservableObject {
 		isValidEmail &&
 		!fullName.isEmpty &&
 		isValidAge &&
-		!weight.isEmpty &&
-		!height.isEmpty &&
+		isValidWeight &&
+		isValidHeight &&
 		!gender.isEmpty &&
 		isValidPassword
+	}
+
+	var isValidWeight : Bool {
+		guard let weightValue = Double (weight) else {return false}
+		return weightValue > 0 && weightValue < 500
+	}
+	
+	var isValidHeight : Bool {
+		guard let heightValue = Double (height) else {return false}
+		return heightValue > 0 && heightValue < 300
 	}
 	
 	func signup() {
