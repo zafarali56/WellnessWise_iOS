@@ -9,7 +9,7 @@ struct HealthAssessmentScreen: View {
 				.navigationTitle("Health Assessment")
 				.toolbar {
 					ToolbarItem(placement: .bottomBar) {
-							SubmitButton(viewModel: viewModel)
+						BottomBarContent(viewModel: viewModel)
 					}
 				}
 				.overlay {
@@ -38,7 +38,35 @@ private struct FormContent: View {
 		}
 	}
 }
+private struct BottomBarContent: View {
+	@ObservedObject var viewModel: HealthAssessmentViewModel
+	
+	var body: some View {
+		VStack(spacing: 8) {
+			Button(action: { viewModel.submitAssessment() }) {
+				if viewModel.isLoading {
+					ProgressView()
+						.tint(.white)
+				} else {
+					Text("Submit")
+					
+						.font(.headline)
+						.fontWeight(.semibold)
+						.foregroundStyle(.white)
+						.frame(maxWidth: .infinity)
+						.frame(width: 250,height: 30)
+						
 
+				}
+			}
+			.buttonStyle(.borderedProminent)
+			.clipShape(.capsule)
+			.tint(.black)
+			.disabled(viewModel.isLoading)
+		}
+		
+	}
+}
 struct MedicalHistorySection: View {
 	@ObservedObject var viewModel: HealthAssessmentViewModel
 	
@@ -130,12 +158,6 @@ struct AdditionalInformationSection: View {
 	}
 }
 
-
-
-
-
-
-
 struct SleepHoursSlider: View {
 	@ObservedObject var viewModel: HealthAssessmentViewModel
 	
@@ -193,30 +215,7 @@ struct AirQualitySlider: View {
 	}
 }
 
-// MARK: - Supporting Views
-struct SubmitButton: View {
-	@ObservedObject var viewModel: HealthAssessmentViewModel
-	
-	var body: some View {
-		Button(action: {
-			viewModel.submitAssessment()
-		}) {
-			if viewModel.isLoading {
-				ProgressView()
-			} else {
-				Text("Submit")
-					.font(.subheadline)
-					.fontWeight(.semibold)
-					.foregroundStyle(.white)
-					.frame(width: 250, height: 50)
-					.background(.black)
-					.clipShape(.capsule)
-			}
-		}
-		
-		.disabled(viewModel.isLoading)
-	}
-}
+
 
 struct ErrorOverlay: View {
 	let errorMessage: String
