@@ -19,9 +19,10 @@ class SignUpViewModel: ObservableObject {
 	@Published var gender = "Male"
 	@Published var password = ""
 	
+	@Published var isSignupSuccessful = false
 	@Published var errorMessage = ""
 	@Published var isLoading = false
-	@Published var isSignupSuccessful = false
+
 	
 	var isValidEmail: Bool {
 		let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
