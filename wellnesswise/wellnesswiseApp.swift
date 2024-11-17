@@ -17,10 +17,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct wellnesswiseApp: App {
+	@StateObject private var navigationManager = NavigationManager()
 	@UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     var body: some Scene {
         WindowGroup {
             ContentView()
+				.environmentObject(navigationManager)
         }
     }
 }

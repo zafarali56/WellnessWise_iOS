@@ -12,8 +12,7 @@ enum AppScreen: Hashable {
 class NavigationManager: ObservableObject {
 	@Published var path = NavigationPath()
 	@Published var currentScreen: AppScreen = .loginScreen
-	
-	// Keep track of navigation history
+
 	private var screenHistory: [AppScreen] = []
 	
 	func navigateTo(_ screen: AppScreen) {

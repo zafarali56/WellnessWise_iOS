@@ -20,6 +20,11 @@ class EmailVerificationViewModel : ObservableObject {
 	
 	init() {
 		checkVerificationStatus()
+		if (isVerificationEmailSent == false)
+		{
+			sendVerificationEmail()
+		}
+
 	}
 	
 	func checkVerificationStatus() {
