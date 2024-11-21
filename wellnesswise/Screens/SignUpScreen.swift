@@ -3,35 +3,34 @@ import Firebase
 import FirebaseAuth
 
 struct SignUpScreen: View {
+	@EnvironmentObject private var navigationManager : NavigationManager
 	@StateObject private var viewModel = SignUpViewModel()
+
+	init(){
+		_viewModel = StateObject(
+			wrappedValue: SignUpViewModel(
+			)
+		)
+	}
 	
 	var body: some View {
-		NavigationStack {
-			ScrollView {
-				VStack(spacing: 20) {
-					// Form Content
-					FormContent(viewModel: viewModel)
-					
-					// Error Message
-					ErrorView(message: viewModel.errorMessage)
-				}
-				.padding()
-			}
-			.navigationTitle("Create Account")
-			.navigationBarTitleDisplayMode(.large)
-			.toolbar {
-				ToolbarItem(placement: .bottomBar) {
-					BottomBarContent(viewModel: viewModel)
-				}
-			}
-			.navigationDestination(isPresented: $viewModel.isSignupSuccessful) {
-				HealthAssessmentScreen()
-			}
-			.navigationBarBackButtonHidden()
-		}
-	}
-}
-
+		 ScrollView {
+			 VStack(spacing: 20) {
+				 FormContent(viewModel: viewModel)
+				 ErrorView(message: viewModel.errorMessage)
+			 }
+			 .padding()
+		 }
+		 .navigationTitle("Create Account")
+		 .navigationBarTitleDisplayMode(.large)
+		 .toolbar {
+			 ToolbarItem(placement: .bottomBar) {
+				 BottomBarContent(viewModel: viewModel)
+			 }
+		 }
+		 .navigationBarBackButtonHidden()
+	 }
+ }
 // MARK: - Supporting Views
 private struct FormContent: View {
 	@ObservedObject var viewModel: SignUpViewModel
@@ -105,12 +104,13 @@ private struct FormContent: View {
 }
 
 private struct BottomBarContent: View {
+	@EnvironmentObject private var navigationManager:  NavigationManager
 	@ObservedObject var viewModel: SignUpViewModel
 	
 	var body: some View {
 		VStack(spacing: 8) {
 			// Sign Up Button
-			Button(action: { viewModel.signup() }) {
+			Button(action: { viewModel.signup(using: navigationManager) }) {
 				if viewModel.isLoading {
 					ProgressView()
 						.tint(.white)
@@ -129,11 +129,10 @@ private struct BottomBarContent: View {
 			.clipShape(.capsule)
 			.tint(.black)
 			.disabled(viewModel.isLoading || !viewModel.isFormValid)
+		
 			
-			// Login Link
-			NavigationLink {
-				LoginScreen()
-			} label: {
+			Button{navigationManager.navigateTo(.loginScreen)}
+			label:{
 				Text("Already have an account? Login")
 					.font(.subheadline)
 					.fontWeight(.medium)

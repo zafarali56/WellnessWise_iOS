@@ -35,6 +35,10 @@ struct ContentView: View {
 				HealthAssessmentScreen()
 			case .homeScreen:
 				HomeScreen()
+			case .profileScreen:
+				ProfileScreen()
+			case .healthDataScreen:
+				HealthDataScreen()
 		}
 	}
 	
@@ -51,6 +55,10 @@ struct ContentView: View {
 			HealthAssessmentScreen()
 		case .homeScreen:
 			HomeScreen()
+			case .profileScreen:
+				ProfileScreen()
+			case .healthDataScreen:
+				HealthDataScreen()
 		}
 	}
 }

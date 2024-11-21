@@ -8,8 +8,7 @@ class LoginViewModel: ObservableObject {
 	
 	@Published var errorMessage = ""
 	@Published var isLoading = false
-	@Published var isLoginSuccessful = false
-	
+
 	var isValidEmail: Bool? {
 		if email.isEmpty { return nil }
 		let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
@@ -26,7 +25,7 @@ class LoginViewModel: ObservableObject {
 		isValidEmail == true && isValidPassword == true
 	}
 	
-	func login() {
+	func login(using navigationManager: NavigationManager) {
 		guard isFormValid else {
 			errorMessage = "Please fill in all fields correctly"
 			return
@@ -44,7 +43,7 @@ class LoginViewModel: ObservableObject {
 				if let error = error {
 					self.errorMessage = self.handleAuthError(error)
 				} else {
-					self.isLoginSuccessful = true
+					navigationManager.replaceNavigationStack(with: .homeScreen)
 				}
 			}
 		}

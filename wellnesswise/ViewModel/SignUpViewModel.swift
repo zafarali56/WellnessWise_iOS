@@ -23,6 +23,7 @@ class SignUpViewModel: ObservableObject {
 	@Published var errorMessage = ""
 	@Published var isLoading = false
 
+
 	
 	var isValidEmail: Bool {
 		let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
@@ -59,7 +60,7 @@ class SignUpViewModel: ObservableObject {
 		return heightValue > 0 && heightValue < 300
 	}
 	
-	func signup() {
+	func signup(using navigationManager : NavigationManager) {
 		guard isFormValid else {
 			errorMessage = "Please fill in all fields correctly"
 			return
@@ -68,7 +69,9 @@ class SignUpViewModel: ObservableObject {
 		isLoading = true
 		errorMessage = ""
 		
-		Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
+		Auth.auth().createUser(withEmail: email, password: password) {
+ [weak self] result,
+ error in
 			guard let self = self else { return }
 			
 			if let error = error {
@@ -94,7 +97,10 @@ class SignUpViewModel: ObservableObject {
 					if let error = error {
 						self.errorMessage = error.localizedDescription
 					} else {
-						self.isSignupSuccessful = true
+						navigationManager
+							.replaceNavigationStack(
+								with: .emailVerificationScreen
+							)
 					}
 				}
 			}

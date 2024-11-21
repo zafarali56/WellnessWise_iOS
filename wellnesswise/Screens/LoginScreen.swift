@@ -8,36 +8,36 @@
 import SwiftUI
 
 struct LoginScreen: View {
-	@StateObject private var viewModel = LoginViewModel()
+	@EnvironmentObject var navigationManager: NavigationManager
+	@StateObject private var viewModel: LoginViewModel
+	
+	init() {
+		_viewModel = StateObject(wrappedValue: LoginViewModel())
+	}
 	
 	var body: some View {
-		NavigationStack {
-			ScrollView {
-				VStack(spacing: 15) {
-					LogoSection()
-					
-					FormSection(viewModel: viewModel)
-					
-					ActionSection(viewModel: viewModel)
-				}
-				.padding(.horizontal, 30)
+		ScrollView {
+			VStack(spacing: 15) {
+				LogoSection()
+				FormSection(viewModel: viewModel)
+				ActionSection(viewModel: viewModel)
 			}
-			.navigationTitle("Login")
-			.navigationBarTitleDisplayMode(.large)
-			.navigationDestination(isPresented: $viewModel.isLoginSuccessful) {
-				HomeScreen()
-			}
-			.navigationBarBackButtonHidden()
+			.padding(.horizontal, 30)
 		}
+		.navigationTitle("Login")
+		.navigationBarTitleDisplayMode(.large)
+		.navigationBarBackButtonHidden()
 	}
 }
+
+
 private struct ActionSection: View {
+	@EnvironmentObject private var navigationManager : NavigationManager
 	@ObservedObject var viewModel: LoginViewModel
 	@Environment(\.colorScheme) var colorScheme
 	
 	var body: some View {
 		VStack(spacing: 16) {
-			// Error Message
 			if !viewModel.errorMessage.isEmpty {
 				Text(viewModel.errorMessage)
 					.font(.footnote)
@@ -46,8 +46,7 @@ private struct ActionSection: View {
 					.transition(.opacity)
 			}
 			
-			// Login Button
-			Button(action: { viewModel.login() }) {
+			Button(action: { viewModel.login(using: navigationManager) }) {
 				if viewModel.isLoading {
 					ProgressView()
 						.tint(.white)
@@ -64,11 +63,9 @@ private struct ActionSection: View {
 			.buttonStyle(.borderedProminent)
 			.tint(.black)
 			.disabled(viewModel.isLoading || !viewModel.isFormValid)
+		
 			
-			// Sign Up Link
-			NavigationLink {
-				SignUpScreen()
-			} label: {
+			Button {navigationManager.navigateTo(.signUpScreen)} label: {
 				Text("Don't have an account? Sign up")
 					.font(.subheadline)
 					.fontWeight(.medium)
@@ -81,7 +78,7 @@ private struct ActionSection: View {
 
 private struct FormSection: View {
 	@ObservedObject var viewModel: LoginViewModel
-	
+
 	var body: some View {
 		VStack(spacing: 16) {
 			StyledTextField(
@@ -91,7 +88,7 @@ private struct FormSection: View {
 				isValid: viewModel.isValidEmail,
 				errorMessage: "Please enter a valid email"
 			)
-			
+
 			StyledTextField(
 				title: "Password",
 				placeholder: "Enter your password",
@@ -100,10 +97,9 @@ private struct FormSection: View {
 				isValid: viewModel.isValidPassword,
 				errorMessage: "Password must be at least 6 characters"
 			)
-			
-			// Forgot Password Link
-			NavigationLink {
 
+			Button {
+				
 			} label: {
 				Text("Forgot password?")
 					.font(.footnote)
@@ -115,7 +111,6 @@ private struct FormSection: View {
 	}
 }
 
-// MARK: - Supporting Views
 private struct LogoSection: View {
 	var body: some View {
 		Image(.whitetheme)
