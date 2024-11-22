@@ -8,7 +8,7 @@ class LoginViewModel: ObservableObject {
 	
 	@Published var errorMessage = ""
 	@Published var isLoading = false
-
+	
 	var isValidEmail: Bool? {
 		if email.isEmpty { return nil }
 		let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
@@ -50,9 +50,9 @@ class LoginViewModel: ObservableObject {
 	}
 	
 	private func handleAuthError(_ error: Error) -> String {
-			let nsError = error as NSError
-			
-			switch nsError.code {
+		let nsError = error as NSError
+		
+		switch nsError.code {
 			case AuthErrorCode.wrongPassword.rawValue:
 				return "Incorrect password. Please try again."
 			case AuthErrorCode.invalidEmail.rawValue:
@@ -69,6 +69,6 @@ class LoginViewModel: ObservableObject {
 				return "Too many attempts. Please try again later."
 			default:
 				return "An error occurred. Please try again."
-			}
 		}
+	}
 }

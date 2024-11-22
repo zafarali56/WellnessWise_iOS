@@ -1,10 +1,15 @@
 import SwiftUI
 
 struct HealthAssessmentScreen: View {
-	@StateObject private var viewModel = HealthAssessmentViewModel()
+	@EnvironmentObject private var navigationManager: NavigationManager
+	@StateObject private var viewModel: HealthAssessmentViewModel
+	
+	init() {
+		_viewModel = StateObject(wrappedValue: HealthAssessmentViewModel())
+	}
 	
 	var body: some View {
-		NavigationStack {
+		VStack{
 			FormContent(viewModel: viewModel)
 				.navigationTitle("Health Assessment")
 				.toolbar {
@@ -20,8 +25,7 @@ struct HealthAssessmentScreen: View {
 						ProgressView()
 					}
 				}
-		}.navigationDestination(isPresented: $viewModel.isAssessmentCompleted){
-			HomeScreen()
+			
 		}.navigationBarBackButtonHidden()
 	}
 }
@@ -39,11 +43,12 @@ private struct FormContent: View {
 	}
 }
 private struct BottomBarContent: View {
+	@EnvironmentObject private var navigationManager : NavigationManager
 	@ObservedObject var viewModel: HealthAssessmentViewModel
 	
 	var body: some View {
 		VStack(spacing: 8) {
-			Button(action: { viewModel.submitAssessment() }) {
+			Button(action: { viewModel.submitAssessment(using: navigationManager) }) {
 				if viewModel.isLoading {
 					ProgressView()
 						.tint(.white)
@@ -55,8 +60,8 @@ private struct BottomBarContent: View {
 						.foregroundStyle(.white)
 						.frame(maxWidth: .infinity)
 						.frame(width: 250,height: 30)
-						
-
+					
+					
 				}
 			}
 			.buttonStyle(.borderedProminent)
@@ -73,15 +78,15 @@ struct MedicalHistorySection: View {
 	var body: some View {
 		Section("Medical History") {
 			createTogglePicker(title: "Family history of Diabetes",
-							 binding: $viewModel.familyDiabetes)
+							   binding: $viewModel.familyDiabetes)
 			createTogglePicker(title: "Family history of heart disease",
-							 binding: $viewModel.heartDisease)
+							   binding: $viewModel.heartDisease)
 			createTogglePicker(title: "Family history of cancer",
-							 binding: $viewModel.familyHistoryCancer)
+							   binding: $viewModel.familyHistoryCancer)
 			createTogglePicker(title: "Previous surgeries",
-							 binding: $viewModel.previousSurgeries)
+							   binding: $viewModel.previousSurgeries)
 			createTogglePicker(title: "Chronic diseases",
-							 binding: $viewModel.chronicDiseases)
+							   binding: $viewModel.chronicDiseases)
 		}
 	}
 }
@@ -92,14 +97,14 @@ struct LifestyleHabitsSection: View {
 	var body: some View {
 		Section("Lifestyle Habits") {
 			createTogglePicker(title: "Do you smoke?",
-							 binding: $viewModel.smoke)
+							   binding: $viewModel.smoke)
 			
 			CustomPicker(
 				headerText: "Alcohol consumption level:",
 				pickerText: "Select level",
 				options: viewModel.alcoholConsumptionLevels,
 				selected: $viewModel.selectedAlcoholLevel)
-		
+			
 			CustomPicker(
 				headerText: "Physical activity level:",
 				pickerText: "Select level",

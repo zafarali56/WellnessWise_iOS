@@ -34,7 +34,6 @@ struct LoginScreen: View {
 private struct ActionSection: View {
 	@EnvironmentObject private var navigationManager : NavigationManager
 	@ObservedObject var viewModel: LoginViewModel
-	@Environment(\.colorScheme) var colorScheme
 	
 	var body: some View {
 		VStack(spacing: 16) {
@@ -63,7 +62,7 @@ private struct ActionSection: View {
 			.buttonStyle(.borderedProminent)
 			.tint(.black)
 			.disabled(viewModel.isLoading || !viewModel.isFormValid)
-		
+			
 			
 			Button {navigationManager.navigateTo(.signUpScreen)} label: {
 				Text("Don't have an account? Sign up")
@@ -78,7 +77,7 @@ private struct ActionSection: View {
 
 private struct FormSection: View {
 	@ObservedObject var viewModel: LoginViewModel
-
+	
 	var body: some View {
 		VStack(spacing: 16) {
 			StyledTextField(
@@ -88,7 +87,7 @@ private struct FormSection: View {
 				isValid: viewModel.isValidEmail,
 				errorMessage: "Please enter a valid email"
 			)
-
+			
 			StyledTextField(
 				title: "Password",
 				placeholder: "Enter your password",
@@ -97,7 +96,7 @@ private struct FormSection: View {
 				isValid: viewModel.isValidPassword,
 				errorMessage: "Password must be at least 6 characters"
 			)
-
+			
 			Button {
 				
 			} label: {
@@ -114,11 +113,11 @@ private struct FormSection: View {
 private struct LogoSection: View {
 	var body: some View {
 		Image(.whitetheme)
-		.resizable()
-		.scaledToFit()
+			.resizable()
+			.scaledToFit()
 	}
 }
 
 #Preview {
-    LoginScreen()
+	LoginScreen()
 }

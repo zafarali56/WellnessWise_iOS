@@ -17,34 +17,41 @@ class EmailVerificationViewModel : ObservableObject {
 	@Published var showResendAlert = false
 	@Published var isVerificationEmailSent = false
 	
+	private var verificationTimer : Timer?
+	
 	
 	init() {
 		checkVerificationStatus()
-		if (isVerificationEmailSent == false)
-		{
-			sendVerificationEmail()
-		}
-
+		
 	}
-	
+	deinit {
+		verificationTimer?.invalidate()
+		
+	}
 	func checkVerificationStatus() {
-		guard let usr = Auth.auth().currentUser else {return}
-		usr.reload {[weak self] error in
-			if let error = error {
-				DispatchQueue.main.async{
+		guard let user = Auth.auth().currentUser else {
+			errorMessage = "No authenticated user found"
+			return
+		}
+		
+		user.reload { [weak self] error in
+			DispatchQueue.main.async {
+				if let error = error {
 					self?.errorMessage = error.localizedDescription
+				} else {
+					self?.isEmailVerified = Auth.auth().currentUser?.isEmailVerified ?? false
 				}
-				return
-			}
-			DispatchQueue.main.async{
-				self?.isEmailVerified	= usr.isEmailVerified
 			}
 		}
 	}
 	
 	func sendVerificationEmail (){
-		guard let usr = Auth.auth().currentUser else {return}
+		guard let usr = Auth.auth().currentUser else {
+			errorMessage = "No authenticated user found"
+			return
+		}
 		isLoading = true
+		errorMessage = ""
 		
 		usr.sendEmailVerification(){ [weak self] error in
 			DispatchQueue.main.async{
@@ -60,18 +67,27 @@ class EmailVerificationViewModel : ObservableObject {
 		}
 	}
 	
-	func startVerificationEmailCheck ()
+	func startVerificationEmailCheck (using navigationManager: NavigationManager)
 	{
-		Timer.scheduledTimer(withTimeInterval: 	5.0, repeats: true){
-			[weak self] timer in
-			self?.checkVerificationStatus()
+		checkVerificationStatus()
 		
-			//Stops the timer from runloop object
-			if self?.isEmailVerified == true {
+		verificationTimer?.invalidate()
+		
+		verificationTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] timer in
+			guard let self = self else {
 				timer.invalidate()
+				return
+			}
+			
+			
+			self.checkVerificationStatus()
+			
+			if self.isEmailVerified {
+				timer.invalidate()
+				DispatchQueue.main.async {
+					navigationManager.replaceNavigationStack(with: .healthAssessmentScreen)
+				}
 			}
 		}
 	}
-	
-	
 }

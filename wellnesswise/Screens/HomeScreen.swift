@@ -8,16 +8,13 @@
 import SwiftUI
 
 struct HomeScreen: View {
-    var body: some View {
-		
-		NavigationStack {
-			VStack {
-				Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-			}.navigationBarBackButtonHidden()
-		}
+	var body: some View {
+		VStack {
+			Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+		}.navigationBarBackButtonHidden()
 	}
 }
 
 #Preview {
-    HomeScreen()
+	HomeScreen()
 }

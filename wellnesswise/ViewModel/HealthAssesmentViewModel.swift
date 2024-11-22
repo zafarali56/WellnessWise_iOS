@@ -47,40 +47,40 @@ class HealthAssessmentViewModel: ObservableObject {
 	// MARK: - Helper Methods
 	func getAirQualityColor() -> Color {
 		switch airQualityIndex {
-		case 0...50:
-			return .green
-		case 51...100:
-			return .yellow
-		case 101...150:
-			return .orange
-		case 151...200:
-			return .red
-		case 201...300:
-			return .purple
-		default:
-			return .brown
+			case 0...50:
+				return .green
+			case 51...100:
+				return .yellow
+			case 101...150:
+				return .orange
+			case 151...200:
+				return .red
+			case 201...300:
+				return .purple
+			default:
+				return .brown
 		}
 	}
 	
 	func getAirQualityDescription() -> String {
 		switch airQualityIndex {
-		case 0...50:
-			return "Good: Safe for most people"
-		case 51...100:
-			return "Moderate: Acceptable"
-		case 101...150:
-			return "Unhealthy for Sensitive Groups"
-		case 151...200:
-			return "Unhealthy: Everyone may experience effects"
-		case 201...300:
-			return "Very Unhealthy: Health warnings"
-		default:
-			return "Hazardous: Health alert"
+			case 0...50:
+				return "Good: Safe for most people"
+			case 51...100:
+				return "Moderate: Acceptable"
+			case 101...150:
+				return "Unhealthy for Sensitive Groups"
+			case 151...200:
+				return "Unhealthy: Everyone may experience effects"
+			case 201...300:
+				return "Very Unhealthy: Health warnings"
+			default:
+				return "Hazardous: Health alert"
 		}
 	}
 	
 	// MARK: - Data Submission
-	func submitAssessment() {
+	func submitAssessment(using navigationManager : NavigationManager) {
 		guard let userId = Auth.auth().currentUser?.uid else {
 			errorMessage = "User not authenticated"
 			return
@@ -124,6 +124,7 @@ class HealthAssessmentViewModel: ObservableObject {
 					self?.errorMessage = error.localizedDescription
 				} else {
 					self?.isAssessmentCompleted = true
+					navigationManager.replaceNavigationStack(with: .homeScreen)
 				}
 			}
 	}

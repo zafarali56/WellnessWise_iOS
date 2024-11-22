@@ -22,8 +22,8 @@ class SignUpViewModel: ObservableObject {
 	@Published var isSignupSuccessful = false
 	@Published var errorMessage = ""
 	@Published var isLoading = false
-
-
+	
+	
 	
 	var isValidEmail: Bool {
 		let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
@@ -49,7 +49,7 @@ class SignUpViewModel: ObservableObject {
 		!gender.isEmpty &&
 		isValidPassword
 	}
-
+	
 	var isValidWeight : Bool {
 		guard let weightValue = Double (weight) else {return false}
 		return weightValue > 0 && weightValue < 500
@@ -70,8 +70,8 @@ class SignUpViewModel: ObservableObject {
 		errorMessage = ""
 		
 		Auth.auth().createUser(withEmail: email, password: password) {
- [weak self] result,
- error in
+			[weak self] result,
+			error in
 			guard let self = self else { return }
 			
 			if let error = error {

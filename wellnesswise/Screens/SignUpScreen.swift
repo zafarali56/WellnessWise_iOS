@@ -5,7 +5,7 @@ import FirebaseAuth
 struct SignUpScreen: View {
 	@EnvironmentObject private var navigationManager : NavigationManager
 	@StateObject private var viewModel = SignUpViewModel()
-
+	
 	init(){
 		_viewModel = StateObject(
 			wrappedValue: SignUpViewModel(
@@ -14,23 +14,23 @@ struct SignUpScreen: View {
 	}
 	
 	var body: some View {
-		 ScrollView {
-			 VStack(spacing: 20) {
-				 FormContent(viewModel: viewModel)
-				 ErrorView(message: viewModel.errorMessage)
-			 }
-			 .padding()
-		 }
-		 .navigationTitle("Create Account")
-		 .navigationBarTitleDisplayMode(.large)
-		 .toolbar {
-			 ToolbarItem(placement: .bottomBar) {
-				 BottomBarContent(viewModel: viewModel)
-			 }
-		 }
-		 .navigationBarBackButtonHidden()
-	 }
- }
+		ScrollView {
+			VStack(spacing: 20) {
+				FormContent(viewModel: viewModel)
+				ErrorView(message: viewModel.errorMessage)
+			}
+			.padding()
+		}
+		.navigationTitle("Create Account")
+		.navigationBarTitleDisplayMode(.large)
+		.toolbar {
+			ToolbarItem(placement: .bottomBar) {
+				BottomBarContent(viewModel: viewModel)
+			}
+		}
+		.navigationBarBackButtonHidden()
+	}
+}
 // MARK: - Supporting Views
 private struct FormContent: View {
 	@ObservedObject var viewModel: SignUpViewModel
@@ -116,20 +116,20 @@ private struct BottomBarContent: View {
 						.tint(.white)
 				} else {
 					Text("Create Account")
-
+					
 						.font(.headline)
 						.fontWeight(.semibold)
 						.foregroundStyle(.white)
 						.frame(maxWidth: .infinity)
 						.frame(height: 30)
-	
+					
 				}
 			}
 			.buttonStyle(.borderedProminent)
 			.clipShape(.capsule)
 			.tint(.black)
 			.disabled(viewModel.isLoading || !viewModel.isFormValid)
-		
+			
 			
 			Button{navigationManager.navigateTo(.loginScreen)}
 			label:{
@@ -189,10 +189,10 @@ private struct PasswordStrengthIndicator: View {
 	
 	private var color: Color {
 		switch strength {
-		case 0.0..<0.5: return .red
-		case 0.5..<0.6: return .orange
-		case 0.6..<0.8: return .yellow
-		default: return .green
+			case 0.0..<0.5: return .red
+			case 0.5..<0.6: return .orange
+			case 0.6..<0.8: return .yellow
+			default: return .green
 		}
 	}
 	
@@ -216,10 +216,10 @@ private struct PasswordStrengthIndicator: View {
 	
 	private var strengthText: String {
 		switch strength {
-		case 0.0..<0.5: return "Weak password"
-		case 0.5..<0.6: return "Moderate password"
-		case 0.6..<0.8: return "Safe password"
-		default: return "Strong password"
+			case 0.0..<0.5: return "Weak password"
+			case 0.5..<0.6: return "Moderate password"
+			case 0.6..<0.8: return "Safe password"
+			default: return "Strong password"
 		}
 	}
 }
