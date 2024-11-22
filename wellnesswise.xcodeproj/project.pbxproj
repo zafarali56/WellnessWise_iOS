@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9E0BD0762CF0B2C2009A9B84 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E0BD0752CF0B2C2009A9B84 /* AuthManager.swift */; };
 		9E14F5B82CB979050094EF6C /* LoginScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E14F5B72CB979050094EF6C /* LoginScreen.swift */; };
 		9E1BA6422CC5443F00DFDD3B /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1BA6412CC5443F00DFDD3B /* SignUpViewModel.swift */; };
 		9E1BA6442CC5444C00DFDD3B /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E1BA6432CC5444C00DFDD3B /* LoginViewModel.swift */; };
@@ -55,6 +56,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9E0BD0752CF0B2C2009A9B84 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		9E14F5B72CB979050094EF6C /* LoginScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginScreen.swift; sourceTree = "<group>"; };
 		9E1BA6412CC5443F00DFDD3B /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		9E1BA6432CC5444C00DFDD3B /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -127,11 +129,13 @@
 			path = Screens;
 			sourceTree = "<group>";
 		};
-		9E14F5B62CB978C40094EF6C /* Data */ = {
+		9E14F5B62CB978C40094EF6C /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				9E0BD0752CF0B2C2009A9B84 /* AuthManager.swift */,
+				9EDBF7402CE922D70001A54C /* NavigationManager.swift */,
 			);
-			path = Data;
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		9E1BA6402CC5441B00DFDD3B /* ViewModel */ = {
@@ -180,14 +184,13 @@
 			children = (
 				9E1BA6402CC5441B00DFDD3B /* ViewModel */,
 				9E7BFF7C2CC17A9D00253D36 /* Components */,
-				9E14F5B62CB978C40094EF6C /* Data */,
+				9E14F5B62CB978C40094EF6C /* Managers */,
 				9E14F5B52CB978AC0094EF6C /* Screens */,
 				9EEF184F2CB6B6E800AA8D5B /* wellnesswiseApp.swift */,
 				9EEF18512CB6B6E800AA8D5B /* ContentView.swift */,
 				9EEF18532CB6B6EB00AA8D5B /* Assets.xcassets */,
 				9EEF18552CB6B6EB00AA8D5B /* Preview Content */,
 				9EBE0B492CC8CA1E00350D6C /* GoogleService-Info.plist */,
-				9EDBF7402CE922D70001A54C /* NavigationManager.swift */,
 			);
 			path = wellnesswise;
 			sourceTree = "<group>";
@@ -352,6 +355,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9E7DCE792CD1599C0032AF2F /* HealthDataViewModel.swift in Sources */,
+				9E0BD0762CF0B2C2009A9B84 /* AuthManager.swift in Sources */,
 				9EEF18522CB6B6E800AA8D5B /* ContentView.swift in Sources */,
 				9EEFE8672CDA9FC000A47133 /* VerificationScreen.swift in Sources */,
 				9E7DCE752CD159740032AF2F /* HealthDataScreen.swift in Sources */,

@@ -7,6 +7,8 @@
 
 import SwiftUI
 import FirebaseCore
+
+
 class AppDelegate: NSObject, UIApplicationDelegate {
 	func application(_ application: UIApplication,
 					 didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
@@ -19,10 +21,19 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct wellnesswiseApp: App {
 	@StateObject private var navigationManager = NavigationManager()
 	@UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+	@StateObject private var authManager = AuthManager.shared
 	var body: some Scene {
 		WindowGroup {
-			ContentView()
-				.environmentObject(navigationManager)
+			if authManager.isLoading {
+				ProgressView()
+			} else if authManager.isAuthenticated{
+				ContentView ()
+					.environmentObject(authManager)
+			}
+			else {
+				LoginScreen()
+					.environmentObject(authManager)
+			}
 		}
 	}
 }
