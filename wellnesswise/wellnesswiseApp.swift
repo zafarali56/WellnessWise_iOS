@@ -21,14 +21,53 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct wellnesswiseApp: App {
 	@UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 	@StateObject private var authManager = AuthManager.shared
+	@StateObject private var navigationManager = NavigationManager()
 	var body: some Scene {
 		WindowGroup {
+			RootView ()
+				.environmentObject(authManager)
+				.environmentObject(navigationManager)
+		}
+	}
+}
+
+struct RootView : View {
+	@EnvironmentObject var authManager : AuthManager
+	@EnvironmentObject var navigationManager : NavigationManager
+	
+	
+	var body: some View {
+		Group {
 			if authManager.isLoading {
 				LoadingView()
-			} else {
-				ContentView ()
-					.environmentObject(authManager)
+				
+			}else if authManager.isAuthenticated{
+				ContentView()
 			}
+			else {
+				AuthenticationView()
+			}
+		}
+	}
+}
+
+
+struct AuthenticationView : View {
+	@EnvironmentObject var navigationManager : NavigationManager
+	var body: some View {
+		NavigationStack(path: $navigationManager.path){
+			LoginScreen()
+				.navigationDestination(for: AppScreen.self) {
+					screen in
+					switch screen {
+						case .signUpScreen:
+							SignUpScreen()
+						case .emailVerificationScreen:
+							VerificationScreen()
+						default:
+							EmptyView()
+					}
+				}
 		}
 	}
 }
