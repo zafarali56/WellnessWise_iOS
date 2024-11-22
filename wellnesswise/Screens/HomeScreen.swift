@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct HomeScreen: View {
+	@EnvironmentObject private var authManager: AuthManager
+	@EnvironmentObject private var navigationManager : NavigationManager
+	
 	var body: some View {
-		VStack {
-			Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+		VStack (spacing : 20){
+			if let user = authManager.currentUser {
+				Text("\(user.fullName) welcome")
+			}
 		}.navigationBarBackButtonHidden()
 	}
 }

@@ -30,6 +30,7 @@ class AuthManager : ObservableObject {
 	private var cancellables = Set<AnyCancellable>()
 	
 	private init (){
+		print("AUthenticatin Manager initilized ")
 		setupAuthStateListener()
 	}
 	
@@ -37,6 +38,7 @@ class AuthManager : ObservableObject {
 	private func setupAuthStateListener () {
 		Auth.auth().addStateDidChangeListener{[weak self ] _, user in
 			DispatchQueue.main.async{
+				print ("Auth state changed. User:: \(user?.uid ?? "Nil")")
 				self?.userSession = user
 				self?.isAuthenticated = user != nil
 				self?.isLoading = false
@@ -53,6 +55,7 @@ class AuthManager : ObservableObject {
 	}
 	
 	private func fetchUserData(userId: String) {
+		print("Fetching user data for ID\(userId)")
 		Firestore.firestore().collection("users")
 			.document(userId)
 			.getDocument { [weak self] snapshot, error in
@@ -73,6 +76,7 @@ class AuthManager : ObservableObject {
 					)
 					
 					DispatchQueue.main.async {
+						print("User data fetched successfully")
 						self?.currentUser = user
 					}
 				}

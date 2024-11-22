@@ -19,21 +19,27 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct wellnesswiseApp: App {
-	@StateObject private var navigationManager = NavigationManager()
 	@UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 	@StateObject private var authManager = AuthManager.shared
 	var body: some Scene {
 		WindowGroup {
 			if authManager.isLoading {
-				ProgressView()
-			} else if authManager.isAuthenticated{
+				LoadingView()
+			} else {
 				ContentView ()
 					.environmentObject(authManager)
 			}
-			else {
-				LoginScreen()
-					.environmentObject(authManager)
-			}
+		}
+	}
+}
+
+struct LoadingView: View {
+	var body: some View {
+		VStack{
+			ProgressView()
+			Text("Loading...")
+				.foregroundStyle(.secondary)
+				.padding(.top)
 		}
 	}
 }
