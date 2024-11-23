@@ -69,41 +69,47 @@ class SignUpViewModel: ObservableObject {
 		isLoading = true
 		errorMessage = ""
 		
-		Auth.auth().createUser(withEmail: email, password: password) {
-			[weak self] result,
-			error in
-			guard let self = self else { return }
-			
-			if let error = error {
-				self.errorMessage = error.localizedDescription
-				self.isLoading = false
-				return
+		Auth.auth().createUser(withEmail: email, password: password) { [weak self] result, error in
+					guard let self = self else { return }
+
+					DispatchQueue.main.async {
+						if let error = error {
+							self.errorMessage = error.localizedDescription
+							self.isLoading = false
+							return
+						}
+
+						if let user = result?.user {
+							self.createUserProfile(user: user) { success in
+								if success {
+									navigationManager.pushAuthentication(.verification)
+								}
+							}
+						}
+					}
+				}
 			}
 			
-			if let user = result?.user {
-				let userData: [String: Any] = [
-					"fullName": self.fullName,
-					"age": self.age,
-					"weight": self.weight,
-					"height": self.height,
-					"gender": self.gender,
-					"createdAt": FieldValue.serverTimestamp()
-				]
-				
-				Firestore.firestore().collection("users").document(user.uid).setData(userData) { [weak self] error in
-					guard let self = self else { return }
+	private func createUserProfile(user: FirebaseAuth.User, completion: @escaping (Bool) -> Void) {
+			let userData: [String: Any] = [
+				"fullName": self.fullName,
+				"age": self.age,
+				"weight": self.weight,
+				"height": self.height,
+				"gender": self.gender,
+				"createdAt": FieldValue.serverTimestamp()
+			]
+
+			Firestore.firestore().collection("users").document(user.uid).setData(userData) { error in
+				DispatchQueue.main.async {
 					self.isLoading = false
-					
 					if let error = error {
 						self.errorMessage = error.localizedDescription
+						completion(false)
 					} else {
-						navigationManager
-							.replaceNavigationStack(
-								with: .emailVerificationScreen
-							)
+						completion(true)
 					}
 				}
 			}
 		}
-	}
 }

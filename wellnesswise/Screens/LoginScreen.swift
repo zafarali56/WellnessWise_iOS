@@ -64,60 +64,61 @@ private struct ActionSection: View {
 			.disabled(viewModel.isLoading || !viewModel.isFormValid)
 			
 			
-			Button {navigationManager.navigateTo(.signUpScreen)} label: {
+			Button {
+				navigationManager.pushAuthentication(.signup)
+			} label: {
 				Text("Don't have an account? Sign up")
 					.font(.subheadline)
 					.fontWeight(.medium)
 			}
-			
 		}
 		.padding(.vertical)
 	}
-}
-
-private struct FormSection: View {
-	@ObservedObject var viewModel: LoginViewModel
 	
-	var body: some View {
-		VStack(spacing: 16) {
-			StyledTextField(
-				title: "Email",
-				placeholder: "Enter your email",
-				text: $viewModel.email,
-				isValid: viewModel.isValidEmail,
-				errorMessage: "Please enter a valid email"
-			)
-			
-			StyledTextField(
-				title: "Password",
-				placeholder: "Enter your password",
-				text: $viewModel.password,
-				isSecure: true,
-				isValid: viewModel.isValidPassword,
-				errorMessage: "Password must be at least 6 characters"
-			)
-			
-			Button {
+}
+	private struct FormSection: View {
+		@ObservedObject var viewModel: LoginViewModel
+		
+		var body: some View {
+			VStack(spacing: 16) {
+				StyledTextField(
+					title: "Email",
+					placeholder: "Enter your email",
+					text: $viewModel.email,
+					isValid: viewModel.isValidEmail,
+					errorMessage: "Please enter a valid email"
+				)
 				
-			} label: {
-				Text("Forgot password?")
-					.font(.footnote)
-					.fontWeight(.medium)
+				StyledTextField(
+					title: "Password",
+					placeholder: "Enter your password",
+					text: $viewModel.password,
+					isSecure: true,
+					isValid: viewModel.isValidPassword,
+					errorMessage: "Password must be at least 6 characters"
+				)
+				
+				Button {
+					
+				} label: {
+					Text("Forgot password?")
+						.font(.footnote)
+						.fontWeight(.medium)
+				}
+				.frame(maxWidth: .infinity, alignment: .trailing)
+				.padding(.top, 4)
 			}
-			.frame(maxWidth: .infinity, alignment: .trailing)
-			.padding(.top, 4)
 		}
 	}
-}
 
-private struct LogoSection: View {
-	var body: some View {
-		Image(.whitetheme)
-			.resizable()
-			.scaledToFit()
+	private struct LogoSection: View {
+		var body: some View {
+			Image(.whitetheme)
+				.resizable()
+				.scaledToFit()
+		}
 	}
-}
-
-#Preview {
-	LoginScreen()
-}
+	
+	#Preview {
+		LoginScreen()
+	}

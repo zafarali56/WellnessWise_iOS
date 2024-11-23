@@ -103,26 +103,27 @@ private struct FormContent: View {
 	}
 }
 
+
 private struct BottomBarContent: View {
-	@EnvironmentObject private var navigationManager:  NavigationManager
+	@EnvironmentObject private var navigationManager: NavigationManager
 	@ObservedObject var viewModel: SignUpViewModel
 	
 	var body: some View {
 		VStack(spacing: 8) {
 			// Sign Up Button
-			Button(action: { viewModel.signup(using: navigationManager) }) {
+			Button(action: {
+				viewModel.signup(using: navigationManager)
+			}) {
 				if viewModel.isLoading {
 					ProgressView()
 						.tint(.white)
 				} else {
 					Text("Create Account")
-					
 						.font(.headline)
 						.fontWeight(.semibold)
 						.foregroundStyle(.white)
 						.frame(maxWidth: .infinity)
 						.frame(height: 30)
-					
 				}
 			}
 			.buttonStyle(.borderedProminent)
@@ -130,9 +131,10 @@ private struct BottomBarContent: View {
 			.tint(.black)
 			.disabled(viewModel.isLoading || !viewModel.isFormValid)
 			
-			
-			Button{navigationManager.navigateTo(.loginScreen)}
-			label:{
+			// Login Navigation Button
+			Button {
+				navigationManager.popToRoot()
+			} label: {
 				Text("Already have an account? Login")
 					.font(.subheadline)
 					.fontWeight(.medium)
@@ -142,7 +144,6 @@ private struct BottomBarContent: View {
 		.padding(.horizontal, 20)
 	}
 }
-
 private struct GenderPicker: View {
 	@Binding var selection: String
 	let options = ["Male", "Female"]

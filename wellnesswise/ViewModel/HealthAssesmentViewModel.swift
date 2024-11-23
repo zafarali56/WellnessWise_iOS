@@ -124,7 +124,7 @@ class HealthAssessmentViewModel: ObservableObject {
 					self?.errorMessage = error.localizedDescription
 				} else {
 					self?.isAssessmentCompleted = true
-					navigationManager.replaceNavigationStack(with: .homeScreen)
+					navigationManager.switchToMain()
 				}
 			}
 	}

@@ -6,20 +6,35 @@
 //
 
 import SwiftUI
-
 struct HomeScreen: View {
-	@EnvironmentObject private var authManager: AuthManager
-	@EnvironmentObject private var navigationManager : NavigationManager
+	@EnvironmentObject private var authManager: AppStateManager
+	@EnvironmentObject private var navigationManager: NavigationManager
 	
 	var body: some View {
-		VStack (spacing : 20){
+		VStack(spacing: 20) {
 			if let user = authManager.currentUser {
-				Text("\(user.fullName) welcome")
+				Text("Welcome, \(user.fullName)")
+					.font(.title2)
+				
+				Button("Sign Out") {
+					Task { @MainActor in
+						authManager.signOut()
+						// Use the shared instance to switch to auth
+						NavigationManager.shared.switchToAuth()
+					}
+				}
+				.buttonStyle(.borderedProminent)
+			} else {
+				ProgressView()
 			}
-		}.navigationBarBackButtonHidden()
+		}
+		.padding()
+		.navigationBarBackButtonHidden()
 	}
 }
 
 #Preview {
 	HomeScreen()
+		.environmentObject(AppStateManager.shared)
+		.environmentObject(NavigationManager.shared)
 }

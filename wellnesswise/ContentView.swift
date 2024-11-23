@@ -26,20 +26,28 @@ struct ContentView: View {
 	
 	
 	@ViewBuilder
-	private var startingView: some View {
-		switch navigationManager.currentScreen {
-			case .loginScreen, .signUpScreen, .emailVerificationScreen:
-				HomeScreen()
-			case .healthAssessmentScreen:
-				HealthAssessmentScreen()
-			case .homeScreen:
-				HomeScreen()
-			case .profileScreen:
-				ProfileScreen()
-			case .healthDataScreen:
-				HealthDataScreen()
+		private var startingView: some View {
+			if !authManager.isAuthenticated {
+				LoginScreen()
+			} else {
+				switch navigationManager.currentScreen {
+					case .loginScreen:
+						LoginScreen()
+					case .signUpScreen:
+						SignUpScreen()
+					case .emailVerificationScreen:
+						VerificationScreen()
+					case .healthAssessmentScreen:
+						HealthAssessmentScreen()
+					case .homeScreen:
+						HomeScreen()
+					case .profileScreen:
+						ProfileScreen()
+					case .healthDataScreen:
+						HealthDataScreen()
+				}
+			}
 		}
-	}
 	
 	@ViewBuilder
 	private func viewForScreen(_ screen: AppScreen) -> some View {

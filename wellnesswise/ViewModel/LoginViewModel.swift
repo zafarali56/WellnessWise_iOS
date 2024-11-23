@@ -43,7 +43,7 @@ class LoginViewModel: ObservableObject {
 				if let error = error {
 					self.errorMessage = self.handleAuthError(error)
 				} else {
-					navigationManager.replaceNavigationStack(with: .homeScreen)
+					navigationManager.switchToMain()
 				}
 			}
 		}

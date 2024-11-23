@@ -85,7 +85,8 @@ class EmailVerificationViewModel : ObservableObject {
 			if self.isEmailVerified {
 				timer.invalidate()
 				DispatchQueue.main.async {
-					navigationManager.replaceNavigationStack(with: .healthAssessmentScreen)
+					NavigationManager.shared
+						.pushAuthentication(.healthAssessment)
 				}
 			}
 		}

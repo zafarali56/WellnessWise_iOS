@@ -1,57 +1,70 @@
-// NavigationManager.swift
 import SwiftUI
 
-enum AppScreen: Hashable {
-	case loginScreen
-	case signUpScreen
-	case emailVerificationScreen
-	case healthAssessmentScreen
-	case homeScreen
-	case profileScreen
-	case healthDataScreen
-	
-	var title: String {
-		switch self {
-		case .loginScreen: return "Login"
-		case .signUpScreen: return "Sign Up"
-		case .emailVerificationScreen: return "Verify Email"
-		case .healthAssessmentScreen: return "Health Assessment"
-		case .homeScreen: return "Home"
-		case .profileScreen: return "Profile"
-		case .healthDataScreen: return "Health Data"
-		}
-	}
+enum NavigationType: Hashable {
+	case authentication
+	case main
 }
 
+enum AuthenticationRoute: Hashable {
+	case login
+	case signup
+	case verification
+	case healthAssessment
+}
+
+enum MainRoute: Hashable {
+	case home
+	case profile
+	case healthData
+
+}
+@MainActor
 class NavigationManager: ObservableObject {
-	@Published var path = NavigationPath()
-	@Published var currentScreen: AppScreen = .loginScreen
+	static let shared = NavigationManager()
 	
-	private var screenHistory: [AppScreen] = []
+	@Published var navigationType: NavigationType = .authentication
+	@Published var authenticationPath = NavigationPath()
+	@Published var mainPath = NavigationPath()
 	
-	func navigateTo(_ screen: AppScreen) {
-		currentScreen = screen
-		path.append(screen)
-		screenHistory.append(screen)
+	private init() {}
+	
+	// Make these methods public
+	func switchToMain() {
+		DispatchQueue.main.async { [weak self] in
+			self?.navigationType = .main
+			self?.mainPath = NavigationPath()
+		}
 	}
 	
-	func navigateBack() {
-		if !path.isEmpty {
-			path.removeLast()
-			screenHistory.removeLast()
-			currentScreen = screenHistory.last ?? .loginScreen
+	func switchToAuth() {
+		DispatchQueue.main.async { [weak self] in
+			self?.navigationType = .authentication
+			self?.authenticationPath = NavigationPath()
+		}
+	}
+	
+	func pushAuthentication(_ route: AuthenticationRoute) {
+		DispatchQueue.main.async { [weak self] in
+			self?.authenticationPath.append(route)
+		}
+	}
+	
+	func pushMain(_ route: MainRoute) {
+		DispatchQueue.main.async { [weak self] in
+			self?.mainPath.append(route)
 		}
 	}
 	
 	func popToRoot() {
-		path = NavigationPath()
-		screenHistory.removeAll()
-		currentScreen = .loginScreen
-	}
-	
-	func replaceNavigationStack(with screen: AppScreen) {
-		path = NavigationPath()
-		screenHistory.removeAll()
-		navigateTo(screen)
+		DispatchQueue.main.async { [weak self] in
+			switch self?.navigationType {
+			case .authentication:
+				self?.authenticationPath = NavigationPath()
+			case .main:
+				self?.mainPath = NavigationPath()
+			case .none:
+				break
+			}
+		}
 	}
 }
