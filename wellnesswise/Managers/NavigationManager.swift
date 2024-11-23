@@ -28,7 +28,6 @@ class NavigationManager: ObservableObject {
 	
 	private init() {}
 	
-	// Make these methods public
 	func switchToMain() {
 		DispatchQueue.main.async { [weak self] in
 			self?.navigationType = .main

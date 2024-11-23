@@ -10,7 +10,12 @@ import SwiftUI
 struct VerificationScreen: View {
 	@StateObject private var viewModel = EmailVerificationViewModel ()
 	@EnvironmentObject private var navigationManager : NavigationManager
-	
+	init () {
+		if !viewModel.isVerificationEmailSent {
+			viewModel.sendVerificationEmail()
+		}
+		
+	}
 	var body: some View {
 		
 		VStack (spacing : 20){

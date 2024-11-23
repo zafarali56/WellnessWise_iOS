@@ -19,7 +19,6 @@ struct HomeScreen: View {
 				Button("Sign Out") {
 					Task { @MainActor in
 						authManager.signOut()
-						// Use the shared instance to switch to auth
 						NavigationManager.shared.switchToAuth()
 					}
 				}
