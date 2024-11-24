@@ -18,16 +18,31 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 		return true
 	}
 }
-
 @main
 struct WellnessWiseApp: App {
 	@UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 	@StateObject private var appState = AppStateManager.shared
+	@StateObject private var navigationManager = NavigationManager.shared
 	
 	var body: some Scene {
 		WindowGroup {
-			RootView()
-				.environmentObject(appState)
+			Group {
+				if appState.isLoading {
+					LoadingView()
+				} else {
+					RootView()
+						.environmentObject(appState)
+						.environmentObject(navigationManager)
+				}
+			}
+			.onAppear {
+				// Handle initial navigation based on auth state
+				if appState.isAuthenticated {
+					navigationManager.navigationType = .main
+				} else {
+					navigationManager.navigationType = .authentication
+				}
+			}
 		}
 	}
 }

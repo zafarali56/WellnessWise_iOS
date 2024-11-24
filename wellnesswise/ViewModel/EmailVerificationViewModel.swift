@@ -21,7 +21,12 @@ class EmailVerificationViewModel : ObservableObject {
 	
 	
 	init() {
-		checkVerificationStatus()
+		if isVerificationEmailSent == true{
+			checkVerificationStatus()
+		}
+		else {
+			sendVerificationEmail()
+		}
 		
 	}
 	deinit {

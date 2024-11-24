@@ -3,7 +3,11 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 
-// MARK: - User Model
+import SwiftUI
+import Firebase
+import FirebaseAuth
+import FirebaseFirestore
+
 struct User: Codable, Identifiable {
 	let id: String
 	let fullName: String
@@ -22,27 +26,8 @@ struct User: Codable, Identifiable {
 		case height
 		case gender
 	}
-	
-	init(id: String, fullName: String, email: String, age: String, weight: String, height: String, gender: String) {
-		self.id = id
-		self.fullName = fullName
-		self.email = email
-		self.age = age
-		self.weight = weight
-		self.height = height
-		self.gender = gender
-	}
 }
 
-enum Route: Hashable {
-	case login
-	case signup
-	case verification
-	case healthAssessment
-	case home
-}
-
-// MARK: - App State Manager
 @MainActor
 class AppStateManager: ObservableObject {
 	@Published var isAuthenticated = false
@@ -51,49 +36,99 @@ class AppStateManager: ObservableObject {
 	
 	static let shared = AppStateManager()
 	
+	private let authStateKey = "com.wellnesswise.authState"
+	private let userIdKey = "com.wellnesswise.userId"
+	
 	private init() {
+		// Load initial state
+		setupInitialState()
+	}
+	
+	private func setupInitialState() {
+		isAuthenticated = UserDefaults.standard.bool(forKey: authStateKey)
+		
+		if let currentUser = Auth.auth().currentUser {
+			isAuthenticated = true
+			UserDefaults.standard.set(true, forKey: authStateKey)
+			UserDefaults.standard.set(currentUser.uid, forKey: userIdKey)
+			
+			Task {
+				await fetchUserData(userId: currentUser.uid)
+				isLoading = false
+			}
+		} else {
+			if isAuthenticated {
+				Task {
+					await restoreSession()
+				}
+			} else {
+				isLoading = false
+			}
+		}
+		
 		setupAuthListener()
 	}
 	
 	private func setupAuthListener() {
 		Auth.auth().addStateDidChangeListener { [weak self] _, user in
-			guard let self = self else { return }
-			
-			self.isAuthenticated = user != nil
-			self.isLoading = false
-			
-			if let user = user {
-				self.fetchUserData(userId: user.uid)
-			} else {
-				self.currentUser = nil
+			Task { @MainActor in
+				guard let self = self else { return }
+				
+				let isAuth = user != nil
+				self.isAuthenticated = isAuth
+				UserDefaults.standard.set(isAuth, forKey: self.authStateKey)
+				
+				if let user = user {
+					UserDefaults.standard.set(user.uid, forKey: self.userIdKey)
+					await self.fetchUserData(userId: user.uid)
+				} else {
+					self.currentUser = nil
+					UserDefaults.standard.removeObject(forKey: self.userIdKey)
+				}
+				
+				self.isLoading = false
 			}
 		}
 	}
 	
-	private func fetchUserData(userId: String) {
-		Firestore.firestore().collection("users")
-			.document(userId)
-			.getDocument(source: .default) { [weak self] snapshot, error in
-				if let error = error {
-					print("Error fetching user data: \(error.localizedDescription)")
-					return
-				}
-				
-				guard let data = snapshot?.data() else {
-					print("No user data found")
-					return
-				}
-				
-				self?.currentUser = User(
-					id: userId,
-					fullName: data["fullName"] as? String ?? "",
-					email: data["email"] as? String ?? "",
-					age: data["age"] as? String ?? "",
-					weight: data["weight"] as? String ?? "",
-					height: data["height"] as? String ?? "",
-					gender: data["gender"] as? String ?? ""
-				)
+	private func restoreSession() async {
+		// Check if we have a saved user ID
+		if let userId = UserDefaults.standard.string(forKey: userIdKey),
+		   Auth.auth().currentUser != nil {
+			await fetchUserData(userId: userId)
+		} else {
+			isAuthenticated = false
+			UserDefaults.standard.set(false, forKey: authStateKey)
+			UserDefaults.standard.removeObject(forKey: userIdKey)
+		}
+		
+		isLoading = false
+	}
+	
+	private func fetchUserData(userId: String) async {
+		do {
+			let document = try await Firestore.firestore()
+				.collection("users")
+				.document(userId)
+				.getDocument()
+			
+			guard let data = document.data() else {
+				print("No user data found")
+				return
 			}
+			
+			self.currentUser = User(
+				id: userId,
+				fullName: data["fullName"] as? String ?? "",
+				email: data["email"] as? String ?? "",
+				age: data["age"] as? String ?? "",
+				weight: data["weight"] as? String ?? "",
+				height: data["height"] as? String ?? "",
+				gender: data["gender"] as? String ?? ""
+			)
+		} catch {
+			print("Error fetching user data: \(error.localizedDescription)")
+		}
 	}
 	
 	func signOut() {
@@ -101,6 +136,8 @@ class AppStateManager: ObservableObject {
 			try Auth.auth().signOut()
 			isAuthenticated = false
 			currentUser = nil
+			UserDefaults.standard.set(false, forKey: authStateKey)
+			UserDefaults.standard.removeObject(forKey: userIdKey)
 		} catch {
 			print("Error signing out: \(error.localizedDescription)")
 		}

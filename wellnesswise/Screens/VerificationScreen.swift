@@ -10,16 +10,11 @@ import SwiftUI
 struct VerificationScreen: View {
 	@StateObject private var viewModel = EmailVerificationViewModel ()
 	@EnvironmentObject private var navigationManager : NavigationManager
-	init () {
-		if !viewModel.isVerificationEmailSent {
-			viewModel.sendVerificationEmail()
-		}
-		
-	}
+	
 	var body: some View {
 		
 		VStack (spacing : 20){
-			Image(systemName: "envelope.circle.fill")
+			Image(systemName: "envelope")
 				.font(.system(size: 70))
 				.foregroundStyle(.black)
 			
