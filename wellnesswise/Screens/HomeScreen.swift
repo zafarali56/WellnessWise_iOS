@@ -9,29 +9,42 @@ import SwiftUI
 struct HomeScreen: View {
 	@EnvironmentObject private var authManager: AppStateManager
 	@EnvironmentObject private var navigationManager: NavigationManager
+	@State private var selectedTab : TabItem = .home
 	
 	var body: some View {
-		VStack(spacing: 20) {
-			if let user = authManager.currentUser {
-				Text("Welcome, \(user.fullName)")
-					.font(.title2)
-				
-				Button("Sign Out") {
-					Task { @MainActor in
-						authManager.signOut()
-						NavigationManager.shared.switchToAuth()
+		ScrollView{
+			VStack(spacing: 20) {
+				if let user = authManager.currentUser {
+					Text("Welcome, \(user.fullName)")
+						.font(.title2)
+					
+					Button("Sign Out") {
+						Task { @MainActor in
+							authManager.signOut()
+							NavigationManager.shared.switchToAuth()
+						}
 					}
+					.buttonStyle(.borderedProminent)
+					
+					
+				} else {
+					ProgressView()
 				}
-				.buttonStyle(.borderedProminent)
-			} else {
-				ProgressView()
 			}
+			
+			.navigationTitle("Wellness wise")
+			.padding()
+			.navigationBarBackButtonHidden()
+			.toolbar {
+				ToolbarItem(placement: .bottomBar){
+					CustomBottomBar(selectedTab: $selectedTab)
+					
+				}
+			}
+			
 		}
-		.padding()
-		.navigationBarBackButtonHidden()
 	}
 }
-
 #Preview {
 	HomeScreen()
 		.environmentObject(AppStateManager.shared)

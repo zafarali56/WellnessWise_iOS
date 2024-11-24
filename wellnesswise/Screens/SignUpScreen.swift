@@ -110,7 +110,6 @@ private struct BottomBarContent: View {
 	
 	var body: some View {
 		VStack(spacing: 8) {
-			// Sign Up Button
 			Button(action: {
 				viewModel.signup(using: navigationManager)
 			}) {
@@ -131,7 +130,6 @@ private struct BottomBarContent: View {
 			.tint(.black)
 			.disabled(viewModel.isLoading || !viewModel.isFormValid)
 			
-			// Login Navigation Button
 			Button {
 				navigationManager.popToRoot()
 			} label: {

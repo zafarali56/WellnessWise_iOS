@@ -26,6 +26,7 @@
 		9EBE0B4A2CC8CA1E00350D6C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EBE0B492CC8CA1E00350D6C /* GoogleService-Info.plist */; };
 		9EDBF73A2CE914EE0001A54C /* EmailVerificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDBF7392CE914EE0001A54C /* EmailVerificationViewModel.swift */; };
 		9EDBF7412CE922D70001A54C /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDBF7402CE922D70001A54C /* NavigationManager.swift */; };
+		9EDFA1802CF398B000960194 /* CustomBottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDFA17F2CF398B000960194 /* CustomBottomBar.swift */; };
 		9EE597192CC6284C00B3DF14 /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE597182CC6284C00B3DF14 /* HomeScreen.swift */; };
 		9EEF18502CB6B6E800AA8D5B /* wellnesswiseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEF184F2CB6B6E800AA8D5B /* wellnesswiseApp.swift */; };
 		9EEF18542CB6B6EB00AA8D5B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9EEF18532CB6B6EB00AA8D5B /* Assets.xcassets */; };
@@ -69,6 +70,7 @@
 		9EBE0B492CC8CA1E00350D6C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9EDBF7392CE914EE0001A54C /* EmailVerificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationViewModel.swift; sourceTree = "<group>"; };
 		9EDBF7402CE922D70001A54C /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
+		9EDFA17F2CF398B000960194 /* CustomBottomBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomBottomBar.swift; path = wellnesswise/CustomBottomBar.swift; sourceTree = SOURCE_ROOT; };
 		9EE597182CC6284C00B3DF14 /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeScreen.swift; sourceTree = "<group>"; };
 		9EEF184C2CB6B6E800AA8D5B /* wellnesswise.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wellnesswise.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9EEF184F2CB6B6E800AA8D5B /* wellnesswiseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wellnesswiseApp.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 			children = (
 				9E2820AE2CCA7DF500CABA49 /* StyledTextField.swift */,
 				9EA583B82CDF28EB00222E46 /* CustomPicker.swift */,
+				9EDFA17F2CF398B000960194 /* CustomBottomBar.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -356,6 +359,7 @@
 				9EEFE8672CDA9FC000A47133 /* VerificationScreen.swift in Sources */,
 				9E7DCE752CD159740032AF2F /* HealthDataScreen.swift in Sources */,
 				9EDBF73A2CE914EE0001A54C /* EmailVerificationViewModel.swift in Sources */,
+				9EDFA1802CF398B000960194 /* CustomBottomBar.swift in Sources */,
 				9EEF18502CB6B6E800AA8D5B /* wellnesswiseApp.swift in Sources */,
 				9EA583B92CDF28EB00222E46 /* CustomPicker.swift in Sources */,
 				9EEFE8652CDA9FA300A47133 /* ProfileScreen.swift in Sources */,

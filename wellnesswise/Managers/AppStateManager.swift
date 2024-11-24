@@ -40,7 +40,6 @@ class AppStateManager: ObservableObject {
 	private let userIdKey = "com.wellnesswise.userId"
 	
 	private init() {
-		// Load initial state
 		setupInitialState()
 	}
 	
@@ -92,7 +91,6 @@ class AppStateManager: ObservableObject {
 	}
 	
 	private func restoreSession() async {
-		// Check if we have a saved user ID
 		if let userId = UserDefaults.standard.string(forKey: userIdKey),
 		   Auth.auth().currentUser != nil {
 			await fetchUserData(userId: userId)
