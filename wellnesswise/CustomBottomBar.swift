@@ -28,7 +28,7 @@ struct CustomBottomBar: View {
 	@Binding var selectedTab : TabItem
 	private let tabBarItems = TabItem.allCases
     var body: some View {
-		HStack(spacing: 40	){
+		HStack(){
 			ForEach(tabBarItems, id: \.self){
 				tab in
 				Button (action: {withAnimation(.easeOut){
@@ -36,24 +36,24 @@ struct CustomBottomBar: View {
 				}
 				})
 				{
-					VStack (spacing: 4){
+					VStack (){
 						Image(systemName: tab.icon)
 							.symbolRenderingMode(.hierarchical)
-							.font(.system( size: 20))
+							.font(.system( size: 24))
 						Text(tab.title)
 							.font(.caption2)
 						
 					}
 					.foregroundStyle(selectedTab == tab ? .black : .gray)
 					.frame(maxWidth: .infinity)
-					.padding(5)
+					.padding(10)
 				}
 			}
 		}
 		.background(.thinMaterial)
-		
+
 		.clipShape(RoundedRectangle(cornerRadius: 30))
-		.padding(10)
+		.padding(.horizontal, 10)
 		.frame(maxWidth: .infinity)
     }
 }

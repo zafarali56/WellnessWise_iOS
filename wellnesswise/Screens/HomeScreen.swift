@@ -8,25 +8,21 @@ struct MainTabContainer: View {
 	var body: some View {
 		ZStack(alignment: .bottom) {
 			TabView(selection: $selectedTab) {
-				// Home Tab Content
 				NavigationView {
 					HomeContent()
 				}
 				.tag(TabItem.home)
 				
-				// Profile Tab
 				NavigationView {
 					ProfileScreen()
 				}
 				.tag(TabItem.profile)
 				
-				// Settings Tab
 				NavigationView {
 					SettingsView()
 				}
 				.tag(TabItem.settings)
 				
-				// Health Tab
 				NavigationView {
 					HealthDataScreen()
 				}
@@ -34,12 +30,10 @@ struct MainTabContainer: View {
 			}
 			
 			CustomBottomBar(selectedTab: $selectedTab)
-				.padding(.bottom, 8)
 		}
 	}
 }
 
-// Separate content view for Home tab
 struct HomeContent: View {
 	@EnvironmentObject private var authManager: AppStateManager
 	@EnvironmentObject private var navigationManager: NavigationManager
@@ -69,7 +63,6 @@ struct HomeContent: View {
 	}
 }
 
-// Updated HomeScreen to use MainTabContainer
 struct HomeScreen: View {
 	var body: some View {
 		MainTabContainer()
