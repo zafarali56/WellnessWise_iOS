@@ -50,10 +50,10 @@ struct CustomBottomBar: View {
 				}
 			}
 		}
-		.background(.thinMaterial)
+		.glassmorphism()
 
 		.clipShape(RoundedRectangle(cornerRadius: 30))
-		.padding(.horizontal, 10)
+		.padding(.horizontal, 20)
 		.frame(maxWidth: .infinity)
     }
 }
@@ -121,4 +121,10 @@ struct ProfileView : View {
 		
 	}
 }
-
+extension View {
+	func glassmorphism() -> some View {
+		self
+			.background(.ultraThinMaterial)
+			.background(Color.white.opacity(0.05))
+	}
+}
