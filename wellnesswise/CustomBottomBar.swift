@@ -50,8 +50,7 @@ struct CustomBottomBar: View {
 				}
 			}
 		}
-		.glassmorphism()
-
+		.background(.ultraThinMaterial)
 		.clipShape(RoundedRectangle(cornerRadius: 30))
 		.padding(.horizontal, 20)
 		.frame(maxWidth: .infinity)
@@ -64,67 +63,16 @@ struct MainTabView: View {
 	var body: some View {
 		ZStack(alignment: .bottom){
 			TabView(selection: $selectedTab){
-				HomeView()
+				HomeScreen()
 					.tag(TabItem.home)
-				HealthView()
+				HealthScreen()
 					.tag(TabItem.health)
 				
-				ProfileView()
+				ProfileScreen()
 					.tag(TabItem.profile)
-				SettingsView()
+				SettingsScreeen()
 					.tag(TabItem.settings)
 			}
 		}
-	}
-}
-
-struct HomeView : View {
-	var body: some View {
-		NavigationView()
-		{
-			Text("Home Screen")
-				.navigationTitle("Home")
-		}
-		
-	}
-}
-
-struct HealthView : View {
-	var body: some View {
-		NavigationView()
-		{
-			Text("Home Screen")
-				.navigationTitle("Health")
-		}
-		
-	}
-}
-
-struct SettingsView : View {
-	var body: some View {
-		NavigationView()
-		{
-			Text("Home Screen")
-				.navigationTitle("Settings")
-		}
-		
-	}
-}
-
-struct ProfileView : View {
-	var body: some View {
-		NavigationView()
-		{
-			Text("Home Screen")
-				.navigationTitle("Profile")
-		}
-		
-	}
-}
-extension View {
-	func glassmorphism() -> some View {
-		self
-			.background(.ultraThinMaterial)
-			.background(Color.white.opacity(0.05))
 	}
 }

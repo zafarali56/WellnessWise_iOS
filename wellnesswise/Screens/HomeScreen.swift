@@ -19,12 +19,12 @@ struct MainTabContainer: View {
 				.tag(TabItem.profile)
 				
 				NavigationView {
-					SettingsView()
+					SettingsScreeen()
 				}
 				.tag(TabItem.settings)
 				
 				NavigationView {
-					HealthDataScreen()
+					HealthScreen()
 				}
 				.tag(TabItem.health)
 			}
@@ -45,20 +45,14 @@ struct HomeContent: View {
 					Text("Welcome, \(user.fullName)")
 						.font(.title2)
 					
-					Button("Sign Out") {
-						Task { @MainActor in
-							authManager.signOut()
-							NavigationManager.shared.switchToAuth()
-						}
-					}
-					.buttonStyle(.borderedProminent)
+
 				} else {
 					ProgressView()
 				}
 			}
 			.padding()
 		}
-		.navigationTitle("Wellness Wise")
+		.navigationTitle("Home")
 		.navigationBarBackButtonHidden()
 	}
 }
