@@ -27,14 +27,13 @@ enum TabItem: String, CaseIterable{
 struct CustomBottomBar: View {
 	@Binding var selectedTab : TabItem
 	private let tabBarItems = TabItem.allCases
-    var body: some View {
+	var body: some View {
 		HStack(){
 			ForEach(tabBarItems, id: \.self){
 				tab in
 				Button (action: {withAnimation(.easeOut){
 					selectedTab = tab
-				}
-				})
+				}})
 				{
 					VStack (){
 						Image(systemName: tab.icon)
@@ -54,7 +53,7 @@ struct CustomBottomBar: View {
 		.clipShape(RoundedRectangle(cornerRadius: 30))
 		.padding(.horizontal, 20)
 		.frame(maxWidth: .infinity)
-    }
+	}
 }
 
 struct MainTabView: View {

@@ -115,12 +115,10 @@ struct MainFlow: View {
 			HomeScreen()
 				.navigationDestination(for: MainRoute.self) { route in
 					switch route {
-					case .home:
-						HomeScreen()
-					case .profile:
-						ProfileScreen()
-					case .healthData:
-						HealthDataScreen()
+						case .home:
+							HomeScreen()
+						case .profile:
+							ProfileScreen()
 					}
 				}
 		}

@@ -72,7 +72,7 @@ private struct BottomBarContent: View {
 		
 	}
 }
-struct MedicalHistorySection: View {
+private struct MedicalHistorySection: View {
 	@ObservedObject var viewModel: HealthAssessmentViewModel
 	
 	var body: some View {
@@ -91,7 +91,7 @@ struct MedicalHistorySection: View {
 	}
 }
 
-struct LifestyleHabitsSection: View {
+private struct LifestyleHabitsSection: View {
 	@ObservedObject var viewModel: HealthAssessmentViewModel
 	
 	var body: some View {
@@ -126,7 +126,7 @@ struct LifestyleHabitsSection: View {
 	}
 }
 
-struct EnvironmentalFactorsSection: View {
+private struct EnvironmentalFactorsSection: View {
 	@ObservedObject var viewModel: HealthAssessmentViewModel
 	
 	var body: some View {

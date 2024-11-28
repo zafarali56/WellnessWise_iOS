@@ -15,7 +15,7 @@ enum AuthenticationRoute: Hashable {
 enum MainRoute: Hashable {
 	case home
 	case profile
-	case healthData
+
 
 }
 @MainActor
