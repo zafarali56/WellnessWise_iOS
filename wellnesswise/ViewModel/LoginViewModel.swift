@@ -67,6 +67,8 @@ class LoginViewModel: ObservableObject {
 				return "Password is too weak. Please use a stronger password."
 			case AuthErrorCode.tooManyRequests.rawValue:
 				return "Too many attempts. Please try again later."
+			case AuthErrorCode.wrongPassword.rawValue:
+				return "Wrong email or password."
 			default:
 				return "An error occurred. Please try again."
 		}

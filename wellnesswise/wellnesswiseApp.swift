@@ -36,7 +36,6 @@ struct WellnessWiseApp: App {
 				}
 			}
 			.onAppear {
-				// Handle initial navigation based on auth state
 				if appState.isAuthenticated {
 					navigationManager.navigationType = .main
 				} else {
@@ -47,7 +46,6 @@ struct WellnessWiseApp: App {
 	}
 }
 
-// MARK: - Root View
 struct RootView: View {
 	@StateObject private var navigationManager = NavigationManager.shared
 	@StateObject private var appState = AppStateManager.shared
@@ -70,7 +68,6 @@ struct RootView: View {
 	}
 }
 
-// MARK: - Authentication Flow
 struct AuthenticationFlow: View {
 	@EnvironmentObject private var navigationManager: NavigationManager
 	
@@ -95,14 +92,12 @@ struct AuthenticationFlow: View {
 	}
 }
 
-// MARK: - Authenticated Flow
 struct AuthenticatedView: View {
 	var body: some View {
 		HomeScreen()
 	}
 }
 
-// MARK: - Loading View
 struct LoadingView: View {
 	var body: some View {
 		ProgressView()
@@ -127,7 +122,6 @@ struct MainFlow: View {
 	}
 }
 
-// MARK: - View Model Extensions
 extension LoginViewModel {
 	@MainActor func handleSuccessfulLogin() {
 		NavigationManager.shared.switchToMain()

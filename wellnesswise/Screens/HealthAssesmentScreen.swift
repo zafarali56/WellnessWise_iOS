@@ -60,8 +60,6 @@ private struct BottomBarContent: View {
 						.foregroundStyle(.white)
 						.frame(maxWidth: .infinity)
 						.frame(width: 250,height: 30)
-					
-					
 				}
 			}
 			.buttonStyle(.borderedProminent)
@@ -121,7 +119,6 @@ private struct LifestyleHabitsSection: View {
 			)
 			
 			SleepHoursSlider(viewModel: viewModel)
-			
 		}
 	}
 }
@@ -234,7 +231,6 @@ struct ErrorOverlay: View {
 	}
 }
 
-// MARK: - Helper Functions
 func createTogglePicker(title: String, binding: Binding<String>) -> some View {
 	Picker(title, selection: binding) {
 		Text("Yes").tag("yes")

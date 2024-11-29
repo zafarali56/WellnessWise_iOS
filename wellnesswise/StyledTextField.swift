@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct StyledTextField: View {
-	// MARK: - Properties
 	let title: String
 	let placeholder: String
 	@Binding var text: String
@@ -12,10 +11,8 @@ struct StyledTextField: View {
 	
 	@FocusState private var isFocused: Bool
 	
-	// MARK: - Body
 	var body: some View {
 		VStack(alignment: .leading, spacing: 4) {
-			// Title and validation status
 			HStack {
 				Text(title)
 					.font(.subheadline)
@@ -28,9 +25,7 @@ struct StyledTextField: View {
 				}
 			}
 			
-			// TextField Container
 			HStack {
-				// Input Field
 				Group {
 					if isSecure {
 						SecureField(placeholder, text: $text)
@@ -50,7 +45,6 @@ struct StyledTextField: View {
 				.font(.body)
 				.focused($isFocused)
 				
-				// Clear Button
 				if !text.isEmpty {
 					Button(action: { text = "" }) {
 						Image(systemName: "xmark.circle.fill")
@@ -72,7 +66,6 @@ struct StyledTextField: View {
 					}
 			}
 			
-			// Error Message
 			if let errorMessage = errorMessage, !text.isEmpty && isValid == false {
 				Text(errorMessage)
 					.font(.caption)
@@ -84,7 +77,6 @@ struct StyledTextField: View {
 		}
 	}
 	
-	// MARK: - Computed Properties
 	private var borderColor: Color {
 		if isFocused {
 			return .blue
@@ -103,10 +95,8 @@ struct StyledTextField: View {
 	}
 }
 
-// MARK: - Preview
 #Preview {
 	VStack(spacing: 20) {
-		// Regular TextField
 		StyledTextField(
 			title: "Username",
 			placeholder: "Enter username",
@@ -114,7 +104,6 @@ struct StyledTextField: View {
 			isValid: true
 		)
 		
-		// TextField with Error
 		StyledTextField(
 			title: "Email",
 			placeholder: "Enter email",
@@ -123,7 +112,6 @@ struct StyledTextField: View {
 			errorMessage: "Please enter a valid email address"
 		)
 		
-		// Secure TextField
 		StyledTextField(
 			title: "Password",
 			placeholder: "Enter password",
@@ -132,7 +120,6 @@ struct StyledTextField: View {
 			isValid: true
 		)
 		
-		// Number TextField
 		StyledTextField(
 			title: "Age",
 			placeholder: "Enter age",

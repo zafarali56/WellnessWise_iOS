@@ -20,13 +20,11 @@ struct HealthDataScreen: View {
 						ToolbarItem(placement: .bottomBar){
 							BottomBarContent(viewModel: viewModel)
 						}
-						
 					}
 			}
-			
 		}
 		.navigationBarBackButtonHidden()
-		.padding(40)
+		.padding(30)
 	}
 }
 
@@ -54,46 +52,46 @@ private struct FormContent : View {
 			
 			StyledTextField(
 				title: "Heart rate",
-				placeholder: "Bpm",
+				placeholder: "eg. 50-150",
 				text: $viewModel
 					.HeartRate,
 				isNumber: true,
-				isValid: viewModel.validation
+				isValid: viewModel.isHearRateValid
 			)
 			
 			StyledTextField(
 				title: "Cholestrol",
-				placeholder: "200",
+				placeholder: "eg. 100-300",
 				text: $viewModel
 					.Cholestrol,
 				isNumber: true,
-				isValid: viewModel.validation
+				isValid: viewModel.isCholestrolValid
 			)
 			StyledTextField(
 				title: "Blood sugar",
-				placeholder: "80/180",
+				placeholder: "eg. 80-180",
 				text: $viewModel
 					.BloodSugar
 				, isNumber: true,
-				isValid: viewModel.validation
+				isValid: viewModel.isBloodSugarValid
 			)
 			
 			StyledTextField(
 				title: "Waist circumference",
-				placeholder: "eg. 47",
+				placeholder: "eg. 15-130",
 				text: $viewModel
 					.WaistCircumference
 				, isNumber: true,
-				isValid: viewModel.validation
+				isValid: viewModel.isWaistCircumferenceValid
 			)
 			
 			StyledTextField(
 				title: "Triglycerides",
-				placeholder: "Enter the value",
+				placeholder: "eg. 50-200",
 				text: $viewModel
 					.Triglycerides,
 				isNumber: true
-				, isValid: viewModel.validation
+				, isValid: viewModel.isTriglycerides
 			)
 			
 			
@@ -123,7 +121,8 @@ private struct BottomBarContent: View {
 			.buttonStyle(.borderedProminent)
 			.clipShape(.capsule)
 			.tint(.black)
-			.disabled(viewModel.isLoading)
+			.disabled(viewModel.isLoading || !viewModel.validation)
+			.padding()
 		}
 	}
 }
