@@ -10,7 +10,7 @@ import SwiftUI
 struct HealthDataScreen: View {
 	@StateObject var viewModel : HealthDataViewModel
 	@EnvironmentObject private var navigationManager: NavigationManager
-
+	
 	var body: some View {
 		ScrollView{
 			VStack {
@@ -57,7 +57,8 @@ private struct FormContent : View {
 				placeholder: "Bpm",
 				text: $viewModel
 					.HeartRate,
-				isNumber: true
+				isNumber: true,
+				isValid: viewModel.validation
 			)
 			
 			StyledTextField(
@@ -65,7 +66,16 @@ private struct FormContent : View {
 				placeholder: "200",
 				text: $viewModel
 					.Cholestrol,
-				isNumber: true
+				isNumber: true,
+				isValid: viewModel.validation
+			)
+			StyledTextField(
+				title: "Blood sugar",
+				placeholder: "80/180",
+				text: $viewModel
+					.BloodSugar
+				, isNumber: true,
+				isValid: viewModel.validation
 			)
 			
 			StyledTextField(
@@ -73,7 +83,8 @@ private struct FormContent : View {
 				placeholder: "eg. 47",
 				text: $viewModel
 					.WaistCircumference
-				, isNumber: true
+				, isNumber: true,
+				isValid: viewModel.validation
 			)
 			
 			StyledTextField(
@@ -81,7 +92,10 @@ private struct FormContent : View {
 				placeholder: "Enter the value",
 				text: $viewModel
 					.Triglycerides,
-				isNumber: true)
+				isNumber: true
+				, isValid: viewModel.validation
+			)
+			
 			
 		}
 	}
@@ -91,7 +105,7 @@ private struct BottomBarContent: View {
 	@EnvironmentObject private var navigationManager : NavigationManager
 	@ObservedObject var viewModel : HealthDataViewModel
 	var body: some View {
-		VStack(spacing: 8){
+		VStack{
 			Button(action: {viewModel.Submit(using: navigationManager)}){
 				if viewModel.isLoading {
 					ProgressView()
