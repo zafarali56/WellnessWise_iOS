@@ -31,7 +31,6 @@ struct SignUpScreen: View {
 		.navigationBarBackButtonHidden()
 	}
 }
-// MARK: - Supporting Views
 private struct FormContent: View {
 	@ObservedObject var viewModel: SignUpViewModel
 	

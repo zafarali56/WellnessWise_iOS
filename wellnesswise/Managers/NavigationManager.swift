@@ -10,6 +10,7 @@ enum AuthenticationRoute: Hashable {
 	case signup
 	case verification
 	case healthAssessment
+	case healthDataScreen
 }
 
 enum MainRoute: Hashable {

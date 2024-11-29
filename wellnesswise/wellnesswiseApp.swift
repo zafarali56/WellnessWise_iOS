@@ -58,10 +58,10 @@ struct RootView: View {
 				LoadingView()
 			} else {
 				switch navigationManager.navigationType {
-				case .authentication:
-					AuthenticationFlow()
-				case .main:
-					MainFlow()
+					case .authentication:
+						AuthenticationFlow()
+					case .main:
+						MainFlow()
 				}
 			}
 		}
@@ -79,14 +79,16 @@ struct AuthenticationFlow: View {
 			LoginScreen()
 				.navigationDestination(for: AuthenticationRoute.self) { route in
 					switch route {
-					case .login:
-						LoginScreen()
-					case .signup:
-						SignUpScreen()
-					case .verification:
-						VerificationScreen()
-					case .healthAssessment:
-						HealthAssessmentScreen()
+						case .login:
+							LoginScreen()
+						case .signup:
+							SignUpScreen()
+						case .verification:
+							VerificationScreen()
+						case .healthAssessment:
+							HealthAssessmentScreen()
+						case .healthDataScreen:
+							HealthDataScreen(viewModel: HealthDataViewModel())
 					}
 				}
 		}
@@ -146,6 +148,13 @@ extension EmailVerificationViewModel {
 
 extension HealthAssessmentViewModel {
 	@MainActor func handleSuccessfulAssessment() {
+		NavigationManager.shared.pushAuthentication(.healthDataScreen)
+	}
+}
+
+extension HealthDataViewModel {
+	@MainActor func handleSuccessfulHealthData ()
+	{
 		NavigationManager.shared.switchToMain()
 	}
 }

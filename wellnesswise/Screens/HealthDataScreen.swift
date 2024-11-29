@@ -9,15 +9,22 @@ import SwiftUI
 
 struct HealthDataScreen: View {
 	@StateObject var viewModel : HealthDataViewModel
+	@EnvironmentObject private var navigationManager: NavigationManager
+
 	var body: some View {
 		ScrollView{
 			VStack {
 				FormContent(viewModel: viewModel)
+					.navigationTitle("Health Data")
+					.toolbar{
+						ToolbarItem(placement: .bottomBar){
+							BottomBarContent(viewModel: viewModel)
+						}
+						
+					}
 			}
 			
 		}
-		.navigationTitle("Health Data")
-		.navigationBarTitleDisplayMode(.large)
 		.navigationBarBackButtonHidden()
 		.padding(40)
 	}
@@ -80,6 +87,32 @@ private struct FormContent : View {
 	}
 }
 
+private struct BottomBarContent: View {
+	@EnvironmentObject private var navigationManager : NavigationManager
+	@ObservedObject var viewModel : HealthDataViewModel
+	var body: some View {
+		VStack(spacing: 8){
+			Button(action: {viewModel.Submit(using: navigationManager)}){
+				if viewModel.isLoading {
+					ProgressView()
+						.tint(.white)
+				}
+				else {
+					Text("Submit")
+						.font(.headline)
+						.fontWeight(.semibold)
+						.foregroundStyle(.white)
+						.frame(maxWidth: .infinity)
+						.frame(width: 250, height: 30)
+				}
+			}
+			.buttonStyle(.borderedProminent)
+			.clipShape(.capsule)
+			.tint(.black)
+			.disabled(viewModel.isLoading)
+		}
+	}
+}
 #Preview {
 	HealthDataScreen(viewModel: HealthDataViewModel())
 }
