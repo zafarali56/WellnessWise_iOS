@@ -66,29 +66,16 @@ class EmailVerificationViewModel : ObservableObject {
 				}
 				else {
 					self?.isVerificationEmailSent = true
-				}
-			}
-			
-		}
-	}
-	
+				}}}}
 	func startVerificationEmailCheck (using navigationManager: NavigationManager)
 	{
 		checkVerificationStatus()
-		
 		verificationTimer?.invalidate()
-		
 		verificationTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] timer in
 			guard let self = self else {
 				timer.invalidate()
 				return
-			}
-			
-			
-			self.checkVerificationStatus()
-			
-			if self.isEmailVerified {
-				timer.invalidate()
+			};self.checkVerificationStatus();if self.isEmailVerified {timer.invalidate()
 				DispatchQueue.main.async {
 					NavigationManager.shared
 						.pushAuthentication(.healthAssessment)

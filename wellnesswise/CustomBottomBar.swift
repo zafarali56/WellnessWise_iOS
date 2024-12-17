@@ -66,7 +66,6 @@ struct MainTabView: View {
 					.tag(TabItem.home)
 				HealthScreen()
 					.tag(TabItem.health)
-				
 				ProfileScreen()
 					.tag(TabItem.profile)
 				SettingsScreeen()

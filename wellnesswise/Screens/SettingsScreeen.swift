@@ -21,8 +21,6 @@ struct SettingsScreeen: View {
 				}
 				.buttonStyle(.borderedProminent)
 			}
-			
-			
 		}.navigationTitle("Settings")
 	}
 }
