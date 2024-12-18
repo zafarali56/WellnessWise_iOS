@@ -7,20 +7,47 @@
 
 import SwiftUI
 
+//Bindings
+//Place holders
 struct HomeWidgets: View {
-    var body: some View {
-		ZStack{
-				RoundedRectangle(cornerRadius: 20, style: .continuous)
-				.fill(Color.blue.opacity(0.2))
-				.overlay(
-					RoundedRectangle(cornerRadius: 20)
-						.stroke(Color.blue.opacity(0.3), lineWidth: 1)
-				)
-				.frame(width:.infinity, height: 100)
-				.shadow(color: .black.opacity(0.2), radius: 10, x: 0, y:10)
+	var title: String
+	var subtitle: String
+	var imageName: String
+	var backgroundColor: Color
+	
+	var body: some View {
+		HStack {
+			VStack{
+				Image(imageName)
+					.resizable()
+					.scaledToFit()
+					.frame(width: 70, height: 40)
+				
+				Text(title)
+					.font(.headline)
+					.foregroundColor(.white)
+			}
+			
+			Spacer()
+			Text(subtitle)
+				.font(.largeTitle)
+				.foregroundColor(.white.opacity(0.7))
+				.fontDesign(.rounded)
+				.fontWeight(.bold)
 		}
-    }
+		.padding()
+		.frame(width: .infinity, height: 110)
+		.background(backgroundColor)
+		.cornerRadius(15)
+		.shadow(radius: 5)
+	}
 }
+
 #Preview {
-	HomeWidgets()
+	HomeWidgets(
+		title: "",
+		subtitle: "",
+		imageName: "",
+		backgroundColor: Color.accentColor
+	)
 }
