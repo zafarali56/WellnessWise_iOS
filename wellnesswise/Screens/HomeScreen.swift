@@ -63,20 +63,20 @@ struct Widgets: View {
 				HomeWidgets(
 					title: "Blood Sugar",
 					subtitle: "120",
-					imageName: "",
+					imageName: "sugar-blood-level",
 					backgroundColor: Color.black
 				)
 				HomeWidgets(
 					title: "Cholestrol",
 					subtitle: "150",
-					imageName: "",
+					imageName: "cholesterol",
 					backgroundColor: Color
 						.black)
 			}
 			HomeWidgets(
 				title: "Blood pressure",
 				subtitle: "120/80",
-				imageName: "",
+				imageName: "blood-pressure-2",
 				backgroundColor: Color
 					.black)
 		}

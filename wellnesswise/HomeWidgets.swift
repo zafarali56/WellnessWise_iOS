@@ -21,7 +21,7 @@ struct HomeWidgets: View {
 				Image(imageName)
 					.resizable()
 					.scaledToFit()
-					.frame(width: 70, height: 40)
+					.frame(width: 35, height: 30)
 				
 				Text(title)
 					.font(.headline)
@@ -30,8 +30,8 @@ struct HomeWidgets: View {
 			
 			Spacer()
 			Text(subtitle)
-				.font(.largeTitle)
-				.foregroundColor(.white.opacity(0.7))
+				.font(.title2)
+				.foregroundColor(.white)
 				.fontDesign(.rounded)
 				.fontWeight(.bold)
 		}
