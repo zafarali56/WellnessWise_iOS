@@ -20,7 +20,7 @@ struct HealthData: Codable, Identifiable {
 	let bloodPressure: String
 	let heartRate: String
 	let waistCircumference: String
-
+	
 }
 @MainActor
 class AppStateManager: ObservableObject {
@@ -160,18 +160,16 @@ class AppStateManager: ObservableObject {
 				}
 			}
 			
-			// Debugging: Print fetched health data
 			print("Fetched Health Data: \(fetchedHealthData)")
 			
-			// Assign fetched data to a published property
 			self.currentUserHealthData = fetchedHealthData.first // Show the first health record
 			
 		} catch {
 			print("Error fetching health data: \(error.localizedDescription)")
 		}
 	}
-
-
+	
+	
 	func signOut() {
 		do {
 			try Auth.auth().signOut()

@@ -4,52 +4,91 @@
 //
 //  Created by Zafar Ali on 17/12/2024.
 //
-
 import SwiftUI
-
-//Bindings
-//Place holders
 struct HomeWidgets: View {
 	var title: String
 	var subtitle: String
 	var imageName: String
 	var backgroundColor: Color
 	var width: CGFloat
-	
 	var body: some View {
 		HStack {
-			VStack{
-				Image(imageName)
+			VStack {
+				Image( imageName)
 					.resizable()
 					.scaledToFit()
 					.frame(width: width, height: 50)
-				
+					.shadow(radius: 10)
 				Text(title)
-					.font(.headline)
-					.foregroundColor(.white)
+					.font(.subheadline)
+					.foregroundColor(.primary)
+				Spacer()
+				Text(subtitle)
+					.font(.title2)
+					.foregroundColor(.primary)
+					.fontDesign(.rounded)
+					.fontWeight(.bold)
+					.shadow(radius: 2)
 			}
+			.padding()
+			.frame(width: .infinity, height: 100)
+			.background(
+				ZStack {
+					LinearGradient(
+						gradient: Gradient(colors: [backgroundColor.opacity(0.7), backgroundColor]),
+						startPoint: .topLeading,
+						endPoint: .bottomTrailing
+					)
+					.clipShape(RoundedRectangle(cornerRadius: 20))
+					RoundedRectangle(cornerRadius: 20)
+						.fill(Material.ultraThin)
+				}
+			)
+			.cornerRadius(20)
+			.shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 6)
+		}
+	}
+}
+struct HomeWidgetsPreview: View {
+	var body: some View {
+		VStack(spacing: 20) {
+			HomeWidgets(
+				title: "Heart Rate",
+				subtitle: "72 bpm",
+				imageName: "heart_rate",
+				backgroundColor: Color.red,
+				width: 50
+			)
 			
-			Spacer()
-			Text(subtitle)
-				.font(.title2)
-				.foregroundColor(.white)
-				.fontDesign(.rounded)
-				.fontWeight(.bold)
+			HomeWidgets(
+				title: "Blood Sugar",
+				subtitle: "90 mg/dL",
+				imageName: "sugar-blood-level",
+				backgroundColor: Color.blue,
+				width: 50
+			)
+			
+			HomeWidgets(
+				title: "Cholesterol",
+				subtitle: "180 mg/dL",
+				imageName: "cholesterol",
+				backgroundColor: Color.green,
+				width: 50
+			)
+			
+			HomeWidgets(
+				title: "Blood Pressure",
+				subtitle: "120/80",
+				imageName: "blood-pressure1",
+				backgroundColor: Color.purple,
+				width: 50
+			)
 		}
 		.padding()
-		.frame(width: .infinity, height: 110)
-		.background(backgroundColor)
-		.cornerRadius(15)
-		.shadow(radius: 5)
+		.background(Color.gray.opacity(0.1))
 	}
 }
 
 #Preview {
-	HomeWidgets(
-		title: "",
-		subtitle: "",
-		imageName: "",
-		backgroundColor: Color.accentColor,
-		width: 0
-	)
+	HomeWidgetsPreview()
 }
