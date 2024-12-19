@@ -35,6 +35,7 @@ struct HomeContent: View {
 	var body: some View {
 		ScrollView {
 			VStack(spacing: 2) {
+	
 				Widgets()
 
 			}
@@ -54,31 +55,35 @@ struct Widgets: View {
 		VStack{
 			HomeWidgets(
 				title: "Heart rate",
-				subtitle: "40",
+				subtitle: "40 bmp",
 				imageName: "heart_rate",
 				backgroundColor: Color
-					.black)
+					.black,
+				width: 70)
 			HStack()
 			{
 				HomeWidgets(
 					title: "Blood Sugar",
 					subtitle: "120",
 					imageName: "sugar-blood-level",
-					backgroundColor: Color.black
+					backgroundColor: Color.black,
+					width: 40
 				)
 				HomeWidgets(
 					title: "Cholestrol",
 					subtitle: "150",
 					imageName: "cholesterol",
 					backgroundColor: Color
-						.black)
+						.black, width: 40
+				)
 			}
 			HomeWidgets(
 				title: "Blood pressure",
 				subtitle: "120/80",
-				imageName: "blood-pressure-2",
+				imageName: "blood-pressure1",
 				backgroundColor: Color
-					.black)
+					.black,
+				width: 70)
 		}
 	}
 }

@@ -3,10 +3,6 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 
-import SwiftUI
-import Firebase
-import FirebaseAuth
-import FirebaseFirestore
 
 struct User: Codable, Identifiable {
 	let id: String
@@ -16,23 +12,22 @@ struct User: Codable, Identifiable {
 	let weight: String
 	let height: String
 	let gender: String
-	
-	enum CodingKeys: String, CodingKey {
-		case id
-		case fullName
-		case email
-		case age
-		case weight
-		case height
-		case gender
-	}
 }
-
+struct HealthData: Codable, Identifiable {
+	let id: String
+	let bloodSugar: String
+	let cholestrol: String
+	let heartRate: String
+	let waistCircumference: String
+	let diastolic: String
+	let systolic : String
+}
 @MainActor
 class AppStateManager: ObservableObject {
 	@Published var isAuthenticated = false
 	@Published var isLoading = true
-	@Published var currentUser: User?
+	@Published var currentUserData: User?
+	@Published var currentUserHealthData: HealthData?
 	
 	static let shared = AppStateManager()
 	
@@ -81,7 +76,7 @@ class AppStateManager: ObservableObject {
 					UserDefaults.standard.set(user.uid, forKey: self.userIdKey)
 					await self.fetchUserData(userId: user.uid)
 				} else {
-					self.currentUser = nil
+					self.currentUserData = nil
 					UserDefaults.standard.removeObject(forKey: self.userIdKey)
 				}
 				
@@ -115,7 +110,7 @@ class AppStateManager: ObservableObject {
 				return
 			}
 			
-			self.currentUser = User(
+			self.currentUserData = User(
 				id: userId,
 				fullName: data["fullName"] as? String ?? "",
 				email: data["email"] as? String ?? "",
@@ -128,12 +123,37 @@ class AppStateManager: ObservableObject {
 			print("Error fetching user data: \(error.localizedDescription)")
 		}
 	}
-	
+	private func fetchHealthData(userId: String) async {
+		do {
+			let document = try await Firestore.firestore()
+				.collection("user/healthData")
+				.document(userId)
+				.getDocument()
+			
+			
+			guard let healthData = document.data() else {
+				print("No health data found")
+				return
+			}
+			self.currentUserHealthData = HealthData(
+				id: userId,
+				bloodSugar : healthData["bloodSugar"] as? String ?? "",
+				cholestrol : healthData["cholestrol"] as? String ?? "",
+				heartRate : healthData["heartRate"] as? String ?? "",
+				waistCircumference: healthData["waitCircumference"] as? String ?? "",
+				diastolic : healthData ["diastolic"] as? String ?? "",
+				systolic : healthData ["systolic"] as? String ?? ""
+				)
+		}catch {
+			print("Error fetching health data : \(error.localizedDescription)")
+		}
+	}
 	func signOut() {
 		do {
 			try Auth.auth().signOut()
 			isAuthenticated = false
-			currentUser = nil
+			currentUserData = nil
+			currentUserHealthData = nil
 			UserDefaults.standard.set(false, forKey: authStateKey)
 			UserDefaults.standard.removeObject(forKey: userIdKey)
 		} catch {

@@ -14,6 +14,7 @@ struct HomeWidgets: View {
 	var subtitle: String
 	var imageName: String
 	var backgroundColor: Color
+	var width: CGFloat
 	
 	var body: some View {
 		HStack {
@@ -21,7 +22,7 @@ struct HomeWidgets: View {
 				Image(imageName)
 					.resizable()
 					.scaledToFit()
-					.frame(width: 35, height: 30)
+					.frame(width: width, height: 50)
 				
 				Text(title)
 					.font(.headline)
@@ -48,6 +49,7 @@ struct HomeWidgets: View {
 		title: "",
 		subtitle: "",
 		imageName: "",
-		backgroundColor: Color.accentColor
+		backgroundColor: Color.accentColor,
+		width: 0
 	)
 }
