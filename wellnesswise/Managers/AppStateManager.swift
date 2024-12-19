@@ -17,10 +17,10 @@ struct HealthData: Codable, Identifiable {
 	let id: String
 	let bloodSugar: String
 	let cholestrol: String
+	let bloodPressure: String
 	let heartRate: String
 	let waistCircumference: String
-	let diastolic: String
-	let systolic : String
+
 }
 @MainActor
 class AppStateManager: ObservableObject {
@@ -123,31 +123,55 @@ class AppStateManager: ObservableObject {
 			print("Error fetching user data: \(error.localizedDescription)")
 		}
 	}
-	private func fetchHealthData(userId: String) async {
+	func fetchHealthData(userId: String) async {
 		do {
-			let document = try await Firestore.firestore()
-				.collection("user/healthData")
+			let snapshot = try await Firestore.firestore()
+				.collection("users")
 				.document(userId)
-				.getDocument()
+				.collection("healthData")
+				.getDocuments()
 			
+			var fetchedHealthData = [HealthData]()
 			
-			guard let healthData = document.data() else {
-				print("No health data found")
-				return
+			for document in snapshot.documents {
+				let docData = document.data()
+				print("Document Data: \(docData)")
+				if let nestedHealthData = docData["healthData"] as? [String: Any] {
+					let bloodSugar = nestedHealthData["bloodSugar"] as? String ?? "\(nestedHealthData["bloodSugar"] as? Int ?? 0)"
+					let cholestrol = nestedHealthData["cholestrol"] as? String ?? "\(nestedHealthData["cholestrol"] as? Int ?? 0)"
+					let diastolic = nestedHealthData["diastolic"] as? String ?? "\(nestedHealthData["diastolic"] as? Int ?? 0)"
+					let heartRate = nestedHealthData["heartRate"] as? String ?? "\(nestedHealthData["heartRate"] as? Int ?? 0)"
+					let systolic = nestedHealthData["systolic"] as? String ?? "\(nestedHealthData["systolic"] as? Int ?? 0)"
+					let waistCircumference = nestedHealthData["waistCircumference"] as? String ?? "\(nestedHealthData["waistCircumference"] as? Int ?? 0)"
+					
+					let bloodPressure : String = ("\(systolic) / \(diastolic)")
+					
+					let healthRecord = HealthData(
+						id: document.documentID,
+						bloodSugar: bloodSugar,
+						cholestrol: cholestrol,
+						bloodPressure: bloodPressure,
+						heartRate: heartRate,
+						waistCircumference: waistCircumference
+					)
+					fetchedHealthData.append(healthRecord)
+				} else {
+					print("No health data found in document.")
+				}
 			}
-			self.currentUserHealthData = HealthData(
-				id: userId,
-				bloodSugar : healthData["bloodSugar"] as? String ?? "",
-				cholestrol : healthData["cholestrol"] as? String ?? "",
-				heartRate : healthData["heartRate"] as? String ?? "",
-				waistCircumference: healthData["waitCircumference"] as? String ?? "",
-				diastolic : healthData ["diastolic"] as? String ?? "",
-				systolic : healthData ["systolic"] as? String ?? ""
-				)
-		}catch {
-			print("Error fetching health data : \(error.localizedDescription)")
+			
+			// Debugging: Print fetched health data
+			print("Fetched Health Data: \(fetchedHealthData)")
+			
+			// Assign fetched data to a published property
+			self.currentUserHealthData = fetchedHealthData.first // Show the first health record
+			
+		} catch {
+			print("Error fetching health data: \(error.localizedDescription)")
 		}
 	}
+
+
 	func signOut() {
 		do {
 			try Auth.auth().signOut()

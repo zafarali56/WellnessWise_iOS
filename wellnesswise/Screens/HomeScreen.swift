@@ -1,4 +1,5 @@
 import SwiftUI
+import FirebaseAuth
 
 struct MainTabContainer: View {
 	@State private var selectedTab: TabItem = .home
@@ -37,6 +38,13 @@ struct HomeContent: View {
 			VStack(spacing: 2) {
 	
 				Widgets()
+					.onAppear {
+						Task {
+							if let userId = Auth.auth().currentUser?.uid {
+								await authManager.fetchHealthData(userId: userId)
+							}
+						}
+					}
 
 			}
 			.padding()
@@ -51,39 +59,42 @@ struct HomeScreen: View {
 	}
 }
 struct Widgets: View {
+	@StateObject var appState = AppStateManager.shared
 	var body: some View {
 		VStack{
-			HomeWidgets(
-				title: "Heart rate",
-				subtitle: "40 bmp",
-				imageName: "heart_rate",
-				backgroundColor: Color
-					.black,
-				width: 70)
-			HStack()
-			{
+			if let healthData = appState.currentUserHealthData{
 				HomeWidgets(
-					title: "Blood Sugar",
-					subtitle: "120",
-					imageName: "sugar-blood-level",
-					backgroundColor: Color.black,
-					width: 40
-				)
-				HomeWidgets(
-					title: "Cholestrol",
-					subtitle: "150",
-					imageName: "cholesterol",
+					title: "Heart rate",
+					subtitle: "\(healthData.heartRate)",
+					imageName: "heart_rate",
 					backgroundColor: Color
-						.black, width: 40
-				)
+						.black,
+					width: 70)
+				HStack()
+				{
+					HomeWidgets(
+						title: "Blood Sugar",
+						subtitle: "\(healthData.bloodSugar)",
+						imageName: "sugar-blood-level",
+						backgroundColor: Color.black,
+						width: 40
+					)
+					HomeWidgets(
+						title: "Cholestrol",
+						subtitle: "\(healthData.cholestrol)",
+						imageName: "cholesterol",
+						backgroundColor: Color
+							.black, width: 40
+					)
+				}
+				HomeWidgets(
+					title: "Blood pressure",
+					subtitle: "\(healthData.bloodPressure)",
+					imageName: "blood-pressure1",
+					backgroundColor: Color
+						.black,
+					width: 70)
 			}
-			HomeWidgets(
-				title: "Blood pressure",
-				subtitle: "120/80",
-				imageName: "blood-pressure1",
-				backgroundColor: Color
-					.black,
-				width: 70)
 		}
 	}
 }
