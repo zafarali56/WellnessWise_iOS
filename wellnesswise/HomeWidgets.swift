@@ -11,44 +11,50 @@ struct HomeWidgets: View {
 	var imageName: String
 	var backgroundColor: Color
 	var width: CGFloat
+
 	var body: some View {
-		HStack {
+		HStack { 
 			VStack {
-				Image( imageName)
+				Image(imageName)
 					.resizable()
 					.scaledToFit()
 					.frame(width: width, height: 50)
 					.shadow(radius: 10)
+				
 				Text(title)
 					.font(.subheadline)
 					.foregroundColor(.primary)
-				Spacer()
-				Text(subtitle)
-					.font(.title2)
-					.foregroundColor(.primary)
-					.fontDesign(.rounded)
-					.fontWeight(.bold)
-					.shadow(radius: 2)
 			}
-			.padding()
-			.frame(width: .infinity, height: 100)
-			.background(
-				ZStack {
-					LinearGradient(
-						gradient: Gradient(colors: [backgroundColor.opacity(0.7), backgroundColor]),
-						startPoint: .topLeading,
-						endPoint: .bottomTrailing
-					)
-					.clipShape(RoundedRectangle(cornerRadius: 20))
-					RoundedRectangle(cornerRadius: 20)
-						.fill(Material.ultraThin)
-				}
-			)
-			.cornerRadius(20)
-			.shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 6)
+			
+			Spacer()
+			
+			Text(subtitle)
+				.font(.title2)
+				.foregroundColor(.primary)
+				.fontDesign(.rounded)
+				.fontWeight(.bold)
+				.shadow(radius: 2)
 		}
+		.padding()
+		.frame(maxWidth: .infinity, maxHeight: 100)
+		.background(
+			ZStack {
+				LinearGradient(
+					gradient: Gradient(colors: [backgroundColor.opacity(0.7), backgroundColor]),
+					startPoint: .topLeading,
+					endPoint: .bottomTrailing
+				)
+				.clipShape(RoundedRectangle(cornerRadius: 20))
+				
+				RoundedRectangle(cornerRadius: 20)
+					.fill(Material.ultraThin)
+			}
+		)
+		.cornerRadius(20)
+		.shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 6)
 	}
 }
+
 struct HomeWidgetsPreview: View {
 	var body: some View {
 		VStack(spacing: 20) {

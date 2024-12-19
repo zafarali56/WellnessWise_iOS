@@ -45,12 +45,15 @@ struct HomeContent: View {
 							}
 						}
 					}
-
+		
 			}
+
 		}
+		.padding()
 		.navigationTitle("Home")
 		.navigationBarBackButtonHidden()
 	}
+	
 }
 struct HomeScreen: View {
 	var body: some View {
@@ -67,7 +70,7 @@ struct Widgets: View {
 					subtitle: "\(healthData.heartRate) -/Bpm",
 					imageName: "heart_rate",
 					backgroundColor: Color.red,
-					width: 40)
+					width: 35)
 				HStack()
 				{
 					HomeWidgets(
@@ -75,14 +78,14 @@ struct Widgets: View {
 						subtitle: "\(healthData.bloodSugar)",
 						imageName: "sugar-blood-level",
 						backgroundColor: Color.blue,
-						width: 40
+						width: 35
 					)
 					HomeWidgets(
 						title: "Cholestrol",
 						subtitle: "\(healthData.cholestrol)",
 						imageName: "cholesterol",
 						backgroundColor: Color.green,
-						width: 40
+						width: 35
 					)
 				}
 				HomeWidgets(
@@ -93,7 +96,6 @@ struct Widgets: View {
 					width: 40)
 			}
 		}
-		.padding()
 	}
 }
 
