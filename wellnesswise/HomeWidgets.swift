@@ -40,7 +40,7 @@ struct HomeWidgets: View {
 		.background(
 			ZStack {
 				LinearGradient(
-					gradient: Gradient(colors: [backgroundColor.opacity(0.7), backgroundColor]),
+					gradient: Gradient(colors: [backgroundColor.opacity(0.3), backgroundColor]),
 					startPoint: .topLeading,
 					endPoint: .bottomTrailing
 				)

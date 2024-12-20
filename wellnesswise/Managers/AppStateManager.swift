@@ -20,7 +20,6 @@ struct HealthData: Codable, Identifiable {
 	let bloodPressure: String
 	let heartRate: String
 	let waistCircumference: String
-	
 }
 @MainActor
 class AppStateManager: ObservableObject {
@@ -59,7 +58,6 @@ class AppStateManager: ObservableObject {
 				isLoading = false
 			}
 		}
-		
 		setupAuthListener()
 	}
 	
@@ -159,16 +157,12 @@ class AppStateManager: ObservableObject {
 					print("No health data found in document.")
 				}
 			}
-			
 			print("Fetched Health Data: \(fetchedHealthData)")
-			
-			self.currentUserHealthData = fetchedHealthData.first // Show the first health record
-			
+			self.currentUserHealthData = fetchedHealthData.first
 		} catch {
 			print("Error fetching health data: \(error.localizedDescription)")
 		}
 	}
-	
 	
 	func signOut() {
 		do {
