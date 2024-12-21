@@ -110,7 +110,6 @@ private struct ActionSection: View {
 			}
 		}
 	}
-
 	private struct LogoSection: View {
 		var body: some View {
 			Image(.whitetheme)

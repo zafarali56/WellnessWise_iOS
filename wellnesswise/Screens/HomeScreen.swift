@@ -29,22 +29,21 @@ struct MainTabContainer: View {
 		}
 	}
 }
-struct HomeContent: View {
+private struct HomeContent: View {
 	@EnvironmentObject private var authManager: AppStateManager
 	@EnvironmentObject private var navigationManager: NavigationManager
 	
 	var body: some View {
 		ScrollView {
 			VStack(spacing: 2) {
-	
 				Widgets()
 					.onAppear {
 						Task {
 							if let userId = Auth.auth().currentUser?.uid {
 								await authManager.fetchHealthData(userId: userId)
-							}
 						}
 					}
+				}
 			}
 		}
 		.padding(.horizontal)
@@ -53,19 +52,19 @@ struct HomeContent: View {
 	}
 	
 }
-struct HomeScreen: View {
+ struct HomeScreen: View {
 	var body: some View {
 		MainTabContainer()
 	}
 }
-struct Widgets: View {
+private struct Widgets: View {
 	@StateObject var appState = AppStateManager.shared
 	var body: some View {
 		VStack{
 			if let healthData = appState.currentUserHealthData{
 				HomeWidgets(
 					title: "Heart rate",
-					subtitle: "\(healthData.heartRate) -/Bpm",
+					subtitle: "\(healthData.heartRate) -/bpm",
 					imageName: "heart_rate",
 					backgroundColor: Color.red,
 					width: 35)

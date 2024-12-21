@@ -21,6 +21,11 @@ struct HealthData: Codable, Identifiable {
 	let heartRate: String
 	let waistCircumference: String
 }
+
+struct HealthAssessment : Codable, Identifiable {
+	let id : String
+}
+
 @MainActor
 class AppStateManager: ObservableObject {
 	@Published var isAuthenticated = false
@@ -77,7 +82,6 @@ class AppStateManager: ObservableObject {
 					self.currentUserData = nil
 					UserDefaults.standard.removeObject(forKey: self.userIdKey)
 				}
-				
 				self.isLoading = false
 			}
 		}
@@ -92,7 +96,6 @@ class AppStateManager: ObservableObject {
 			UserDefaults.standard.set(false, forKey: authStateKey)
 			UserDefaults.standard.removeObject(forKey: userIdKey)
 		}
-		
 		isLoading = false
 	}
 	
@@ -107,7 +110,6 @@ class AppStateManager: ObservableObject {
 				print("No user data found")
 				return
 			}
-			
 			self.currentUserData = User(
 				id: userId,
 				fullName: data["fullName"] as? String ?? "",
@@ -128,9 +130,7 @@ class AppStateManager: ObservableObject {
 				.document(userId)
 				.collection("healthData")
 				.getDocuments()
-			
 			var fetchedHealthData = [HealthData]()
-			
 			for document in snapshot.documents {
 				let docData = document.data()
 				print("Document Data: \(docData)")
@@ -141,9 +141,7 @@ class AppStateManager: ObservableObject {
 					let heartRate = nestedHealthData["heartRate"] as? String ?? "\(nestedHealthData["heartRate"] as? Int ?? 0)"
 					let systolic = nestedHealthData["systolic"] as? String ?? "\(nestedHealthData["systolic"] as? Int ?? 0)"
 					let waistCircumference = nestedHealthData["waistCircumference"] as? String ?? "\(nestedHealthData["waistCircumference"] as? Int ?? 0)"
-					
 					let bloodPressure : String = ("\(systolic) / \(diastolic)")
-					
 					let healthRecord = HealthData(
 						id: document.documentID,
 						bloodSugar: bloodSugar,
