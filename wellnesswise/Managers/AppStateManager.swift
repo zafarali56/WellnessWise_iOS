@@ -24,14 +24,29 @@ struct HealthData: Codable, Identifiable {
 
 struct HealthAssessment : Codable, Identifiable {
 	let id : String
+	let chronicDiseases : String
+	let familyDiabetes : String
+	let familyHistoryCancer : String
+	let heartDisease : String
+	let previousDisease : String
+	let previousSurgeries : String
+	var alcoholLevel : String
+	var dietQuality : String
+	var physicalActivityLevel : String
+	var sleepHours : Int8
+	var smoke: String
+	var airQualityIndex : Int16
+	var pollutantExposure : String
+	var healthCareAcces : String
+	var stresslevel : String
 }
-
 @MainActor
 class AppStateManager: ObservableObject {
 	@Published var isAuthenticated = false
 	@Published var isLoading = true
 	@Published var currentUserData: User?
 	@Published var currentUserHealthData: HealthData?
+	@Published var currentHealthAssesmentData : HealthAssessment?
 	
 	static let shared = AppStateManager()
 	
@@ -41,7 +56,6 @@ class AppStateManager: ObservableObject {
 	private init() {
 		setupInitialState()
 	}
-	
 	private func setupInitialState() {
 		isAuthenticated = UserDefaults.standard.bool(forKey: authStateKey)
 		
@@ -65,16 +79,13 @@ class AppStateManager: ObservableObject {
 		}
 		setupAuthListener()
 	}
-	
 	private func setupAuthListener() {
 		Auth.auth().addStateDidChangeListener { [weak self] _, user in
 			Task { @MainActor in
 				guard let self = self else { return }
-				
 				let isAuth = user != nil
 				self.isAuthenticated = isAuth
 				UserDefaults.standard.set(isAuth, forKey: self.authStateKey)
-				
 				if let user = user {
 					UserDefaults.standard.set(user.uid, forKey: self.userIdKey)
 					await self.fetchUserData(userId: user.uid)
@@ -99,7 +110,7 @@ class AppStateManager: ObservableObject {
 		isLoading = false
 	}
 	
-	private func fetchUserData(userId: String) async {
+	 func fetchUserData(userId: String) async {
 		do {
 			let document = try await Firestore.firestore()
 				.collection("users")
@@ -161,12 +172,77 @@ class AppStateManager: ObservableObject {
 			print("Error fetching health data: \(error.localizedDescription)")
 		}
 	}
-	
+	func fetchHealthAssesment(userId: String) async {
+		do {
+			let snapShot = try await Firestore.firestore()
+				.collection("users")
+				.document(userId)
+				.collection("assessments")
+				.getDocuments()
+			print("Assessment Snapshot fetched: \(snapShot.documents.count) documents")
+			print("Assessment Snapshot Documents Count: \(snapShot.documents.count)")
+			guard !snapShot.documents.isEmpty else {
+				print("No assessment data found for userId: \(userId)")
+				return
+			}
+			var fetchedAssessmentData = [HealthAssessment]()
+			for document in snapShot.documents {
+				let docData = document.data()
+				let medicalHistory = docData["medicalHistory"] as? [String: Any] ?? [:]
+				let chronicDiseases = medicalHistory["chronicDiseases"] as? String ?? "N/A"
+				let familyDiabetes = medicalHistory["familyDiabetes"] as? String ?? "N/A"
+				let familyHistoryCancer = medicalHistory["familyHistoryCancer"] as? String ?? "N/A"
+				let heartDisease = medicalHistory["heartDisease"] as? String ?? "N/A"
+				let previousDisease = medicalHistory["previousDisease"] as? String ?? "N/A"
+				let previousSurgeries = medicalHistory["previousSurgeries"] as? String ?? "N/A"
+				
+				let lifestyleHabits = docData["lifestyleHabits"] as? [String: Any] ?? [:]
+				let alcoholLevel = lifestyleHabits["alcoholLevel"] as? String ?? "N/A"
+				let dietQuality = lifestyleHabits["dietQuality"] as? String ?? "N/A"
+				let physicalActivityLevel = lifestyleHabits["physicalActivityLevel"] as? String ?? "N/A"
+				let sleepHours = lifestyleHabits["sleepHours"] as? Int ?? 0
+				let smoke = lifestyleHabits["smoke"] as? String ?? "N/A"
+				
+				let environmentalFactors = docData["environmentalFactors"] as? [String: Any] ?? [:]
+				let airQualityIndex = environmentalFactors["airQualityIndex"] as? Int ?? 0
+				let pollutantExposure = environmentalFactors["pollutantExposure"] as? String ?? "N/A"
+				
+				let additionalInformation = docData["additionalInformation"] as? [String: Any] ?? [:]
+				let healthCareAccess = additionalInformation["healthcareAccess"] as? String ?? "N/A"
+				let stressLevel = additionalInformation["stressLevel"] as? String ?? "N/A"
+				let assessmentItem = HealthAssessment(
+					id: document.documentID,
+					chronicDiseases: chronicDiseases,
+					familyDiabetes: familyDiabetes,
+					familyHistoryCancer: familyHistoryCancer,
+					heartDisease: heartDisease,
+					previousDisease: previousDisease,
+					previousSurgeries: previousSurgeries,
+					alcoholLevel: alcoholLevel,
+					dietQuality: dietQuality,
+					physicalActivityLevel: physicalActivityLevel,
+					sleepHours: Int8(sleepHours),
+					smoke: smoke,
+					airQualityIndex: Int16(airQualityIndex),
+					pollutantExposure: pollutantExposure,
+					healthCareAcces: healthCareAccess,
+					stresslevel: stressLevel
+				)
+				fetchedAssessmentData.append(assessmentItem)
+			}
+			print("Fetched Assessment Data: \(fetchedAssessmentData)")
+			self.currentHealthAssesmentData = fetchedAssessmentData.first
+		} catch let error as NSError {
+			print("Error fetching assessment data: \(error.localizedDescription), code: \(error.code), domain: \(error.domain)")
+		}
+		
+	}
 	func signOut() {
 		do {
 			try Auth.auth().signOut()
 			isAuthenticated = false
 			currentUserData = nil
+			currentHealthAssesmentData = nil
 			currentUserHealthData = nil
 			UserDefaults.standard.set(false, forKey: authStateKey)
 			UserDefaults.standard.removeObject(forKey: userIdKey)
