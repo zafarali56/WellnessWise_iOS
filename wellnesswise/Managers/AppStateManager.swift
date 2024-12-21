@@ -193,7 +193,7 @@ class AppStateManager: ObservableObject {
 				let familyDiabetes = medicalHistory["familyDiabetes"] as? String ?? "N/A"
 				let familyHistoryCancer = medicalHistory["familyHistoryCancer"] as? String ?? "N/A"
 				let heartDisease = medicalHistory["heartDisease"] as? String ?? "N/A"
-				let previousDisease = medicalHistory["previousDisease"] as? String ?? "N/A"
+				let previousDisease = medicalHistory["previousDiseases"] as? String ?? "N/A"
 				let previousSurgeries = medicalHistory["previousSurgeries"] as? String ?? "N/A"
 				
 				let lifestyleHabits = docData["lifestyleHabits"] as? [String: Any] ?? [:]

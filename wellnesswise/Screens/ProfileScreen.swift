@@ -45,16 +45,17 @@ struct ProfileScreen: View {
 					}
 					
 				}
-				.navigationTitle("Profile")
-				.padding(.horizontal)
+
 		}
+		.navigationTitle("Profile")
+		.padding(.horizontal)
 	}
 	
 	private struct Personal_Data: View {
 		@StateObject var appState = AppStateManager.shared
 		
 		var body: some View {
-			VStack(spacing: 10) {
+			VStack(spacing: 15) {
 				if let userData = appState.currentUserData {
 					VStack(spacing: 15) {
 						ProfileData(fieldName: "Name", fieldValue: userData.fullName)
@@ -65,11 +66,11 @@ struct ProfileScreen: View {
 					}
 					.padding()
 					.background(
-						RoundedRectangle(cornerRadius: 20)
-							.fill(Color.white.opacity(0.8))
-							.shadow(radius: 5)
-					)
-					.padding()
+					 RoundedRectangle(cornerRadius: 20)
+						 .fill(Color.white.opacity(0.8))
+						 .shadow(radius: 5)
+				 )
+				 .padding()
 				} else {
 					Text("No user data available")
 						.foregroundStyle(.gray)
@@ -82,7 +83,7 @@ struct ProfileScreen: View {
 		@StateObject var appState = AppStateManager.shared
 		var body: some View {
 			if let healthData = appState.currentUserHealthData {
-				VStack (spacing: 10){
+				VStack (spacing: 15){
 					ProfileData	(
 						fieldName: "Blood Pressure",
 						fieldValue: "\(healthData.bloodPressure)"
@@ -103,12 +104,13 @@ struct ProfileScreen: View {
 						fieldName: "Heart Rate",
 						fieldValue: "\(healthData.heartRate)"
 					)
-				}.padding()
-					.background(RoundedRectangle(cornerRadius: 20)
-						.fill(Color.white.opacity(0.8))
-						.shadow(radius: 5)
-					)
-					.padding()
+				}				.padding()
+					.background(
+					 RoundedRectangle(cornerRadius: 20)
+						 .fill(Color.white.opacity(0.8))
+						 .shadow(radius: 5)
+				 )
+				 .padding()
 			}
 			else{
 				Text("No Health Data Found")
