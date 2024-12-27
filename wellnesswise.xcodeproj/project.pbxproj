@@ -18,6 +18,7 @@
 		9E511B472CC37FE10072A470 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 9E511B462CC37FE10072A470 /* FirebaseDatabase */; };
 		9E511B492CC37FE10072A470 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9E511B482CC37FE10072A470 /* FirebaseFirestore */; };
 		9E511B4B2CC37FE10072A470 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 9E511B4A2CC37FE10072A470 /* FirebaseFunctions */; };
+		9E640CE92D1F29060080F945 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E640CE82D1F29060080F945 /* HealthKitManager.swift */; };
 		9E7BFF7B2CC149A200253D36 /* SignUpScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7BFF7A2CC149A200253D36 /* SignUpScreen.swift */; };
 		9E7DCE732CD159560032AF2F /* HealthAssesmentScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7DCE722CD159560032AF2F /* HealthAssesmentScreen.swift */; };
 		9E7DCE752CD159740032AF2F /* HealthDataScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7DCE742CD159740032AF2F /* HealthDataScreen.swift */; };
@@ -65,6 +66,8 @@
 		9E1BA6412CC5443F00DFDD3B /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		9E1BA6432CC5444C00DFDD3B /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		9E2820AE2CCA7DF500CABA49 /* StyledTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StyledTextField.swift; path = wellnesswise/StyledTextField.swift; sourceTree = SOURCE_ROOT; };
+		9E640CE62D1F265D0080F945 /* wellnesswise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wellnesswise.entitlements; sourceTree = "<group>"; };
+		9E640CE82D1F29060080F945 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		9E7BFF7A2CC149A200253D36 /* SignUpScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpScreen.swift; sourceTree = "<group>"; };
 		9E7DCE722CD159560032AF2F /* HealthAssesmentScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthAssesmentScreen.swift; sourceTree = "<group>"; };
 		9E7DCE742CD159740032AF2F /* HealthDataScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthDataScreen.swift; sourceTree = "<group>"; };
@@ -158,6 +161,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		9E640CE72D1F28D20080F945 /* AppManagers */ = {
+			isa = PBXGroup;
+			children = (
+				9E640CE82D1F29060080F945 /* HealthKitManager.swift */,
+			);
+			path = AppManagers;
+			sourceTree = "<group>";
+		};
 		9E7BFF7C2CC17A9D00253D36 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -192,6 +203,8 @@
 		9EEF184E2CB6B6E800AA8D5B /* wellnesswise */ = {
 			isa = PBXGroup;
 			children = (
+				9E640CE72D1F28D20080F945 /* AppManagers */,
+				9E640CE62D1F265D0080F945 /* wellnesswise.entitlements */,
 				9E1BA6402CC5441B00DFDD3B /* ViewModel */,
 				9E7BFF7C2CC17A9D00253D36 /* Components */,
 				9E14F5B62CB978C40094EF6C /* Managers */,
@@ -371,6 +384,7 @@
 				9EA772652CF6EFAC00BBEDE3 /* SettingsScreeen.swift in Sources */,
 				9EDFA1802CF398B000960194 /* CustomBottomBar.swift in Sources */,
 				9EEF18502CB6B6E800AA8D5B /* wellnesswiseApp.swift in Sources */,
+				9E640CE92D1F29060080F945 /* HealthKitManager.swift in Sources */,
 				9EA583B92CDF28EB00222E46 /* CustomPicker.swift in Sources */,
 				9EEFE8652CDA9FA300A47133 /* ProfileScreen.swift in Sources */,
 				9EE597192CC6284C00B3DF14 /* HomeScreen.swift in Sources */,
@@ -544,6 +558,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = wellnesswise/wellnesswise.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"wellnesswise/Preview Content\"";
@@ -573,6 +588,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = wellnesswise/wellnesswise.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"wellnesswise/Preview Content\"";
