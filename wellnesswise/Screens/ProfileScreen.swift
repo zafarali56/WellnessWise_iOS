@@ -20,32 +20,19 @@ struct ProfileScreen: View {
 					Task {
 						if let userId = Auth.auth().currentUser?.uid {
 							await authManager
-								.fetchUserData(userId: userId)
-						}
-					}
-					
-				}
+								.fetchUserData(userId: userId)}}}
 			Health_Data()
 				.onAppear {
 					Task {
 						if let userId = Auth.auth().currentUser?.uid {
 							await authManager
-								.fetchHealthData(userId: userId)
-						}
-					}
-					
-				}
+								.fetchHealthData(userId: userId)}}}
 			Assesment_Data()
 				.onAppear {
 					Task {
 						if let userId = Auth.auth().currentUser?.uid {
 							await authManager
-								.fetchHealthAssesment(userId: userId)
-						}
-					}
-					
-				}
-
+							.fetchHealthAssesment(userId: userId)}}}
 		}
 		.navigationTitle("Profile")
 		.padding(.horizontal)
@@ -58,6 +45,9 @@ struct ProfileScreen: View {
 			VStack(spacing: 15) {
 				if let userData = appState.currentUserData {
 					VStack(spacing: 15) {
+						Text("Personal information")
+							.font(.headline)
+							.fontDesign(.rounded)
 						ProfileData(fieldName: "Name", fieldValue: userData.fullName)
 						ProfileData(fieldName: "Age", fieldValue: "\(userData.age) -/years")
 						ProfileData(fieldName: "Height", fieldValue: "\(userData.height) -/cm")
@@ -70,7 +60,7 @@ struct ProfileScreen: View {
 						 .fill(Color.white.opacity(0.8))
 						 .shadow(radius: 5)
 				 )
-				 .padding()
+					.padding(.horizontal)
 				} else {
 					Text("No user data available")
 						.foregroundStyle(.gray)
@@ -84,6 +74,9 @@ struct ProfileScreen: View {
 		var body: some View {
 			if let healthData = appState.currentUserHealthData {
 				VStack (spacing: 15){
+					Text("Current health info")
+						.font(.headline)
+						.fontDesign(.rounded)
 					ProfileData	(
 						fieldName: "Blood Pressure",
 						fieldValue: "\(healthData.bloodPressure)"
@@ -110,7 +103,7 @@ struct ProfileScreen: View {
 						 .fill(Color.white.opacity(0.8))
 						 .shadow(radius: 5)
 				 )
-				 .padding()
+					.padding(.horizontal)
 			}
 			else{
 				Text("No Health Data Found")
@@ -127,81 +120,65 @@ struct ProfileScreen: View {
 		var body: some View {
 			if let assessmentData = appState.currentHealthAssesmentData {
 				VStack(spacing: 15) {
+					Text("Assessment health info")
+						.font(.headline)
+						.fontDesign(.rounded)
 					ProfileData(
 						fieldName: "Chronic Diseases",
 						fieldValue: assessmentData.chronicDiseases
 					)
-					
 					ProfileData(
 						fieldName: "Family History of Diabetes",
 						fieldValue: assessmentData.familyDiabetes
 					)
-					
 					ProfileData(
 						fieldName: "Family History of Cancer",
 						fieldValue: assessmentData.familyHistoryCancer
 					)
-					
 					ProfileData(
 						fieldName: "Heart Disease",
 						fieldValue: assessmentData.heartDisease
 					)
-					
-					ProfileData(
-						fieldName: "Previous Diseases",
-						fieldValue: assessmentData.previousDisease
-					)
-					
 					ProfileData(
 						fieldName: "Previous Surgeries",
 						fieldValue: assessmentData.previousSurgeries
 					)
-					
 					ProfileData(
 						fieldName: "Alcohol Level",
 						fieldValue: assessmentData.alcoholLevel
 					)
-					
 					ProfileData(
 						fieldName: "Diet Quality",
 						fieldValue: assessmentData.dietQuality
 					)
-					
 					ProfileData(
 						fieldName: "Physical Activity Level",
 						fieldValue: assessmentData.physicalActivityLevel
 					)
-					
 					ProfileData(
 						fieldName: "Sleep Hours",
 						fieldValue: "\(assessmentData.sleepHours) hours"
 					)
-					
 					ProfileData(
 						fieldName: "Smoking",
 						fieldValue: assessmentData.smoke
 					)
-					
 					ProfileData(
 						fieldName: "Air Quality Index",
 						fieldValue: "\(assessmentData.airQualityIndex)"
 					)
-					
 					ProfileData(
 						fieldName: "Pollutant Exposure",
 						fieldValue: assessmentData.pollutantExposure
 					)
-					
 					ProfileData(
 						fieldName: "Healthcare Access",
 						fieldValue: assessmentData.healthCareAcces
 					)
-					
 					ProfileData(
 						fieldName: "Stress Level",
 						fieldValue: assessmentData.stresslevel
 					)
-					
 				}
 				.padding()
 				.background(
@@ -209,7 +186,8 @@ struct ProfileScreen: View {
 						.fill(Color.white.opacity(0.8))
 						.shadow(radius: 5)
 				)
-				.padding()
+				.padding(.horizontal)
+				.padding(.bottom,30)
 			} else {
 				Text("No Health Assessment Data Found")
 					.foregroundStyle(.gray)
@@ -226,7 +204,7 @@ struct ProfileScreen: View {
 		var body: some View {
 			HStack {
 				Text(fieldName)
-					.font(.headline)
+					.font(.body)
 					.foregroundColor(.primary)
 				Spacer()
 				Text(fieldValue)
@@ -234,12 +212,8 @@ struct ProfileScreen: View {
 					.foregroundColor(.secondary)
 					.multilineTextAlignment(.trailing)
 			}
-			.padding(.vertical, 5)
 			.padding(.horizontal)
-			.background(
-				RoundedRectangle(cornerRadius: 10)
-					.fill(Color.accentColor.opacity(0.1))
-			)
+			
 		}
 	}
 	
@@ -252,7 +226,6 @@ struct ProfileScreen: View {
 				familyDiabetes: "Yes",
 				familyHistoryCancer: "No",
 				heartDisease: "No",
-				previousDisease: "Hypertension",
 				previousSurgeries: "Appendectomy",
 				alcoholLevel: "Moderate",
 				dietQuality: "Good",

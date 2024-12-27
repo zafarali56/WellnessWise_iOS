@@ -4,14 +4,14 @@ import FirebaseFirestore
 import SwiftUI
 
 class HealthAssessmentViewModel: ObservableObject {
-	// MARK: - Medical History
+	//Medical History
 	@Published var familyDiabetes: String = "no"
 	@Published var heartDisease: String = "no"
 	@Published var familyHistoryCancer: String = "no"
 	@Published var previousSurgeries: String = "no"
 	@Published var chronicDiseases: String = "no"
 	
-	// MARK: - Lifestyle Habits
+	// Lifestyle Habits
 	@Published var smoke: String = "no"
 	@Published var selectedAlcoholLevel = "None"
 	let alcoholConsumptionLevels = ["None", "Light", "Moderate", "Heavy", "Very Heavy"]
@@ -25,26 +25,26 @@ class HealthAssessmentViewModel: ObservableObject {
 	@Published var sleepHours: Double = 7.0
 	let sleepHoursRange = 4.0...12.0
 	
-	// MARK: - Environmental Factors
+	// Environmental Factors
 	@Published var airQualityIndex: Double = 50.0
 	let airQualityIndexRange = 1.0...500.0
 	
 	@Published var selectedPollutantExposure: String = "Low"
 	let pollutantExposureLevels = ["Low", "Moderate", "High", "Very High"]
 	
-	// MARK: - Additional Information
+	// Additional Information
 	@Published var selectedStressLevel: String = "Moderate"
 	let stressLevels = ["Low", "Mild", "Moderate", "High", "Severe"]
 	
 	@Published var selectedHealthcareAccess: String = "Moderate"
 	let healthcareAccessLevels = ["Poor", "Limited", "Moderate", "Good", "Excellent"]
 	
-	// MARK: - State
+	// State
 	@Published var isLoading = false
 	@Published var errorMessage = ""
 	@Published var isAssessmentCompleted = false
 	
-	// MARK: - Helper Methods
+	//Helper Methods
 	func getAirQualityColor() -> Color {
 		switch airQualityIndex {
 			case 0...50:
@@ -79,7 +79,7 @@ class HealthAssessmentViewModel: ObservableObject {
 		}
 	}
 	
-	// MARK: - Data Submission
+	//Data Submission
 	func submitAssessment(using navigationManager : NavigationManager) {
 		guard let userId = Auth.auth().currentUser?.uid else {
 			errorMessage = "User not authenticated"

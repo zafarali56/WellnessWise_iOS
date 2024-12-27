@@ -28,7 +28,6 @@ struct HealthAssessment : Codable, Identifiable {
 	let familyDiabetes : String
 	let familyHistoryCancer : String
 	let heartDisease : String
-	let previousDisease : String
 	let previousSurgeries : String
 	var alcoholLevel : String
 	var dietQuality : String
@@ -47,12 +46,9 @@ class AppStateManager: ObservableObject {
 	@Published var currentUserData: User?
 	@Published var currentUserHealthData: HealthData?
 	@Published var currentHealthAssesmentData : HealthAssessment?
-	
 	static let shared = AppStateManager()
-	
 	private let authStateKey = "com.wellnesswise.authState"
 	private let userIdKey = "com.wellnesswise.userId"
-	
 	private init() {
 		setupInitialState()
 	}
@@ -63,7 +59,6 @@ class AppStateManager: ObservableObject {
 			isAuthenticated = true
 			UserDefaults.standard.set(true, forKey: authStateKey)
 			UserDefaults.standard.set(currentUser.uid, forKey: userIdKey)
-			
 			Task {
 				await fetchUserData(userId: currentUser.uid)
 				isLoading = false
@@ -97,7 +92,6 @@ class AppStateManager: ObservableObject {
 			}
 		}
 	}
-	
 	private func restoreSession() async {
 		if let userId = UserDefaults.standard.string(forKey: userIdKey),
 		   Auth.auth().currentUser != nil {
@@ -109,7 +103,6 @@ class AppStateManager: ObservableObject {
 		}
 		isLoading = false
 	}
-	
 	 func fetchUserData(userId: String) async {
 		do {
 			let document = try await Firestore.firestore()
@@ -193,7 +186,6 @@ class AppStateManager: ObservableObject {
 				let familyDiabetes = medicalHistory["familyDiabetes"] as? String ?? "N/A"
 				let familyHistoryCancer = medicalHistory["familyHistoryCancer"] as? String ?? "N/A"
 				let heartDisease = medicalHistory["heartDisease"] as? String ?? "N/A"
-				let previousDisease = medicalHistory["previousDiseases"] as? String ?? "N/A"
 				let previousSurgeries = medicalHistory["previousSurgeries"] as? String ?? "N/A"
 				
 				let lifestyleHabits = docData["lifestyleHabits"] as? [String: Any] ?? [:]
@@ -216,7 +208,6 @@ class AppStateManager: ObservableObject {
 					familyDiabetes: familyDiabetes,
 					familyHistoryCancer: familyHistoryCancer,
 					heartDisease: heartDisease,
-					previousDisease: previousDisease,
 					previousSurgeries: previousSurgeries,
 					alcoholLevel: alcoholLevel,
 					dietQuality: dietQuality,

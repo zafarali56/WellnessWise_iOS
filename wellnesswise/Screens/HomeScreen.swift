@@ -65,7 +65,7 @@ private struct Widgets: View {
 				HomeWidgets(
 					title: "Heart rate",
 					subtitle: "\(healthData.heartRate) -/bpm",
-					imageName: "heart_rate",
+					imageName: "hr",
 					backgroundColor: Color.red,
 					width: 35)
 				HStack()
@@ -73,14 +73,14 @@ private struct Widgets: View {
 					HomeWidgets(
 						title: "Blood Sugar",
 						subtitle: "\(healthData.bloodSugar)",
-						imageName: "sugar-blood-level",
+						imageName: "bs",
 						backgroundColor: Color.blue,
 						width: 35
 					)
 					HomeWidgets(
 						title: "Cholestrol",
 						subtitle: "\(healthData.cholestrol)",
-						imageName: "cholesterol",
+						imageName: "ch",
 						backgroundColor: Color.green,
 						width: 35
 					)
@@ -88,7 +88,7 @@ private struct Widgets: View {
 				HomeWidgets(
 					title: "Blood pressure",
 					subtitle: "\(healthData.bloodPressure)",
-					imageName: "blood-pressure1",
+					imageName: "bp",
 					backgroundColor: Color.purple,
 					width: 40)
 			}

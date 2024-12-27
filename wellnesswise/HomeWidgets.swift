@@ -61,7 +61,7 @@ struct HomeWidgetsPreview: View {
 			HomeWidgets(
 				title: "Heart Rate",
 				subtitle: "72 bpm",
-				imageName: "heart_rate",
+				imageName: "hr",
 				backgroundColor: Color.red,
 				width: 50
 			)
@@ -69,7 +69,7 @@ struct HomeWidgetsPreview: View {
 			HomeWidgets(
 				title: "Blood Sugar",
 				subtitle: "90 mg/dL",
-				imageName: "sugar-blood-level",
+				imageName: "bs",
 				backgroundColor: Color.blue,
 				width: 50
 			)
@@ -77,7 +77,7 @@ struct HomeWidgetsPreview: View {
 			HomeWidgets(
 				title: "Cholesterol",
 				subtitle: "180 mg/dL",
-				imageName: "cholesterol",
+				imageName: "ch",
 				backgroundColor: Color.green,
 				width: 50
 			)
@@ -85,7 +85,7 @@ struct HomeWidgetsPreview: View {
 			HomeWidgets(
 				title: "Blood Pressure",
 				subtitle: "120/80",
-				imageName: "blood-pressure1",
+				imageName: "bp",
 				backgroundColor: Color.purple,
 				width: 50
 			)
