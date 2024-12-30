@@ -27,6 +27,7 @@
 		9EA583B92CDF28EB00222E46 /* CustomPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA583B82CDF28EB00222E46 /* CustomPicker.swift */; };
 		9EA772652CF6EFAC00BBEDE3 /* SettingsScreeen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA772642CF6EFAC00BBEDE3 /* SettingsScreeen.swift */; };
 		9EA772672CF6F18600BBEDE3 /* HealthScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA772662CF6F18600BBEDE3 /* HealthScreen.swift */; };
+		9EACD1C52D231A6400C947C6 /* HealthKitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EACD1C42D231A6400C947C6 /* HealthKitViewModel.swift */; };
 		9EBE0B4A2CC8CA1E00350D6C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9EBE0B492CC8CA1E00350D6C /* GoogleService-Info.plist */; };
 		9EDBF73A2CE914EE0001A54C /* EmailVerificationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDBF7392CE914EE0001A54C /* EmailVerificationViewModel.swift */; };
 		9EDBF7412CE922D70001A54C /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDBF7402CE922D70001A54C /* NavigationManager.swift */; };
@@ -76,6 +77,7 @@
 		9EA583B82CDF28EB00222E46 /* CustomPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CustomPicker.swift; path = wellnesswise/CustomPicker.swift; sourceTree = SOURCE_ROOT; };
 		9EA772642CF6EFAC00BBEDE3 /* SettingsScreeen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreeen.swift; sourceTree = "<group>"; };
 		9EA772662CF6F18600BBEDE3 /* HealthScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthScreen.swift; sourceTree = "<group>"; };
+		9EACD1C42D231A6400C947C6 /* HealthKitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitViewModel.swift; sourceTree = "<group>"; };
 		9EBE0B492CC8CA1E00350D6C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9EDBF7392CE914EE0001A54C /* EmailVerificationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailVerificationViewModel.swift; sourceTree = "<group>"; };
 		9EDBF7402CE922D70001A54C /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 				9E7DCE762CD1598E0032AF2F /* HealthAssesmentViewModel.swift */,
 				9E7DCE782CD1599C0032AF2F /* HealthDataViewModel.swift */,
 				9EDBF7392CE914EE0001A54C /* EmailVerificationViewModel.swift */,
+				9EACD1C42D231A6400C947C6 /* HealthKitViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -396,6 +399,7 @@
 				9E2820AF2CCA7DF500CABA49 /* StyledTextField.swift in Sources */,
 				9E7DCE732CD159560032AF2F /* HealthAssesmentScreen.swift in Sources */,
 				9E7BFF7B2CC149A200253D36 /* SignUpScreen.swift in Sources */,
+				9EACD1C52D231A6400C947C6 /* HealthKitViewModel.swift in Sources */,
 				9E0804C62D11E7E1008AA15A /* HomeWidgets.swift in Sources */,
 				9EA772672CF6F18600BBEDE3 /* HealthScreen.swift in Sources */,
 			);

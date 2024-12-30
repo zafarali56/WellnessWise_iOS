@@ -17,12 +17,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 		FirebaseApp.configure()
 		return true
 	}
+	
 }
 @main
 struct WellnessWiseApp: App {
 	@UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 	@StateObject private var appState = AppStateManager.shared
 	@StateObject private var navigationManager = NavigationManager.shared
+	
 	
 	var body: some Scene {
 		WindowGroup {

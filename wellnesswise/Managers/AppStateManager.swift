@@ -52,6 +52,7 @@ class AppStateManager: ObservableObject {
 	private init() {
 		setupInitialState()
 	}
+	
 	private func setupInitialState() {
 		isAuthenticated = UserDefaults.standard.bool(forKey: authStateKey)
 		

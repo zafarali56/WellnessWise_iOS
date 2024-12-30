@@ -33,18 +33,37 @@ class HealthKitManager {
 			diastolicType,
 			bloodGlucoseType
 		]
-		
 		healthStore.requestAuthorization(toShare: nil, read: readTypes) {
 			success,
 			error in completion(success,error)
 		}
 	}
 }
-
-
 extension HealthKitManager {
 	func retriveLatestHearRate (completion: @escaping (Double?, Error?) -> Void ){guard let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)else{completion(nil, nil)
-		return
+		return}
+		let sortDescription = NSSortDescriptor(
+			key: HKSampleSortIdentifierStartDate,
+			ascending: false
+		)
+		let query = HKSampleQuery (
+			sampleType: heartRateType,
+			predicate: nil,
+			limit: 1,
+			sortDescriptors: [sortDescription]
+		){
+			(_, samples, error) in
+			if let sample = samples?.first as? HKQuantitySample {
+				// Heart Rate is typically stored in count/min (beats per minute)
+				let bpm = sample.quantity.doubleValue(for: HKUnit.count().unitDivided(by: .minute()))
+				completion(bpm, nil)
+				
+				print(bpm)
+			} else {
+				completion(nil, error)
+			}
 		}
+		healthStore.execute(query)
 	}
 }
+
