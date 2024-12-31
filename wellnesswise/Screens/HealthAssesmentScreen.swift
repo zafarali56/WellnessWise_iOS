@@ -3,7 +3,6 @@ import SwiftUI
 struct HealthAssessmentScreen: View {
 	@EnvironmentObject private var navigationManager: NavigationManager
 	@StateObject private var viewModel: HealthAssessmentViewModel
-	
 	init() {
 		_viewModel = StateObject(wrappedValue: HealthAssessmentViewModel())
 	}
@@ -72,7 +71,6 @@ private struct BottomBarContent: View {
 }
 private struct MedicalHistorySection: View {
 	@ObservedObject var viewModel: HealthAssessmentViewModel
-	
 	var body: some View {
 		Section("Medical History") {
 			createTogglePicker(title: "Family history of Diabetes",

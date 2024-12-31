@@ -12,7 +12,6 @@ struct SignUpScreen: View {
 			)
 		)
 	}
-	
 	var body: some View {
 		ScrollView {
 			VStack(spacing: 20) {
@@ -166,7 +165,6 @@ private struct GenderPicker: View {
 		}
 	}
 }
-
 private struct PasswordStrengthIndicator: View {
 	let password: String
 	

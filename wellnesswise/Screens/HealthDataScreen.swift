@@ -30,8 +30,74 @@ struct HealthDataScreen: View {
 
 private struct FormContent : View {
 	@StateObject var viewModel : HealthDataViewModel
+	@State private var isHealthInputManual: Bool = true
+	
 	var body: some View {
 		VStack(spacing: 5){
+			
+			Button(action: {
+				isHealthInputManual.toggle()
+			}){
+				if isHealthInputManual{
+					Text("Sync from Apple Health")
+						.font(.headline)
+						.fontWeight(.semibold)
+						.foregroundStyle(.primary)
+						.frame(maxWidth: .infinity)
+						.frame(height: 30)
+				}
+				else {
+					Text("Switch to Manually ")
+						.font(.headline)
+						.fontWeight(.semibold)
+						.foregroundStyle(.background)
+						.frame(maxWidth: .infinity)
+						.frame(height: 30)
+				}
+			}.buttonStyle(.borderedProminent)
+				.clipShape(.capsule)
+				.tint(.black)
+				.disabled(viewModel.isLoading)
+			
+			
+			if isHealthInputManual {
+				EnterManual(viewModel: viewModel)
+			} else {
+				healthKitData()
+				
+			}
+			StyledTextField(
+				title: "Cholestrol",
+				placeholder: "eg. 100-300",
+				text: $viewModel
+					.Cholestrol,
+				isNumber: true,
+				isValid: viewModel.isCholestrolValid
+			)
+			StyledTextField(
+				title: "Waist circumference",
+				placeholder: "eg. 15-130",
+				text: $viewModel
+					.WaistCircumference
+				, isNumber: true,
+				isValid: viewModel.isWaistCircumferenceValid
+			)
+			StyledTextField(
+				title: "Triglycerides",
+				placeholder: "eg. 50-200",
+				text: $viewModel
+					.Triglycerides,
+				isNumber: true
+				, isValid: viewModel.isTriglycerides
+			)
+		}
+	}
+}
+
+private struct EnterManual : View {
+	@StateObject var viewModel : HealthDataViewModel
+	var body: some View {
+		VStack{
 			HStack(){
 				StyledTextField(
 					title: "Systolic",
@@ -49,7 +115,6 @@ private struct FormContent : View {
 				)
 				
 			}
-			
 			StyledTextField(
 				title: "Heart rate",
 				placeholder: "eg. 50-150",
@@ -60,14 +125,6 @@ private struct FormContent : View {
 			)
 			
 			StyledTextField(
-				title: "Cholestrol",
-				placeholder: "eg. 100-300",
-				text: $viewModel
-					.Cholestrol,
-				isNumber: true,
-				isValid: viewModel.isCholestrolValid
-			)
-			StyledTextField(
 				title: "Blood sugar",
 				placeholder: "eg. 80-180",
 				text: $viewModel
@@ -75,26 +132,6 @@ private struct FormContent : View {
 				, isNumber: true,
 				isValid: viewModel.isBloodSugarValid
 			)
-			
-			StyledTextField(
-				title: "Waist circumference",
-				placeholder: "eg. 15-130",
-				text: $viewModel
-					.WaistCircumference
-				, isNumber: true,
-				isValid: viewModel.isWaistCircumferenceValid
-			)
-			
-			StyledTextField(
-				title: "Triglycerides",
-				placeholder: "eg. 50-200",
-				text: $viewModel
-					.Triglycerides,
-				isNumber: true
-				, isValid: viewModel.isTriglycerides
-			)
-			
-			
 		}
 	}
 }
@@ -128,4 +165,21 @@ private struct BottomBarContent: View {
 }
 #Preview {
 	HealthDataScreen(viewModel: HealthDataViewModel())
+}
+
+
+private struct healthKitData: View {
+	var body: some View {
+		VStack {
+			Text("Sync from apple health")
+		}
+		.padding()
+		.background(
+			RoundedRectangle(cornerRadius: 20)
+				.fill(Color.white.opacity(0.8))
+				.shadow(radius: 5)
+		)
+		.padding(.horizontal)
+		.padding()
+	}
 }
