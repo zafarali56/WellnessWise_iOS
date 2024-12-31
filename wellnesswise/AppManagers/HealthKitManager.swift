@@ -18,7 +18,7 @@ class HealthKitManager {
 				forIdentifier: .bloodPressureSystolic
 			  ),
 			  let diastolicType = HKObjectType.quantityType(
-				forIdentifier: .bloodPressureSystolic
+				forIdentifier: .bloodPressureDiastolic
 			  ),
 			  let bloodGlucoseType = HKObjectType.quantityType(
 				forIdentifier: .bloodGlucose
@@ -40,30 +40,31 @@ class HealthKitManager {
 	}
 }
 extension HealthKitManager {
-	func retriveLatestHearRate (completion: @escaping (Double?, Error?) -> Void ){guard let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate)else{completion(nil, nil)
-		return}
-		let sortDescription = NSSortDescriptor(
-			key: HKSampleSortIdentifierStartDate,
-			ascending: false
-		)
-		let query = HKSampleQuery (
-			sampleType: heartRateType,
-			predicate: nil,
-			limit: 1,
-			sortDescriptors: [sortDescription]
-		){
-			(_, samples, error) in
-			if let sample = samples?.first as? HKQuantitySample {
-				// Heart Rate is typically stored in count/min (beats per minute)
-				let bpm = sample.quantity.doubleValue(for: HKUnit.count().unitDivided(by: .minute()))
-				completion(bpm, nil)
-				
-				print(bpm)
-			} else {
-				completion(nil, error)
+	func retrieveLatestHeartRate() async throws -> Double {
+		return try await withCheckedThrowingContinuation { continuation in
+			guard let heartRateType = HKQuantityType.quantityType(forIdentifier: .heartRate) else {
+				continuation.resume(throwing: NSError(domain: "Invalid Type", code: -1, userInfo: nil))
+				return
 			}
+			
+			let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
+			let query = HKSampleQuery(
+				sampleType: heartRateType,
+				predicate: nil,
+				limit: 1,
+				sortDescriptors: [sortDescriptor]
+			) { _, samples, error in
+				if let sample = samples?.first as? HKQuantitySample {
+					let bpm = sample.quantity.doubleValue(for: HKUnit.count().unitDivided(by: .minute()))
+					continuation.resume(returning: bpm)
+				} else {
+					continuation.resume(throwing: error ?? NSError(domain: "No Data", code: -1, userInfo: nil))
+				}
+			}
+			
+			healthStore.execute(query)
 		}
-		healthStore.execute(query)
 	}
 }
+
 

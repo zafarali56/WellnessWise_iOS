@@ -31,6 +31,7 @@ struct HealthDataScreen: View {
 private struct FormContent : View {
 	@StateObject var viewModel : HealthDataViewModel
 	@State private var isHealthInputManual: Bool = true
+	@StateObject private var healthKitViewModel = HealthKitViewModel()
 	
 	var body: some View {
 		VStack(spacing: 5){
@@ -63,7 +64,7 @@ private struct FormContent : View {
 			if isHealthInputManual {
 				EnterManual(viewModel: viewModel)
 			} else {
-				healthKitData()
+				healthKitData(healthKitViewModel: healthKitViewModel)
 				
 			}
 			StyledTextField(
@@ -169,9 +170,25 @@ private struct BottomBarContent: View {
 
 
 private struct healthKitData: View {
+	@StateObject var healthKitViewModel : HealthKitViewModel
 	var body: some View {
 		VStack {
-			Text("Sync from apple health")
+			
+			
+		}
+		.task {
+			do {
+				let access = try await healthKitViewModel.requestHealthKitAccess()
+				print(access)
+				let heartdata = healthKitViewModel.fetchHeartRate()
+				print(heartdata)
+				
+			}catch {
+				print(
+					"healthKit access unsuccessful error \(error.localizedDescription)"
+				)
+			}
+							
 		}
 		.padding()
 		.background(
