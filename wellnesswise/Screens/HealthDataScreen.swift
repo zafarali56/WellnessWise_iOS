@@ -10,7 +10,6 @@ import SwiftUI
 struct HealthDataScreen: View {
 	@StateObject var viewModel : HealthDataViewModel
 	@EnvironmentObject private var navigationManager: NavigationManager
-	
 	var body: some View {
 		ScrollView{
 			VStack {
@@ -64,7 +63,7 @@ private struct FormContent : View {
 			if isHealthInputManual {
 				EnterManual(viewModel: viewModel)
 			} else {
-				healthKitData(healthKitViewModel: healthKitViewModel)
+				HealthKitDataView()
 				
 			}
 			StyledTextField(
@@ -167,36 +166,32 @@ private struct BottomBarContent: View {
 #Preview {
 	HealthDataScreen(viewModel: HealthDataViewModel())
 }
+struct HealthKitDataView: View {
+	@StateObject private var healthKitViewModel = HealthKitViewModel()
 
-
-private struct healthKitData: View {
-	@StateObject var healthKitViewModel : HealthKitViewModel
 	var body: some View {
 		VStack {
-			
-			
-		}
-		.task {
-			do {
-				let access = try await healthKitViewModel.requestHealthKitAccess()
-				print(access)
-				let heartdata = healthKitViewModel.fetchHeartRate()
-				print(heartdata)
-				
-			}catch {
-				print(
-					"healthKit access unsuccessful error \(error.localizedDescription)"
-				)
+			if healthKitViewModel.isLoading {
+				ProgressView("Fetching Health Data...")
+			} else if let error = healthKitViewModel.errorMessage {
+				Text("Error: \(error)")
+					.foregroundColor(.red)
+			} else {
+				if let heartRate = healthKitViewModel.heartRate {
+					Text("Heart Rate: \(heartRate, specifier: "%.1f") bpm")
+				}
+				if let systolic = healthKitViewModel.systolicBP,
+				   let diastolic = healthKitViewModel.diastolicBP {
+					Text("Blood Pressure: \(systolic, specifier: "%.0f") / \(diastolic, specifier: "%.0f") mmHg")
+				}
+				if let bloodGlucose = healthKitViewModel.bloodGlucose {
+					Text("Blood Glucose: \(bloodGlucose, specifier: "%.1f") mg/dL")
+				}
 			}
-							
 		}
 		.padding()
-		.background(
-			RoundedRectangle(cornerRadius: 20)
-				.fill(Color.white.opacity(0.8))
-				.shadow(radius: 5)
-		)
-		.padding(.horizontal)
-		.padding()
+		.task {
+			await healthKitViewModel.fetchAllData()
+		}
 	}
 }

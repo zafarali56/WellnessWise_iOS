@@ -6,38 +6,46 @@
 //
 
 import Foundation
+import HealthKit
 
-
+@MainActor
 class HealthKitViewModel: ObservableObject {
 	private let healthKitManager = HealthKitManager()
-	
 	@Published var heartRate: Double?
-	
-	// Request authorization and fetch data
-	@MainActor
-	func requestHealthKitAccess() async throws {
-		try await withCheckedThrowingContinuation { continuation in
-			healthKitManager.requestAuthorization { success, error in
-				if success {
-					continuation.resume()
-				} else {
-					continuation.resume(throwing: error ?? NSError(domain: "Unknown Error", code: -1, userInfo: nil))
-				}
-			}
+	@Published var systolicBP: Double?
+	@Published var diastolicBP: Double?
+	@Published var bloodGlucose: Double?
+	@Published var isLoading: Bool = false
+	@Published var errorMessage: String?
+	func fetchAllData() async {
+		guard HKHealthStore.isHealthDataAvailable() else {
+			errorMessage = "Health data is not available on this device."
+			return
 		}
-	}
-	
-	
-
-	@MainActor
-	func fetchHeartRate() async {
+		isLoading = true
+		errorMessage = nil
 		do {
-			let bpm = try await healthKitManager.retrieveLatestHeartRate()
-			self.heartRate = bpm
+			try await healthKitManager.requestAuthorization()
+			async let fetchedHeartRate     = healthKitManager.retrieveLatestHeartRate()
+			async let fetchedSystolic      = healthKitManager.retrieveLatestSystolic()
+			async let fetchedDiastolic     = healthKitManager.retrieveLatestDiastolic()
+			async let fetchedBloodGlucose  = healthKitManager.retrieveLatestBloodGlucose()
+			let (heartRate, systolic, diastolic, bloodGlucose) = try await (
+				fetchedHeartRate,
+				fetchedSystolic,
+				fetchedDiastolic,
+				fetchedBloodGlucose
+			)
+			self.heartRate    = heartRate
+			self.systolicBP   = systolic
+			self.diastolicBP  = diastolic
+			self.bloodGlucose = bloodGlucose
+			
 		} catch {
-			print("Error fetching heart rate: \(error.localizedDescription)")
+			errorMessage = error.localizedDescription
+			print("Error fetching health data: \(errorMessage ?? "Unknown error")")
 		}
+		isLoading = false
 	}
-
-	
 }
+
