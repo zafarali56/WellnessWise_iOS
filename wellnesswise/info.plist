@@ -2,7 +2,17 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>privacy location when in use</key>
-	<string>location permission requirement</string>
+	<key>CFBundleName</key>
+	<string>Wellness wise</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.personal.wellnesswise</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>We may update health data to provide richer insights into your health trends</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>We need access to your health data to analyze your wellness metrics.</string>
 </dict>
 </plist>

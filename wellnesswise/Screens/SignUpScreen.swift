@@ -42,7 +42,7 @@ private struct FormContent: View {
 					text: $viewModel.email,
 					isValid: viewModel.isValidEmail
 				)
-				
+
 				StyledTextField(
 					title: "Full Name",
 					placeholder: "Enter your full name",

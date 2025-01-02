@@ -50,7 +50,7 @@ private struct BottomBarContent: View {
 			Button(action: { viewModel.submitAssessment(using: navigationManager) }) {
 				if viewModel.isLoading {
 					ProgressView()
-						.tint(.white)
+					.tint(.white)
 				} else {
 					Text("Submit")
 					
