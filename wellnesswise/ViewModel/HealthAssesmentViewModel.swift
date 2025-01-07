@@ -113,7 +113,7 @@ class HealthAssessmentViewModel: ObservableObject {
 			],
 			"timestamp": FieldValue.serverTimestamp()
 		]
-		
+
 		Firestore.firestore().collection("users")
 			.document(userId)
 			.collection("assessments")

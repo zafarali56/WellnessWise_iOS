@@ -111,12 +111,8 @@ struct ProfileScreen: View {
 			}
 		}
 	}
-	
-	
-	
 	private struct Assesment_Data: View {
 		@StateObject var appState = AppStateManager.shared
-		
 		var body: some View {
 			if let assessmentData = appState.currentHealthAssesmentData {
 				VStack(spacing: 15) {
@@ -196,7 +192,6 @@ struct ProfileScreen: View {
 			}
 		}
 	}
-	
 	private struct ProfileData: View {
 		var fieldName: String
 		var fieldValue: String
@@ -216,7 +211,6 @@ struct ProfileScreen: View {
 			
 		}
 	}
-	
 	struct AssesmentData_Previews: PreviewProvider {
 		static var previews: some View {
 			let mockAppState = AppStateManager.shared

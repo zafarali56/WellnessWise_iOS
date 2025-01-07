@@ -26,10 +26,10 @@ class HealthKitViewModel: ObservableObject {
 		errorMessage = nil
 		do {
 			try await healthKitManager.requestAuthorization()
-			async let fetchedHeartRate     = healthKitManager.retrieveLatestHeartRate()
-			async let fetchedSystolic      = healthKitManager.retrieveLatestSystolic()
-			async let fetchedDiastolic     = healthKitManager.retrieveLatestDiastolic()
-			async let fetchedBloodGlucose  = healthKitManager.retrieveLatestBloodGlucose()
+			async let fetchedHeartRate = healthKitManager.retrieveLatestHeartRate()
+			async let fetchedSystolic = healthKitManager.retrieveLatestSystolic()
+			async let fetchedDiastolic = healthKitManager.retrieveLatestDiastolic()
+			async let fetchedBloodGlucose = healthKitManager.retrieveLatestBloodGlucose()
 			let (heartRate, systolic, diastolic, bloodGlucose) = try await (
 				fetchedHeartRate,
 				fetchedSystolic,
@@ -40,12 +40,15 @@ class HealthKitViewModel: ObservableObject {
 			self.systolicBP   = systolic
 			self.diastolicBP  = diastolic
 			self.bloodGlucose = bloodGlucose
-			
 		} catch {
 			errorMessage = error.localizedDescription
 			print("Error fetching health data: \(errorMessage ?? "Unknown error")")
 		}
 		isLoading = false
 	}
+	
+	
+	
+	
 }
 

@@ -31,6 +31,7 @@ private struct FormContent : View {
 	@StateObject var viewModel : HealthDataViewModel
 	@State private var isHealthInputManual: Bool = true
 	@StateObject private var healthKitViewModel = HealthKitViewModel()
+	@EnvironmentObject private var navigationManager : NavigationManager
 	
 	var body: some View {
 		VStack(spacing: 5){
@@ -90,11 +91,33 @@ private struct FormContent : View {
 				isNumber: true
 				, isValid: viewModel.isTriglycerides
 			)
+			
+			Button(
+				action: {viewModel.SubmitByHealthKit(using: navigationManager)
+				}){
+					if viewModel.isLoading {
+						ProgressView()
+							.tint(.white)
+					}
+					else {
+						Text("Submit healthKit")
+							.font(.headline)
+							.fontWeight(.semibold)
+							.foregroundStyle(.white)
+							.frame(maxWidth: .infinity)
+							.frame(width: 250, height: 30)
+					}
+				}
+				.buttonStyle(.borderedProminent)
+				.clipShape(.capsule)
+				.tint(.black)
+				.padding()
 		}
 	}
 }
 
 private struct EnterManual : View {
+
 	@StateObject var viewModel : HealthDataViewModel
 	var body: some View {
 		VStack{
@@ -141,13 +164,16 @@ private struct BottomBarContent: View {
 	@ObservedObject var viewModel : HealthDataViewModel
 	var body: some View {
 		VStack{
-			Button(action: {viewModel.Submit(using: navigationManager)}){
+			
+			Button(
+				action: {viewModel.SubmitManually(using: navigationManager)
+				}){
 				if viewModel.isLoading {
 					ProgressView()
 						.tint(.white)
 				}
 				else {
-					Text("Submit")
+					Text("Submit manually")
 						.font(.headline)
 						.fontWeight(.semibold)
 						.foregroundStyle(.white)
@@ -158,17 +184,21 @@ private struct BottomBarContent: View {
 			.buttonStyle(.borderedProminent)
 			.clipShape(.capsule)
 			.tint(.black)
-			.disabled(viewModel.isLoading || !viewModel.validation)
 			.padding()
+			
+
+			
 		}
 	}
 }
 #Preview {
-	HealthDataScreen(viewModel: HealthDataViewModel())
+	HealthDataScreen(
+		viewModel: HealthDataViewModel(healthKitViewModel: HealthKitViewModel())
+	)
 }
 struct HealthKitDataView: View {
 	@StateObject private var healthKitViewModel = HealthKitViewModel()
-
+	
 	var body: some View {
 		VStack {
 			if healthKitViewModel.isLoading {

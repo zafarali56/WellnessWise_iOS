@@ -6,7 +6,6 @@ struct HealthAssessmentScreen: View {
 	init() {
 		_viewModel = StateObject(wrappedValue: HealthAssessmentViewModel())
 	}
-	
 	var body: some View {
 		VStack{
 			FormContent(viewModel: viewModel)

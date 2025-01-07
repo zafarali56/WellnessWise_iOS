@@ -1,10 +1,8 @@
 import SwiftUI
-
 enum NavigationType: Hashable {
 	case authentication
 	case main
 }
-
 enum AuthenticationRoute: Hashable {
 	case login
 	case signup
@@ -16,8 +14,6 @@ enum AuthenticationRoute: Hashable {
 enum MainRoute: Hashable {
 	case home
 	case profile
-
-
 }
 @MainActor
 class NavigationManager: ObservableObject {

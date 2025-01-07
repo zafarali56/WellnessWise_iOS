@@ -9,8 +9,12 @@ import Foundation
 import FirebaseAuth
 import FirebaseFirestore
 
-
 class HealthDataViewModel: ObservableObject {
+	@Published var healthKitViewModel : HealthKitViewModel
+	
+	init(healthKitViewModel:HealthKitViewModel){
+		self.healthKitViewModel = healthKitViewModel
+	}
 	@Published var Systolic : String = ""
 	@Published var Diastolic : String = ""
 	@Published var BloodSugar : String = ""
@@ -18,9 +22,9 @@ class HealthDataViewModel: ObservableObject {
 	@Published var Cholestrol : String = ""
 	@Published var WaistCircumference : String = ""
 	@Published var Triglycerides : String = ""
-	
 	@Published var errorMessage : String = ""
 	@Published var isLoading : Bool = false
+	@Published var healthInput = HealthDataInputType.manual
 	var  isBpValid: Bool {
 		if Systolic.isEmpty && Diastolic.isEmpty {return false}
 		return true
@@ -31,7 +35,6 @@ class HealthDataViewModel: ObservableObject {
 		}
 		return true
 	}
-	
 	var isBloodSugarValid : Bool {
 		if BloodSugar.isEmpty {return false}
 		return true
@@ -40,7 +43,6 @@ class HealthDataViewModel: ObservableObject {
 		if HeartRate.isEmpty {return false}
 		return true
 	}
-	
 	var isCholestrolValid : Bool {
 		if Cholestrol.isEmpty {return false}
 		return true
@@ -49,14 +51,12 @@ class HealthDataViewModel: ObservableObject {
 		if WaistCircumference.isEmpty {return false}
 		return true
 	}
-	
 	var isTriglycerides : Bool {
 		if Triglycerides.isEmpty {return false}
 		return true
 	}
-	
-	
-	func Submit (using navigationManager : NavigationManager){
+	@MainActor
+	func SubmitManually (using navigationManager : NavigationManager){
 		guard let userId = Auth.auth().currentUser?.uid else {
 			errorMessage = "User not authentiated"
 			return
@@ -87,10 +87,47 @@ class HealthDataViewModel: ObservableObject {
 					self?.errorMessage = error.localizedDescription
 				} else {
 					navigationManager.switchToMain()
-				}
-				
 			}
-		
-		
+		}
 	}
+	
+	@MainActor func SubmitByHealthKit (using navigation: NavigationManager){
+		guard let userId = Auth.auth().currentUser?.uid else {
+			errorMessage = "User not authenticated"
+			return
+		}
+		errorMessage = ""
+		isLoading = true
+		let healthData : [String: Any] = [
+			"HealthData": [
+				"systolic" : healthKitViewModel.systolicBP ?? Double() ,
+				"diastolic" : healthKitViewModel.diastolicBP ?? Double(),
+				"heartRate" : healthKitViewModel.heartRate ?? Double(),
+				"bloodSugar" : healthKitViewModel.bloodGlucose ?? Double(),
+				"cholestrol" : Cholestrol,
+				"waistCircumference": WaistCircumference
+	
+				
+				
+			],
+			"timestamp" : FieldValue.serverTimestamp()
+			
+		]
+		Firestore.firestore().collection("users")
+			.document(userId)
+			.collection("healthData")
+			.addDocument(data: healthData){ [weak self] error in
+				self?.isLoading = false
+				if let error = error {
+					self?.errorMessage = error.localizedDescription
+				} else {
+					navigation.switchToMain()
+				}
+			}
+	}
+}
+
+
+enum HealthDataInputType: String {
+	case manual, healthKit
 }
