@@ -11,6 +11,7 @@ import FirebaseFirestore
 
 class HealthDataViewModel: ObservableObject {
 	@Published var healthKitViewModel : HealthKitViewModel
+	private let healthKitManager = HealthKitManager()
 	
 	init(healthKitViewModel:HealthKitViewModel){
 		self.healthKitViewModel = healthKitViewModel
@@ -55,6 +56,8 @@ class HealthDataViewModel: ObservableObject {
 		if Triglycerides.isEmpty {return false}
 		return true
 	}
+	
+	
 	@MainActor
 	func SubmitManually (using navigationManager : NavigationManager){
 		guard let userId = Auth.auth().currentUser?.uid else {
@@ -90,29 +93,29 @@ class HealthDataViewModel: ObservableObject {
 			}
 		}
 	}
+
 	
-	@MainActor func SubmitByHealthKit (using navigation: NavigationManager){
+	@MainActor func SubmitByHealthKit (using navigation: NavigationManager) {
 		guard let userId = Auth.auth().currentUser?.uid else {
 			errorMessage = "User not authenticated"
 			return
 		}
 		errorMessage = ""
 		isLoading = true
+		
 		let healthData : [String: Any] = [
 			"HealthData": [
-				"systolic" : healthKitViewModel.systolicBP ?? Double() ,
-				"diastolic" : healthKitViewModel.diastolicBP ?? Double(),
-				"heartRate" : healthKitViewModel.heartRate ?? Double(),
-				"bloodSugar" : healthKitViewModel.bloodGlucose ?? Double(),
+				"systolic": healthKitViewModel.systolicBP ?? 0.0,
+				"diastolic": healthKitViewModel.diastolicBP ?? 0.0,
+				"heartRate": healthKitViewModel.heartRate ?? 0.0,
+				"bloodSugar": healthKitViewModel.bloodGlucose ?? 0.0,
 				"cholestrol" : Cholestrol,
 				"waistCircumference": WaistCircumference
-	
-				
-				
 			],
 			"timestamp" : FieldValue.serverTimestamp()
 			
 		]
+		print(healthData)
 		Firestore.firestore().collection("users")
 			.document(userId)
 			.collection("healthData")
@@ -131,3 +134,7 @@ class HealthDataViewModel: ObservableObject {
 enum HealthDataInputType: String {
 	case manual, healthKit
 }
+
+
+
+

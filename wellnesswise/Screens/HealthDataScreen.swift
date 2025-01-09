@@ -225,3 +225,5 @@ struct HealthKitDataView: View {
 		}
 	}
 }
+
+

@@ -40,6 +40,14 @@ class HealthKitViewModel: ObservableObject {
 			self.systolicBP   = systolic
 			self.diastolicBP  = diastolic
 			self.bloodGlucose = bloodGlucose
+			
+			
+			print("systolic currently :\(systolic)")
+			print("systolic currently :\(diastolic)")
+			print("systolic currently :\(heartRate)")
+			print("systolic currently :\(bloodGlucose)")
+			
+			
 		} catch {
 			errorMessage = error.localizedDescription
 			print("Error fetching health data: \(errorMessage ?? "Unknown error")")
@@ -52,3 +60,10 @@ class HealthKitViewModel: ObservableObject {
 	
 }
 
+struct kitFetchedData: Codable {
+	let id : String
+	var _heartRate : Double
+	var _diastolic : Double
+	var _systolic : Double
+	var _bloodglucose : Double
+}
