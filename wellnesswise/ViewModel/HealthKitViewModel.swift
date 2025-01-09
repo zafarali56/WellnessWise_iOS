@@ -61,7 +61,6 @@ class HealthKitViewModel: ObservableObject {
 }
 
 struct kitFetchedData: Codable {
-	let id : String
 	var _heartRate : Double
 	var _diastolic : Double
 	var _systolic : Double

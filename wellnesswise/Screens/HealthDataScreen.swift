@@ -8,16 +8,23 @@
 import SwiftUI
 
 struct HealthDataScreen: View {
+	@State var isHealthInputManual: Bool = true
 	@StateObject var viewModel : HealthDataViewModel
 	@EnvironmentObject private var navigationManager: NavigationManager
 	var body: some View {
 		ScrollView{
 			VStack {
-				FormContent(viewModel: viewModel)
+				FormContent(
+					isHealthInputManual: $isHealthInputManual,
+					viewModel: viewModel
+				)
 					.navigationTitle("Health Data")
 					.toolbar{
 						ToolbarItem(placement: .bottomBar){
-							BottomBarContent(viewModel: viewModel)
+							BottomBarContent(
+								isHealthInputManual: $isHealthInputManual,
+								viewModel: viewModel
+							)
 						}
 					}
 			}
@@ -28,8 +35,9 @@ struct HealthDataScreen: View {
 }
 
 private struct FormContent : View {
+	@Binding var isHealthInputManual : Bool
 	@StateObject var viewModel : HealthDataViewModel
-	@State private var isHealthInputManual: Bool = true
+	
 	@StateObject private var healthKitViewModel = HealthKitViewModel()
 	@EnvironmentObject private var navigationManager : NavigationManager
 	
@@ -38,27 +46,19 @@ private struct FormContent : View {
 			
 			Button(action: {
 				isHealthInputManual.toggle()
-			}){
-				if isHealthInputManual{
-					Text("Sync from Apple Health")
+			}) {
+				HStack {
+					Image(systemName: isHealthInputManual ? "applelogo" : "keyboard")
+					Text(isHealthInputManual ? "Sync from apple health " : "Enter manually")
 						.font(.headline)
 						.fontWeight(.semibold)
-						.foregroundStyle(.primary)
-						.frame(maxWidth: .infinity)
-						.frame(height: 30)
 				}
-				else {
-					Text("Switch to Manually ")
-						.font(.headline)
-						.fontWeight(.semibold)
-						.foregroundStyle(.background)
-						.frame(maxWidth: .infinity)
-						.frame(height: 30)
-				}
-			}.buttonStyle(.borderedProminent)
-				.clipShape(.capsule)
-				.tint(.black)
-				.disabled(viewModel.isLoading)
+			}
+			.buttonStyle(.borderedProminent)
+			.clipShape(.capsule)
+			.tint(.black)
+			.disabled(viewModel.isLoading)
+
 			
 			
 			if isHealthInputManual {
@@ -92,26 +92,6 @@ private struct FormContent : View {
 				, isValid: viewModel.isTriglycerides
 			)
 			
-			Button(
-				action: {viewModel.SubmitByHealthKit(using: navigationManager)
-				}){
-					if viewModel.isLoading {
-						ProgressView()
-							.tint(.white)
-					}
-					else {
-						Text("Submit healthKit")
-							.font(.headline)
-							.fontWeight(.semibold)
-							.foregroundStyle(.white)
-							.frame(maxWidth: .infinity)
-							.frame(width: 250, height: 30)
-					}
-				}
-				.buttonStyle(.borderedProminent)
-				.clipShape(.capsule)
-				.tint(.black)
-				.padding()
 		}
 	}
 }
@@ -160,20 +140,26 @@ private struct EnterManual : View {
 }
 
 private struct BottomBarContent: View {
-	@EnvironmentObject private var navigationManager : NavigationManager
-	@ObservedObject var viewModel : HealthDataViewModel
+	@Binding var isHealthInputManual: Bool
+	@EnvironmentObject private var navigationManager: NavigationManager
+	@ObservedObject var viewModel: HealthDataViewModel
 	var body: some View {
-		VStack{
+		VStack {
 			
-			Button(
-				action: {viewModel.SubmitManually(using: navigationManager)
-				}){
+
+			Button(action: {
+				if isHealthInputManual {
+					viewModel.SubmitManually(using: navigationManager)
+				} else {
+					viewModel.SubmitByHealthKit(using: navigationManager)
+						
+				}
+			}) {
 				if viewModel.isLoading {
 					ProgressView()
 						.tint(.white)
-				}
-				else {
-					Text("Submit manually")
+				} else {
+					Text(isHealthInputManual ? "Submit Manually" : "Submit via HealthKit")
 						.font(.headline)
 						.fontWeight(.semibold)
 						.foregroundStyle(.white)
@@ -185,12 +171,11 @@ private struct BottomBarContent: View {
 			.clipShape(.capsule)
 			.tint(.black)
 			.padding()
-			
-
-			
+			.disabled(viewModel.isLoading)
 		}
 	}
 }
+
 #Preview {
 	HealthDataScreen(
 		viewModel: HealthDataViewModel(healthKitViewModel: HealthKitViewModel())

@@ -16,6 +16,9 @@ class HealthDataViewModel: ObservableObject {
 	init(healthKitViewModel:HealthKitViewModel){
 		self.healthKitViewModel = healthKitViewModel
 	}
+	
+	
+	
 	@Published var Systolic : String = ""
 	@Published var Diastolic : String = ""
 	@Published var BloodSugar : String = ""
@@ -90,25 +93,39 @@ class HealthDataViewModel: ObservableObject {
 					self?.errorMessage = error.localizedDescription
 				} else {
 					navigationManager.switchToMain()
+				}
 			}
-		}
 	}
-
 	
-	@MainActor func SubmitByHealthKit (using navigation: NavigationManager) {
+	
+	
+	@MainActor func SubmitByHealthKit (using navigationManager: NavigationManager)  {
 		guard let userId = Auth.auth().currentUser?.uid else {
+			
 			errorMessage = "User not authenticated"
 			return
 		}
 		errorMessage = ""
 		isLoading = true
+		guard let systolic = healthKitViewModel.systolicBP,
+			  let diastolic = healthKitViewModel.diastolicBP,
+			  let heartRate = healthKitViewModel.heartRate,
+			  let bloodGlucose = healthKitViewModel.bloodGlucose else {
+			errorMessage = "HealthKit data is incomplete. Please try again."
+			print(errorMessage)
+			return
+		}
+		print(systolic)
+		print(diastolic)
+		print(heartRate)
+		print(bloodGlucose)
 		
 		let healthData : [String: Any] = [
-			"HealthData": [
-				"systolic": healthKitViewModel.systolicBP ?? 0.0,
-				"diastolic": healthKitViewModel.diastolicBP ?? 0.0,
-				"heartRate": healthKitViewModel.heartRate ?? 0.0,
-				"bloodSugar": healthKitViewModel.bloodGlucose ?? 0.0,
+			"healthData":  [
+				"systolic": systolic,
+				"diastolic": diastolic,
+				"heartRate": heartRate,
+				"bloodSugar": bloodGlucose,
 				"cholestrol" : Cholestrol,
 				"waistCircumference": WaistCircumference
 			],
@@ -124,9 +141,9 @@ class HealthDataViewModel: ObservableObject {
 				if let error = error {
 					self?.errorMessage = error.localizedDescription
 				} else {
-					navigation.switchToMain()
-				}
+					navigationManager.switchToMain()
 			}
+		}
 	}
 }
 
