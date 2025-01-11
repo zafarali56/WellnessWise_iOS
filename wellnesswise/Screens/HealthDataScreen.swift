@@ -17,7 +17,7 @@ struct HealthDataScreen: View {
 			VStack {
 				FormContent(
 					isHealthInputManual: $isHealthInputManual,
-					viewModel: viewModel
+					viewModel: viewModel, healthKitViewModel: healthKitViewModel
 				)
 					.navigationTitle("Health Data")
 					.toolbar{
@@ -39,8 +39,7 @@ struct HealthDataScreen: View {
 private struct FormContent : View {
 	@Binding var isHealthInputManual : Bool
 	@StateObject var viewModel : HealthDataViewModel
-	
-	@StateObject private var healthKitViewModel = HealthKitViewModel()
+	@ObservedObject var healthKitViewModel: HealthKitViewModel
 	@EnvironmentObject private var navigationManager : NavigationManager
 	
 	var body: some View {
@@ -66,7 +65,7 @@ private struct FormContent : View {
 			if isHealthInputManual {
 				EnterManual(viewModel: viewModel)
 			} else {
-				HealthKitDataView()
+				HealthKitDataView(healthKitViewModel: healthKitViewModel)
 				
 			}
 			StyledTextField(
@@ -175,7 +174,7 @@ private struct BottomBarContent: View {
 			.clipShape(.capsule)
 			.tint(.black)
 			.padding()
-			.disabled(viewModel.isLoading)
+			.disabled(viewModel.isLoading || healthKitViewModel.isLoading)
 		}
 	}
 }
@@ -186,7 +185,7 @@ private struct BottomBarContent: View {
 	)
 }
 struct HealthKitDataView: View {
-	@StateObject private var healthKitViewModel = HealthKitViewModel()
+	@ObservedObject var healthKitViewModel = HealthKitViewModel()
 	
 	var body: some View {
 		VStack {

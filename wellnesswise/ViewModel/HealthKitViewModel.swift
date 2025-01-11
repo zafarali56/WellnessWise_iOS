@@ -31,22 +31,20 @@ class HealthKitViewModel: ObservableObject {
 			async let fetchedSystolic = healthKitManager.retrieveLatestSystolic()
 			async let fetchedDiastolic = healthKitManager.retrieveLatestDiastolic()
 			async let fetchedBloodGlucose = healthKitManager.retrieveLatestBloodGlucose()
-			let (heartRate, systolic, diastolic, bloodGlucose) = try await (
+			let (heartrate, systolic, diastolic, bloodglucose) = try await (
 				fetchedHeartRate,
 				fetchedSystolic,
 				fetchedDiastolic,
 				fetchedBloodGlucose
 			)
-			self.heartRate    = heartRate
+			self.heartRate    = heartrate
 			self.systolicBP   = systolic
 			self.diastolicBP  = diastolic
-			self.bloodGlucose = bloodGlucose
-			
-
-			print("systolic currently :\(systolic)")
-			print("systolic currently :\(diastolic)")
-			print("systolic currently :\(heartRate)")
-			print("systolic currently :\(bloodGlucose)")
+			self.bloodGlucose = bloodglucose
+			print("systolic currently :\(String(describing: systolicBP))")
+			print("diastolic currently :\(String(describing: diastolicBP))")
+			print("heartate currently :\(String (describing: heartRate))")
+			print("bloodglucose currently :\(String (describing: bloodGlucose))")
 		} catch {
 			errorMessage = error.localizedDescription
 			print("Error fetching health data: \(errorMessage ?? "Unknown error")")
@@ -63,13 +61,23 @@ class HealthKitViewModel: ObservableObject {
 		errorMessage = ""
 		isLoading = true
 		
-		
+		guard let systolic = systolicBP,
+			  let diastolic = diastolicBP,
+			  let heartrate = heartRate,
+			  let bloodglucose = bloodGlucose else {
+			errorMessage = "Values are either Null or missing"
+			isLoading = false
+			return
+		}
+
+		print(errorMessage ?? "")
+		print("Systolic: \(systolic), Diastolic: \(diastolic), HeartRate: \(heartrate), BloodGlucose: \(bloodglucose)")
 		let healthData : [String: Any] = [
 			"healthData":  [
-				"systolic": systolicBP,
-				"diastolic": diastolicBP,
-				"heartRate": heartRate,
-				"bloodSugar": bloodGlucose,
+				"systolic": systolic,
+				"diastolic": diastolic,
+				"heartRate": heartrate,
+				"bloodSugar": bloodglucose,
 			],
 			"timestamp" : FieldValue.serverTimestamp()
 			
