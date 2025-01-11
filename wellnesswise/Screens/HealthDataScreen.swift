@@ -11,6 +11,7 @@ struct HealthDataScreen: View {
 	@State var isHealthInputManual: Bool = true
 	@StateObject var viewModel : HealthDataViewModel
 	@EnvironmentObject private var navigationManager: NavigationManager
+	@StateObject var healthKitViewModel : HealthKitViewModel
 	var body: some View {
 		ScrollView{
 			VStack {
@@ -23,11 +24,12 @@ struct HealthDataScreen: View {
 						ToolbarItem(placement: .bottomBar){
 							BottomBarContent(
 								isHealthInputManual: $isHealthInputManual,
-								viewModel: viewModel
+								viewModel: viewModel, healthKitViewModel: healthKitViewModel
 							)
 						}
 					}
 			}
+			
 		}
 		.navigationBarBackButtonHidden()
 		.padding(30)
@@ -143,6 +145,7 @@ private struct BottomBarContent: View {
 	@Binding var isHealthInputManual: Bool
 	@EnvironmentObject private var navigationManager: NavigationManager
 	@ObservedObject var viewModel: HealthDataViewModel
+	@ObservedObject var healthKitViewModel : HealthKitViewModel
 	var body: some View {
 		VStack {
 			
@@ -151,7 +154,8 @@ private struct BottomBarContent: View {
 				if isHealthInputManual {
 					viewModel.SubmitManually(using: navigationManager)
 				} else {
-					viewModel.SubmitByHealthKit(using: navigationManager)
+					healthKitViewModel
+						.SubmitByHealthKit(using: navigationManager)
 						
 				}
 			}) {
@@ -178,7 +182,7 @@ private struct BottomBarContent: View {
 
 #Preview {
 	HealthDataScreen(
-		viewModel: HealthDataViewModel(healthKitViewModel: HealthKitViewModel())
+		viewModel: HealthDataViewModel(), healthKitViewModel: HealthKitViewModel()
 	)
 }
 struct HealthKitDataView: View {

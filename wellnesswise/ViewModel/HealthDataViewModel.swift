@@ -10,15 +10,6 @@ import FirebaseAuth
 import FirebaseFirestore
 
 class HealthDataViewModel: ObservableObject {
-	@Published var healthKitViewModel : HealthKitViewModel
-	private let healthKitManager = HealthKitManager()
-	
-	init(healthKitViewModel:HealthKitViewModel){
-		self.healthKitViewModel = healthKitViewModel
-	}
-	
-	
-	
 	@Published var Systolic : String = ""
 	@Published var Diastolic : String = ""
 	@Published var BloodSugar : String = ""
@@ -28,7 +19,6 @@ class HealthDataViewModel: ObservableObject {
 	@Published var Triglycerides : String = ""
 	@Published var errorMessage : String = ""
 	@Published var isLoading : Bool = false
-	@Published var healthInput = HealthDataInputType.manual
 	var  isBpValid: Bool {
 		if Systolic.isEmpty && Diastolic.isEmpty {return false}
 		return true
@@ -60,6 +50,15 @@ class HealthDataViewModel: ObservableObject {
 		return true
 	}
 	
+	
+	func isError ()-> Bool {
+		if errorMessage != "" {
+			return true
+		}
+		else {
+			return false
+		}
+	}
 	
 	@MainActor
 	func SubmitManually (using navigationManager : NavigationManager){
@@ -99,52 +98,7 @@ class HealthDataViewModel: ObservableObject {
 	
 	
 	
-	@MainActor func SubmitByHealthKit (using navigationManager: NavigationManager)  {
-		guard let userId = Auth.auth().currentUser?.uid else {
-			
-			errorMessage = "User not authenticated"
-			return
-		}
-		errorMessage = ""
-		isLoading = true
-		guard let systolic = healthKitViewModel.systolicBP,
-			  let diastolic = healthKitViewModel.diastolicBP,
-			  let heartRate = healthKitViewModel.heartRate,
-			  let bloodGlucose = healthKitViewModel.bloodGlucose else {
-			errorMessage = "HealthKit data is incomplete. Please try again."
-			print(errorMessage)
-			return
-		}
-		print(systolic)
-		print(diastolic)
-		print(heartRate)
-		print(bloodGlucose)
-		
-		let healthData : [String: Any] = [
-			"healthData":  [
-				"systolic": systolic,
-				"diastolic": diastolic,
-				"heartRate": heartRate,
-				"bloodSugar": bloodGlucose,
-				"cholestrol" : Cholestrol,
-				"waistCircumference": WaistCircumference
-			],
-			"timestamp" : FieldValue.serverTimestamp()
-			
-		]
-		print(healthData)
-		Firestore.firestore().collection("users")
-			.document(userId)
-			.collection("healthData")
-			.addDocument(data: healthData){ [weak self] error in
-				self?.isLoading = false
-				if let error = error {
-					self?.errorMessage = error.localizedDescription
-				} else {
-					navigationManager.switchToMain()
-			}
-		}
-	}
+
 }
 
 

@@ -78,7 +78,7 @@ class HealthAssessmentViewModel: ObservableObject {
 				return "Hazardous: Health alert"
 		}
 	}
-	
+	@MainActor
 	//Data Submission
 	func submitAssessment(using navigationManager : NavigationManager) {
 		guard let userId = Auth.auth().currentUser?.uid else {

@@ -7,7 +7,8 @@
 
 import Foundation
 import HealthKit
-
+import Firebase
+import FirebaseAuth
 @MainActor
 class HealthKitViewModel: ObservableObject {
 	private let healthKitManager = HealthKitManager()
@@ -41,13 +42,11 @@ class HealthKitViewModel: ObservableObject {
 			self.diastolicBP  = diastolic
 			self.bloodGlucose = bloodGlucose
 			
-			
+
 			print("systolic currently :\(systolic)")
 			print("systolic currently :\(diastolic)")
 			print("systolic currently :\(heartRate)")
 			print("systolic currently :\(bloodGlucose)")
-			
-			
 		} catch {
 			errorMessage = error.localizedDescription
 			print("Error fetching health data: \(errorMessage ?? "Unknown error")")
@@ -55,14 +54,39 @@ class HealthKitViewModel: ObservableObject {
 		isLoading = false
 	}
 	
+	func SubmitByHealthKit (using navigationManager: NavigationManager)  {
+		guard let userId = Auth.auth().currentUser?.uid else {
+			
+			errorMessage = "User not authenticated"
+			return
+		}
+		errorMessage = ""
+		isLoading = true
+		
+		
+		let healthData : [String: Any] = [
+			"healthData":  [
+				"systolic": systolicBP,
+				"diastolic": diastolicBP,
+				"heartRate": heartRate,
+				"bloodSugar": bloodGlucose,
+			],
+			"timestamp" : FieldValue.serverTimestamp()
+			
+		]
+		print(healthData)
+		Firestore.firestore().collection("users")
+			.document(userId)
+			.collection("healthData")
+			.addDocument(data: healthData){ [weak self] error in
+				self?.isLoading = false
+				if let error = error {
+					self?.errorMessage = error.localizedDescription
+				} else {
+					navigationManager.switchToMain()
+				}
+			}
+	}
 	
 	
-	
-}
-
-struct kitFetchedData: Codable {
-	var _heartRate : Double
-	var _diastolic : Double
-	var _systolic : Double
-	var _bloodglucose : Double
 }

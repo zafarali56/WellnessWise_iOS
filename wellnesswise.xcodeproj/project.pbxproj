@@ -147,6 +147,7 @@
 			children = (
 				9E0BD0752CF0B2C2009A9B84 /* AppStateManager.swift */,
 				9EDBF7402CE922D70001A54C /* NavigationManager.swift */,
+				9E640CE82D1F29060080F945 /* HealthKitManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -162,14 +163,6 @@
 				9EACD1C42D231A6400C947C6 /* HealthKitViewModel.swift */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		9E640CE72D1F28D20080F945 /* AppManagers */ = {
-			isa = PBXGroup;
-			children = (
-				9E640CE82D1F29060080F945 /* HealthKitManager.swift */,
-			);
-			path = AppManagers;
 			sourceTree = "<group>";
 		};
 		9E7BFF7C2CC17A9D00253D36 /* Components */ = {
@@ -206,7 +199,6 @@
 		9EEF184E2CB6B6E800AA8D5B /* wellnesswise */ = {
 			isa = PBXGroup;
 			children = (
-				9E640CE72D1F28D20080F945 /* AppManagers */,
 				9E640CE62D1F265D0080F945 /* wellnesswise.entitlements */,
 				9E1BA6402CC5441B00DFDD3B /* ViewModel */,
 				9E7BFF7C2CC17A9D00253D36 /* Components */,
