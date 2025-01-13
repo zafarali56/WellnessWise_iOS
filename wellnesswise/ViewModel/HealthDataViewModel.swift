@@ -10,6 +10,13 @@ import FirebaseAuth
 import FirebaseFirestore
 
 class HealthDataViewModel: ObservableObject {
+	@Published var healthKitViewModel : HealthKitViewModel
+	
+	init (healthKitViewModel: HealthKitViewModel)
+	{
+		self.healthKitViewModel = healthKitViewModel
+	}
+	
 	@Published var Systolic : String = ""
 	@Published var Diastolic : String = ""
 	@Published var BloodSugar : String = ""
@@ -95,15 +102,55 @@ class HealthDataViewModel: ObservableObject {
 				}
 			}
 	}
-	
+	@MainActor
+	func SubmitByHealthKit (using navigationManager: NavigationManager)  {
+		guard let userId = Auth.auth().currentUser?.uid else {
+			
+			healthKitViewModel.errorMessage = "User not authenticated"
+			return
+		}
+		healthKitViewModel.errorMessage = ""
+		healthKitViewModel.isLoading = true
+		
+		guard let systolic = healthKitViewModel.systolicBP,
+			  let diastolic = healthKitViewModel.diastolicBP,
+			  let heartrate = healthKitViewModel.heartRate,
+			  let bloodglucose = healthKitViewModel.bloodGlucose else {
+			healthKitViewModel.errorMessage = "Values are either Null or missing"
+			healthKitViewModel.isLoading = false
+			return
+		}
+		
+		print(healthKitViewModel.errorMessage ?? "")
+		print("Systolic: \(systolic), Diastolic: \(diastolic), HeartRate: \(heartrate), BloodGlucose: \(bloodglucose)")
+		let healthData : [String: Any] = [
+			"healthData":  [
+				"systolic" : healthKitViewModel.systolicBP ?? 0.0,
+				"diastolic" : healthKitViewModel.diastolicBP ?? 0.0,
+				"heartRate" : healthKitViewModel.heartRate ?? 0.0,
+				"cholestrol" : Cholestrol ,
+				"waistCircumference" : WaistCircumference,
+				"bloodSugar" : healthKitViewModel.bloodGlucose ?? 0.0,
+			],
+			"timestamp" : FieldValue.serverTimestamp()
+			
+		]
+		print(healthData)
+		Firestore.firestore().collection("users")
+			.document(userId)
+			.collection("healthData")
+			.addDocument(data: healthData){ [weak self] error in
+				self?.healthKitViewModel.isLoading = false
+				if let error = error {
+					self?.healthKitViewModel.errorMessage = error.localizedDescription
+				} else {
+					navigationManager.switchToMain()
+				}
+			}
+	}
 	
 	
 
-}
-
-
-enum HealthDataInputType: String {
-	case manual, healthKit
 }
 
 

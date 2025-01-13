@@ -89,7 +89,8 @@ struct AuthenticationFlow: View {
 						case .healthDataScreen:
 							HealthDataScreen(
 								viewModel: HealthDataViewModel(
-								), healthKitViewModel: HealthKitViewModel()
+									healthKitViewModel: HealthKitViewModel()
+								)
 							)
 					}
 				}

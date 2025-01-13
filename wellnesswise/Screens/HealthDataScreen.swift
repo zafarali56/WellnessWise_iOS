@@ -11,20 +11,19 @@ struct HealthDataScreen: View {
 	@State var isHealthInputManual: Bool = true
 	@StateObject var viewModel : HealthDataViewModel
 	@EnvironmentObject private var navigationManager: NavigationManager
-	@StateObject var healthKitViewModel : HealthKitViewModel
 	var body: some View {
 		ScrollView{
 			VStack {
 				FormContent(
 					isHealthInputManual: $isHealthInputManual,
-					viewModel: viewModel, healthKitViewModel: healthKitViewModel
+					viewModel: viewModel
 				)
 					.navigationTitle("Health Data")
 					.toolbar{
 						ToolbarItem(placement: .bottomBar){
 							BottomBarContent(
 								isHealthInputManual: $isHealthInputManual,
-								viewModel: viewModel, healthKitViewModel: healthKitViewModel
+								viewModel: viewModel
 							)
 						}
 					}
@@ -39,7 +38,6 @@ struct HealthDataScreen: View {
 private struct FormContent : View {
 	@Binding var isHealthInputManual : Bool
 	@StateObject var viewModel : HealthDataViewModel
-	@ObservedObject var healthKitViewModel: HealthKitViewModel
 	@EnvironmentObject private var navigationManager : NavigationManager
 	
 	var body: some View {
@@ -65,7 +63,7 @@ private struct FormContent : View {
 			if isHealthInputManual {
 				EnterManual(viewModel: viewModel)
 			} else {
-				HealthKitDataView(healthKitViewModel: healthKitViewModel)
+				HealthKitDataView(viewModel: viewModel)
 				
 			}
 			StyledTextField(
@@ -144,7 +142,6 @@ private struct BottomBarContent: View {
 	@Binding var isHealthInputManual: Bool
 	@EnvironmentObject private var navigationManager: NavigationManager
 	@ObservedObject var viewModel: HealthDataViewModel
-	@ObservedObject var healthKitViewModel : HealthKitViewModel
 	var body: some View {
 		VStack {
 			
@@ -152,8 +149,9 @@ private struct BottomBarContent: View {
 			Button(action: {
 				if isHealthInputManual {
 					viewModel.SubmitManually(using: navigationManager)
+					
 				} else {
-					healthKitViewModel
+					viewModel
 						.SubmitByHealthKit(using: navigationManager)
 						
 				}
@@ -174,42 +172,43 @@ private struct BottomBarContent: View {
 			.clipShape(.capsule)
 			.tint(.black)
 			.padding()
-			.disabled(viewModel.isLoading || healthKitViewModel.isLoading)
+			.disabled(viewModel.isLoading )
 		}
 	}
 }
 
 #Preview {
 	HealthDataScreen(
-		viewModel: HealthDataViewModel(), healthKitViewModel: HealthKitViewModel()
+		viewModel: HealthDataViewModel(
+			healthKitViewModel: HealthKitViewModel()
+		)
 	)
 }
 struct HealthKitDataView: View {
-	@ObservedObject var healthKitViewModel = HealthKitViewModel()
-	
+	@ObservedObject var viewModel : HealthDataViewModel
 	var body: some View {
 		VStack {
-			if healthKitViewModel.isLoading {
+			if viewModel.healthKitViewModel.isLoading {
 				ProgressView("Fetching Health Data...")
-			} else if let error = healthKitViewModel.errorMessage {
+			} else if let error = viewModel.healthKitViewModel.errorMessage {
 				Text("Error: \(error)")
 					.foregroundColor(.red)
 			} else {
-				if let heartRate = healthKitViewModel.heartRate {
+				if let heartRate = viewModel.healthKitViewModel.heartRate {
 					Text("Heart Rate: \(heartRate, specifier: "%.1f") bpm")
 				}
-				if let systolic = healthKitViewModel.systolicBP,
-				   let diastolic = healthKitViewModel.diastolicBP {
+				if let systolic = viewModel.healthKitViewModel.systolicBP,
+				   let diastolic = viewModel.healthKitViewModel.diastolicBP {
 					Text("Blood Pressure: \(systolic, specifier: "%.0f") / \(diastolic, specifier: "%.0f") mmHg")
 				}
-				if let bloodGlucose = healthKitViewModel.bloodGlucose {
+				if let bloodGlucose = viewModel.healthKitViewModel.bloodGlucose {
 					Text("Blood Glucose: \(bloodGlucose, specifier: "%.1f") mg/dL")
 				}
 			}
 		}
 		.padding()
 		.task {
-			await healthKitViewModel.fetchAllData()
+			await viewModel.healthKitViewModel.fetchAllData()
 		}
 	}
 }
