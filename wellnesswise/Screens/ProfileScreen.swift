@@ -192,25 +192,7 @@ struct ProfileScreen: View {
 			}
 		}
 	}
-	private struct ProfileData: View {
-		var fieldName: String
-		var fieldValue: String
-		
-		var body: some View {
-			HStack {
-				Text(fieldName)
-					.font(.body)
-					.foregroundColor(.primary)
-				Spacer()
-				Text(fieldValue)
-					.font(.body)
-					.foregroundColor(.secondary)
-					.multilineTextAlignment(.trailing)
-			}
-			.padding(.horizontal)
-			
-		}
-	}
+
 	struct AssesmentData_Previews: PreviewProvider {
 		static var previews: some View {
 			let mockAppState = AppStateManager.shared
@@ -240,3 +222,22 @@ struct ProfileScreen: View {
 #Preview {
 	ProfileScreen()
 }
+struct ProfileData: View {
+	var fieldName: String
+	var fieldValue: String
+	
+	var body: some View {
+		HStack {
+			Text(fieldName)
+				.font(.body)
+				.foregroundColor(.primary)
+			Spacer()
+			Text(fieldValue)
+				.font(.body)
+				.foregroundColor(.secondary)
+				.multilineTextAlignment(.trailing)
+		}
+		.padding(.horizontal)
+		
+	}
+	}

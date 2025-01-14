@@ -172,7 +172,9 @@ private struct BottomBarContent: View {
 			.clipShape(.capsule)
 			.tint(.black)
 			.padding()
-			.disabled(viewModel.isLoading )
+			.disabled(
+				viewModel.isLoading || viewModel.healthKitViewModel.isLoading
+			)
 		}
 	}
 }
@@ -195,18 +197,34 @@ struct HealthKitDataView: View {
 					.foregroundColor(.red)
 			} else {
 				if let heartRate = viewModel.healthKitViewModel.heartRate {
-					Text("Heart Rate: \(heartRate, specifier: "%.1f") bpm")
+					healthKitView(
+						fieldName: "Heart rate",
+						fieldValue: heartRate)
 				}
 				if let systolic = viewModel.healthKitViewModel.systolicBP,
 				   let diastolic = viewModel.healthKitViewModel.diastolicBP {
-					Text("Blood Pressure: \(systolic, specifier: "%.0f") / \(diastolic, specifier: "%.0f") mmHg")
+					healthKitView (
+						fieldName: "Systolic",
+						fieldValue: systolic)
+					healthKitView (
+						fieldName: "Diastiolic",
+						fieldValue: diastolic
+					)
 				}
 				if let bloodGlucose = viewModel.healthKitViewModel.bloodGlucose {
-					Text("Blood Glucose: \(bloodGlucose, specifier: "%.1f") mg/dL")
+					healthKitView(
+						fieldName: "Blood Sugar",
+						fieldValue: bloodGlucose)
 				}
 			}
 		}
 		.padding()
+		.background(
+			RoundedRectangle(cornerRadius: 20)
+				.fill(Color.white.opacity(0.8))
+				.shadow(radius: 5)
+		)
+		.padding(.horizontal)
 		.task {
 			await viewModel.healthKitViewModel.fetchAllData()
 		}
@@ -214,3 +232,22 @@ struct HealthKitDataView: View {
 }
 
 
+private struct healthKitView: View {
+	var fieldName: String
+	var fieldValue: Double
+	
+	var body: some View {
+		HStack {
+			Text(fieldName)
+				.font(.body)
+				.foregroundColor(.primary)
+			Spacer()
+			Text("\(fieldValue, specifier: "%.1f") bpm")
+				.font(.body)
+				.foregroundColor(.secondary)
+				.multilineTextAlignment(.trailing)
+		}
+		.padding(.horizontal)
+		
+	}
+}
