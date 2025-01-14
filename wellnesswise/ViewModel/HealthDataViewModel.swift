@@ -24,7 +24,7 @@ class HealthDataViewModel: ObservableObject {
 	@Published var Cholestrol : String = ""
 	@Published var WaistCircumference : String = ""
 	@Published var Triglycerides : String = ""
-	@Published var errorMessage : String = ""
+	@Published var errorMessage: String? = nil
 	@Published var isLoading : Bool = false
 	var  isBpValid: Bool {
 		if Systolic.isEmpty && Diastolic.isEmpty {return false}

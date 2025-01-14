@@ -190,9 +190,9 @@ struct HealthKitDataView: View {
 	@ObservedObject var viewModel : HealthDataViewModel
 	var body: some View {
 		VStack {
-			if viewModel.healthKitViewModel.isLoading {
+			if viewModel.isLoading {
 				ProgressView("Fetching Health Data...")
-			} else if let error = viewModel.healthKitViewModel.errorMessage {
+			} else if let error = viewModel.errorMessage {
 				Text("Error: \(error)")
 					.foregroundColor(.red)
 			} else {

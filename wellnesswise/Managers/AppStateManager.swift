@@ -104,7 +104,7 @@ class AppStateManager: ObservableObject {
 		}
 		isLoading = false
 	}
-	 func fetchUserData(userId: String) async {
+	func fetchUserData(userId: String) async {
 		do {
 			let document = try await Firestore.firestore()
 				.collection("users")
@@ -242,4 +242,65 @@ class AppStateManager: ObservableObject {
 			print("Error signing out: \(error.localizedDescription)")
 		}
 	}
+	
+	func deleteUser(using navigationManager: NavigationManager) {
+		guard let user = Auth.auth().currentUser else {
+			print("No user is currently signed in")
+			return
+		}
+		let userId = user.uid
+		let db = Firestore.firestore()
+		
+		//Sub collection deletions
+		deleteSubcollection(db.collection("users").document(userId).collection("healthData"))
+		deleteSubcollection(db.collection("users").document(userId).collection("assessments"))
+
+		
+		//user document deletion
+		let userRef = db.collection("users").document(userId)
+		userRef.delete { error in
+			if let error = error {
+				print("Error deleting user document \(error.localizedDescription)")
+			} else {
+				print("successfully deleted user DOC")
+				user.delete { error in
+					if error != nil {
+						print("Error deleting firebase user")
+					} else {
+						print("firebase data sucessfully deleted")
+						navigationManager.switchToAuth()
+					}
+				}
+			}
+		}
+	}
+	
+	func deleteSubcollection(_ collection: CollectionReference) {
+		collection.getDocuments { snapshot, error in
+			if let error = error {
+				print("Error fetching subcollection documents: \(error.localizedDescription)")
+				return
+			}
+			
+			guard let documents = snapshot?.documents else {
+				print("No documents found in subcollection")
+				return
+			}
+			
+			for document in documents {
+				document.reference.delete { error in
+					if let error = error {
+						print("Error deleting document \(document.documentID): \(error.localizedDescription)")
+					} else {
+						print("Document \(document.documentID) successfully deleted")
+					}
+				}
+			}
+		}
+	}
+	
+	
 }
+
+
+
