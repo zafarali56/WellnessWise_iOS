@@ -264,11 +264,12 @@ class AppStateManager: ObservableObject {
 			} else {
 				print("successfully deleted user DOC")
 				user.delete { error in
-					if error != nil {
-						print("Error deleting firebase user")
-					} else {
+					if error == nil {
 						print("firebase data sucessfully deleted")
 						navigationManager.switchToAuth()
+						
+					} else {
+						print("Error deleting firebase user")
 					}
 				}
 			}

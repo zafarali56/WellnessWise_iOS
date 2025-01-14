@@ -18,15 +18,33 @@ struct HealthDataScreen: View {
 					isHealthInputManual: $isHealthInputManual,
 					viewModel: viewModel
 				)
-					.navigationTitle("Health Data")
-					.toolbar{
-						ToolbarItem(placement: .bottomBar){
-							BottomBarContent(
-								isHealthInputManual: $isHealthInputManual,
-								viewModel: viewModel
-							)
+				.navigationTitle("Health Data")
+				.toolbar{
+					ToolbarItem(placement: .topBarTrailing){
+						
+						Button(action: {
+							isHealthInputManual.toggle()
+						}) {
+							HStack {
+								Image(systemName: isHealthInputManual ? "applelogo" : "keyboard")
+								Text(isHealthInputManual ? "Sync from apple health " : "Enter manually")
+									.font(.headline)
+									.fontWeight(.semibold)
+							}
 						}
+						.buttonStyle(.borderedProminent)
+						.clipShape(.capsule)
+						.tint(.black)
+						.disabled(viewModel.isLoading)
 					}
+					
+					ToolbarItem(placement: .bottomBar){
+						BottomBarContent(
+							isHealthInputManual: $isHealthInputManual,
+							viewModel: viewModel
+						)
+					}
+				}
 			}
 			
 		}
@@ -37,29 +55,11 @@ struct HealthDataScreen: View {
 
 private struct FormContent : View {
 	@Binding var isHealthInputManual : Bool
-	@StateObject var viewModel : HealthDataViewModel
+	@ObservedObject var viewModel : HealthDataViewModel
 	@EnvironmentObject private var navigationManager : NavigationManager
 	
 	var body: some View {
 		VStack(spacing: 5){
-			
-			Button(action: {
-				isHealthInputManual.toggle()
-			}) {
-				HStack {
-					Image(systemName: isHealthInputManual ? "applelogo" : "keyboard")
-					Text(isHealthInputManual ? "Sync from apple health " : "Enter manually")
-						.font(.headline)
-						.fontWeight(.semibold)
-				}
-			}
-			.buttonStyle(.borderedProminent)
-			.clipShape(.capsule)
-			.tint(.black)
-			.disabled(viewModel.isLoading)
-
-			
-			
 			if isHealthInputManual {
 				EnterManual(viewModel: viewModel)
 			} else {
@@ -96,7 +96,7 @@ private struct FormContent : View {
 }
 
 private struct EnterManual : View {
-
+	
 	@StateObject var viewModel : HealthDataViewModel
 	var body: some View {
 		VStack{
@@ -145,15 +145,13 @@ private struct BottomBarContent: View {
 	var body: some View {
 		VStack {
 			
-
+			
 			Button(action: {
 				if isHealthInputManual {
 					viewModel.SubmitManually(using: navigationManager)
-					
 				} else {
 					viewModel
 						.SubmitByHealthKit(using: navigationManager)
-						
 				}
 			}) {
 				if viewModel.isLoading {
@@ -187,54 +185,45 @@ private struct BottomBarContent: View {
 	)
 }
 struct HealthKitDataView: View {
-	@ObservedObject var viewModel : HealthDataViewModel
+	@ObservedObject var viewModel: HealthDataViewModel
+	
 	var body: some View {
 		VStack {
-			if viewModel.isLoading {
-				ProgressView("Fetching Health Data...")
-			} else if let error = viewModel.errorMessage {
+			if viewModel.healthKitViewModel.isLoading {
+				ProgressView()
+					.padding()
+			} else if let error = viewModel.healthKitViewModel.errorMessage {
 				Text("Error: \(error)")
 					.foregroundColor(.red)
+					.padding()
 			} else {
-				if let heartRate = viewModel.healthKitViewModel.heartRate {
-					healthKitView(
-						fieldName: "Heart rate",
-						fieldValue: heartRate)
+				if let heartRate = viewModel.healthKitViewModel.heartRate,
+				   let systolic = viewModel.healthKitViewModel.systolicBP,
+				   let diastolic = viewModel.healthKitViewModel.diastolicBP,
+				   let bloodGlucose = viewModel.healthKitViewModel.bloodGlucose {
+					HealthKitFieldView(fieldName: "Blood Sugar", fieldValue: "\(bloodGlucose) mg/dL")
+					HealthKitFieldView(fieldName: "Heart Rate", fieldValue: "\(heartRate) bpm")
+					HealthKitFieldView(fieldName: "Systolic", fieldValue: "\(systolic) mmHg")
+					HealthKitFieldView(fieldName: "Diastolic", fieldValue: "\(diastolic) mmHg")
 				}
-				if let systolic = viewModel.healthKitViewModel.systolicBP,
-				   let diastolic = viewModel.healthKitViewModel.diastolicBP {
-					healthKitView (
-						fieldName: "Systolic",
-						fieldValue: systolic)
-					healthKitView (
-						fieldName: "Diastiolic",
-						fieldValue: diastolic
-					)
-				}
-				if let bloodGlucose = viewModel.healthKitViewModel.bloodGlucose {
-					healthKitView(
-						fieldName: "Blood Sugar",
-						fieldValue: bloodGlucose)
-				}
+				
 			}
+		}
+		.task {
+			await viewModel.healthKitViewModel.fetchAllData()
 		}
 		.padding()
 		.background(
 			RoundedRectangle(cornerRadius: 20)
 				.fill(Color.white.opacity(0.8))
-				.shadow(radius: 5)
 		)
-		.padding(.horizontal)
-		.task {
-			await viewModel.healthKitViewModel.fetchAllData()
-		}
+		
 	}
 }
 
-
-private struct healthKitView: View {
+struct HealthKitFieldView: View {
 	var fieldName: String
-	var fieldValue: Double
+	var fieldValue: String
 	
 	var body: some View {
 		HStack {
@@ -242,12 +231,10 @@ private struct healthKitView: View {
 				.font(.body)
 				.foregroundColor(.primary)
 			Spacer()
-			Text("\(fieldValue, specifier: "%.1f") bpm")
+			Text(fieldValue)
 				.font(.body)
 				.foregroundColor(.secondary)
 				.multilineTextAlignment(.trailing)
 		}
-		.padding(.horizontal)
-		
 	}
 }
