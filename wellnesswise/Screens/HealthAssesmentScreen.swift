@@ -3,9 +3,15 @@ import SwiftUI
 struct HealthAssessmentScreen: View {
 	@EnvironmentObject private var navigationManager: NavigationManager
 	@StateObject private var viewModel: HealthAssessmentViewModel
-	init() {
-		_viewModel = StateObject(wrappedValue: HealthAssessmentViewModel())
+	private var assesmentId: String?
+	
+	init(assesmentId: String? = nil) {
+		self.assesmentId = assesmentId
+		_viewModel = StateObject(
+			wrappedValue: HealthAssessmentViewModel(assesmentId: assesmentId)
+		)
 	}
+	
 	var body: some View {
 		VStack{
 			FormContent(viewModel: viewModel)
@@ -52,7 +58,6 @@ private struct BottomBarContent: View {
 					.tint(.white)
 				} else {
 					Text("Submit")
-					
 						.font(.headline)
 						.fontWeight(.semibold)
 						.foregroundStyle(.white)

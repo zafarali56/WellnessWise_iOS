@@ -168,10 +168,10 @@
 		9E7BFF7C2CC17A9D00253D36 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				9E0804C52D11E7E1008AA15A /* HomeWidgets.swift */,
 				9E2820AE2CCA7DF500CABA49 /* StyledTextField.swift */,
 				9EA583B82CDF28EB00222E46 /* CustomPicker.swift */,
 				9EDFA17F2CF398B000960194 /* CustomBottomBar.swift */,
-				9E0804C52D11E7E1008AA15A /* HomeWidgets.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";

@@ -64,7 +64,6 @@ private struct FormContent : View {
 				EnterManual(viewModel: viewModel)
 			} else {
 				HealthKitDataView(viewModel: viewModel)
-				
 			}
 			StyledTextField(
 				title: "Cholestrol",

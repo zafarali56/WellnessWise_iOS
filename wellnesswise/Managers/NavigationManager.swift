@@ -14,6 +14,7 @@ enum AuthenticationRoute: Hashable {
 enum MainRoute: Hashable {
 	case home
 	case profile
+	case healthAssessment
 }
 @MainActor
 class NavigationManager: ObservableObject {

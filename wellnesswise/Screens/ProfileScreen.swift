@@ -20,14 +20,14 @@ struct ProfileScreen: View {
 					Task {
 						if let userId = Auth.auth().currentUser?.uid {
 							await authManager
-								.fetchUserData(userId: userId)}}}
+							.fetchUserData(userId: userId)}}}
 			Health_Data()
 				.onAppear {
 					Task {
 						if let userId = Auth.auth().currentUser?.uid {
 							await authManager
-								.fetchHealthData(userId: userId)}}}
-			Assesment_Data()
+							.fetchHealthData(userId: userId)}}}
+			Assesment_Data( navigationManager: navigationManager)
 				.onAppear {
 					Task {
 						if let userId = Auth.auth().currentUser?.uid {
@@ -56,10 +56,10 @@ struct ProfileScreen: View {
 					}
 					.padding()
 					.background(
-					 RoundedRectangle(cornerRadius: 20)
-						 .fill(Color.white.opacity(0.8))
-						 .shadow(radius: 5)
-				 )
+						RoundedRectangle(cornerRadius: 20)
+							.fill(Color.white.opacity(0.8))
+							.shadow(radius: 5)
+					)
 					.padding(.horizontal)
 				} else {
 					Text("No user data available")
@@ -71,6 +71,7 @@ struct ProfileScreen: View {
 	
 	private struct Health_Data : View {
 		@StateObject var appState = AppStateManager.shared
+		
 		var body: some View {
 			if let healthData = appState.currentUserHealthData {
 				VStack (spacing: 15){
@@ -99,10 +100,10 @@ struct ProfileScreen: View {
 					)
 				}				.padding()
 					.background(
-					 RoundedRectangle(cornerRadius: 20)
-						 .fill(Color.white.opacity(0.8))
-						 .shadow(radius: 5)
-				 )
+						RoundedRectangle(cornerRadius: 20)
+							.fill(Color.white.opacity(0.8))
+							.shadow(radius: 5)
+					)
 					.padding(.horizontal)
 			}
 			else{
@@ -113,12 +114,23 @@ struct ProfileScreen: View {
 	}
 	private struct Assesment_Data: View {
 		@StateObject var appState = AppStateManager.shared
+		@ObservedObject var navigationManager : NavigationManager
 		var body: some View {
 			if let assessmentData = appState.currentHealthAssesmentData {
 				VStack(spacing: 15) {
-					Text("Assessment health info")
-						.font(.headline)
-						.fontDesign(.rounded)
+					HStack {
+						Text("Assessment health info")
+							.font(.headline)
+							.fontDesign(.rounded)
+						
+						Spacer()
+						Image(systemName: "pencil")
+							.bold()
+							.onTapGesture {
+								navigationManager.pushMain(.healthAssessment)
+							}
+					}
+					
 					ProfileData(
 						fieldName: "Chronic Diseases",
 						fieldValue: assessmentData.chronicDiseases
@@ -192,32 +204,7 @@ struct ProfileScreen: View {
 			}
 		}
 	}
-
-	struct AssesmentData_Previews: PreviewProvider {
-		static var previews: some View {
-			let mockAppState = AppStateManager.shared
-			mockAppState.currentHealthAssesmentData = HealthAssessment(
-				id: "mockId",
-				chronicDiseases: "Diabetes",
-				familyDiabetes: "Yes",
-				familyHistoryCancer: "No",
-				heartDisease: "No",
-				previousSurgeries: "Appendectomy",
-				alcoholLevel: "Moderate",
-				dietQuality: "Good",
-				physicalActivityLevel: "Active",
-				sleepHours: 8,
-				smoke: "No",
-				airQualityIndex: 45,
-				pollutantExposure: "Low",
-				healthCareAcces: "Excellent",
-				stresslevel: "Low"
-			)
-			
-			return Assesment_Data()
-				.environmentObject(mockAppState)
-		}
-	}
+	
 }
 #Preview {
 	ProfileScreen()

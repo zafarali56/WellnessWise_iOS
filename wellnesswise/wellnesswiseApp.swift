@@ -122,6 +122,8 @@ struct MainFlow: View {
 							HomeScreen()
 						case .profile:
 							ProfileScreen()
+						case .healthAssessment:
+							HealthAssessmentScreen(assesmentId: "existingAssessmentId")
 					}
 				}
 		}

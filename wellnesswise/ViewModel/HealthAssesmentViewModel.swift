@@ -4,6 +4,16 @@ import FirebaseFirestore
 import SwiftUI
 
 class HealthAssessmentViewModel: ObservableObject {
+	@Published var assesmentId: String?
+	
+	init (assesmentId: String? = nil) {
+		self.assesmentId = assesmentId
+		if let assesmentId = assesmentId {
+			//TODO Load assesment
+			loadAssesment(assesmentId: assesmentId)
+		}
+	}
+	
 	//Medical History
 	@Published var familyDiabetes: String = "no"
 	@Published var heartDisease: String = "no"
@@ -78,6 +88,58 @@ class HealthAssessmentViewModel: ObservableObject {
 				return "Hazardous: Health alert"
 		}
 	}
+	func loadAssesment (assesmentId: String)
+	{
+		guard let userId = Auth.auth().currentUser?.uid else {
+			errorMessage = "User not authenticated"
+			return
+		}
+		isLoading = true
+		
+		Firestore.firestore().collection("users")
+			.document(userId)
+			.collection("assessments")
+			.document(assesmentId)
+			.getDocument{ [weak self] snapshot, error in
+				self?.isLoading = false
+				
+				if let error = error {
+					self?.errorMessage = error.localizedDescription
+					return
+				}
+				//if data not found
+				guard let data = snapshot?.data() else {
+					self?.errorMessage = "Health assesment data not found"
+					return
+				}
+				// Populate the view model with the loaded data
+				if let medicalHistory = data["medicalHistory"] as? [String: Any] {
+					self?.familyDiabetes = medicalHistory["familyDiabetes"] as? String ?? "no"
+					self?.heartDisease = medicalHistory["heartDisease"] as? String ?? "no"
+					self?.familyHistoryCancer = medicalHistory["familyHistoryCancer"] as? String ?? "no"
+					self?.previousSurgeries = medicalHistory["previousSurgeries"] as? String ?? "no"
+					self?.chronicDiseases = medicalHistory["chronicDiseases"] as? String ?? "no"
+				}
+				
+				if let lifestyleHabits = data["lifestyleHabits"] as? [String: Any] {
+					self?.smoke = lifestyleHabits["smoke"] as? String ?? "no"
+					self?.selectedAlcoholLevel = lifestyleHabits["alcoholLevel"] as? String ?? "None"
+					self?.selectedActivityLevel = lifestyleHabits["physicalActivityLevel"] as? String ?? "Moderate"
+					self?.selectedDietQuality = lifestyleHabits["dietQuality"] as? String ?? "Good"
+					self?.sleepHours = lifestyleHabits["sleepHours"] as? Double ?? 7.0
+				}
+				
+				if let environmentalFactors = data["environmentalFactors"] as? [String: Any] {
+					self?.airQualityIndex = environmentalFactors["airQualityIndex"] as? Double ?? 50.0
+					self?.selectedPollutantExposure = environmentalFactors["pollutantExposure"] as? String ?? "Low"
+				}
+				
+				if let additionalInformation = data["additionalInformation"] as? [String: Any] {
+					self?.selectedStressLevel = additionalInformation["stressLevel"] as? String ?? "Moderate"
+					self?.selectedHealthcareAccess = additionalInformation["healthcareAccess"] as? String ?? "Moderate"
+				}
+			}
+	}
 	@MainActor
 	//Data Submission
 	func submitAssessment(using navigationManager : NavigationManager) {
@@ -113,19 +175,30 @@ class HealthAssessmentViewModel: ObservableObject {
 			],
 			"timestamp": FieldValue.serverTimestamp()
 		]
-
-		Firestore.firestore().collection("users")
-			.document(userId)
-			.collection("assessments")
-			.addDocument(data: assessmentData) { [weak self] error in
-				self?.isLoading = false
+		let documentReference : DocumentReference
+		if let assesmentId = assesmentId {
+			documentReference = Firestore.firestore().collection("users")
+				.document(userId)
+				.collection("assessments")
+				.document(assesmentId)
+		}
+		else {
+			documentReference = Firestore.firestore().collection("users")
+				.document(userId)
+				.collection("assessments")
+				.document()
+		}
+		documentReference.setData(assessmentData) { [weak self] error in
+			self?.isLoading = false
+			
+			if let error = error {
+				self?.errorMessage = error.localizedDescription
 				
-				if let error = error {
-					self?.errorMessage = error.localizedDescription
-				} else {
-					self?.isAssessmentCompleted = true
-					navigationManager.pushAuthentication(.healthDataScreen)
-				}
+			} else {
+				self?.isAssessmentCompleted = true
+				navigationManager.pushAuthentication(.healthDataScreen)
 			}
+		}
+		
 	}
 }
