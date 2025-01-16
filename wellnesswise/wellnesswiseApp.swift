@@ -81,7 +81,7 @@ struct AuthenticationFlow: View {
 						case .verification:
 							VerificationScreen()
 						case .healthAssessment:
-							HealthAssessmentScreen()
+							HealthAssessmentScreen(isEditing: false)
 						case .healthDataScreen:
 							HealthDataScreen(
 								viewModel: HealthDataViewModel(
@@ -117,7 +117,7 @@ struct MainFlow: View {
 						case .profile:
 							ProfileScreen()
 						case .healthAssessment:
-							HealthAssessmentScreen()
+							HealthAssessmentScreen(isEditing: true)
 					}
 				}
 		}

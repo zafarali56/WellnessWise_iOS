@@ -4,9 +4,10 @@ import FirebaseFirestore
 import SwiftUI
 
 class HealthAssessmentViewModel: ObservableObject {
-	@Published var assesmentId: String?
+	@Published var isEditing : Bool = false
 	
-	init () {
+	init (isEditing : Bool = false) {
+		self.isEditing = isEditing
 			loadAssesment()
 		}
 	
@@ -141,7 +142,7 @@ class HealthAssessmentViewModel: ObservableObject {
 	}
 	@MainActor
 	//Data Submission
-	func submitAssessment(using navigationManager : NavigationManager) {
+	func submitAssessment(using navigationManager : NavigationManager, dismiss: DismissAction) {
 		guard let userId = Auth.auth().currentUser?.uid else {
 			errorMessage = "User not authenticated"
 			return
@@ -196,7 +197,8 @@ class HealthAssessmentViewModel: ObservableObject {
 						self.errorMessage = error.localizedDescription
 					}
 					else {
-						navigationManager.pushMain(.profile)
+						dismiss()
+						print("Data saved")
 					}
 				}
 				

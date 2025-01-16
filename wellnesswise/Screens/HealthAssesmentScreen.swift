@@ -4,9 +4,11 @@ import SwiftUI
 struct HealthAssessmentScreen: View {
 	@EnvironmentObject private var navigationManager: NavigationManager
 	@StateObject private var viewModel: HealthAssessmentViewModel
-	init() {
+
+	
+	init(isEditing: Bool = false) {
 		_viewModel = StateObject(
-			wrappedValue: HealthAssessmentViewModel()
+			wrappedValue: HealthAssessmentViewModel(isEditing: isEditing)
 		)
 	}
 	
@@ -28,7 +30,8 @@ struct HealthAssessmentScreen: View {
 					}
 				}
 			
-		}.navigationBarBackButtonHidden()
+		}
+		.navigationBarBackButtonHidden(!viewModel.isEditing)//Show back button only when editing
 	}
 }
 
@@ -47,10 +50,16 @@ private struct FormContent: View {
 private struct BottomBarContent: View {
 	@EnvironmentObject private var navigationManager : NavigationManager
 	@ObservedObject var viewModel: HealthAssessmentViewModel
+	@Environment(\.dismiss) private var dismiss
 	
 	var body: some View {
 		VStack(spacing: 8) {
-			Button(action: { viewModel.submitAssessment(using: navigationManager) }) {
+			Button(
+				action: { viewModel.submitAssessment(
+					using: navigationManager,
+					dismiss: dismiss
+				)
+				}) {
 				if viewModel.isLoading {
 					ProgressView()
 					.tint(.white)
