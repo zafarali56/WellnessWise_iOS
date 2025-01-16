@@ -17,15 +17,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 		FirebaseApp.configure()
 		return true
 	}
-	
 }
 @main
 struct WellnessWiseApp: App {
 	@UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 	@StateObject private var appState = AppStateManager.shared
 	@StateObject private var navigationManager = NavigationManager.shared
-	
-	
 	var body: some Scene {
 		WindowGroup {
 			Group {
@@ -72,7 +69,6 @@ struct RootView: View {
 
 struct AuthenticationFlow: View {
 	@EnvironmentObject private var navigationManager: NavigationManager
-	
 	var body: some View {
 		NavigationStack(path: $navigationManager.authenticationPath) {
 			LoginScreen()
@@ -89,11 +85,9 @@ struct AuthenticationFlow: View {
 						case .healthDataScreen:
 							HealthDataScreen(
 								viewModel: HealthDataViewModel(
-									healthKitViewModel: HealthKitViewModel()
-								)
-							)
-					}
+									healthKitViewModel: HealthKitViewModel()))
 				}
+			}
 		}
 	}
 }
@@ -123,7 +117,7 @@ struct MainFlow: View {
 						case .profile:
 							ProfileScreen()
 						case .healthAssessment:
-							HealthAssessmentScreen(assesmentId: "existingAssessmentId")
+							HealthAssessmentScreen()
 					}
 				}
 		}
@@ -135,25 +129,21 @@ extension LoginViewModel {
 		NavigationManager.shared.switchToMain()
 	}
 }
-
 extension SignUpViewModel {
 	@MainActor func handleSuccessfulSignUp() {
 		NavigationManager.shared.pushAuthentication(.verification)
 	}
 }
-
 extension EmailVerificationViewModel {
 	@MainActor func handleSuccessfulVerification() {
 		NavigationManager.shared.pushAuthentication(.healthAssessment)
 	}
 }
-
 extension HealthAssessmentViewModel {
 	@MainActor func handleSuccessfulAssessment() {
 		NavigationManager.shared.pushAuthentication(.healthDataScreen)
 	}
 }
-
 extension HealthDataViewModel {
 	@MainActor func handleSuccessfulHealthData ()
 	{

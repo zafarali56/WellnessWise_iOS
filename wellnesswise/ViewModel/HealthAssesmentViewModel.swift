@@ -6,13 +6,9 @@ import SwiftUI
 class HealthAssessmentViewModel: ObservableObject {
 	@Published var assesmentId: String?
 	
-	init (assesmentId: String? = nil) {
-		self.assesmentId = assesmentId
-		if let assesmentId = assesmentId {
-			//TODO Load assesment
-			loadAssesment(assesmentId: assesmentId)
+	init () {
+			loadAssesment()
 		}
-	}
 	
 	//Medical History
 	@Published var familyDiabetes: String = "no"
@@ -88,7 +84,7 @@ class HealthAssessmentViewModel: ObservableObject {
 				return "Hazardous: Health alert"
 		}
 	}
-	func loadAssesment (assesmentId: String)
+	func loadAssesment ()
 	{
 		guard let userId = Auth.auth().currentUser?.uid else {
 			errorMessage = "User not authenticated"
@@ -99,8 +95,9 @@ class HealthAssessmentViewModel: ObservableObject {
 		Firestore.firestore().collection("users")
 			.document(userId)
 			.collection("assessments")
-			.document(assesmentId)
-			.getDocument{ [weak self] snapshot, error in
+			.limit(to: 1) // Only fetch the first document
+
+			.getDocuments{ [weak self] snapshot, error in
 				self?.isLoading = false
 				
 				if let error = error {
@@ -108,10 +105,12 @@ class HealthAssessmentViewModel: ObservableObject {
 					return
 				}
 				//if data not found
-				guard let data = snapshot?.data() else {
-					self?.errorMessage = "Health assesment data not found"
+				guard let document = snapshot?.documents.first else {
+	
 					return
 				}
+				
+				let data = document.data()
 				// Populate the view model with the loaded data
 				if let medicalHistory = data["medicalHistory"] as? [String: Any] {
 					self?.familyDiabetes = medicalHistory["familyDiabetes"] as? String ?? "no"
@@ -175,28 +174,47 @@ class HealthAssessmentViewModel: ObservableObject {
 			],
 			"timestamp": FieldValue.serverTimestamp()
 		]
-		let documentReference : DocumentReference
-		if let assesmentId = assesmentId {
-			documentReference = Firestore.firestore().collection("users")
+		let assessmentsCollection = Firestore.firestore().collection("users")
 				.document(userId)
 				.collection("assessments")
-				.document(assesmentId)
-		}
-		else {
-			documentReference = Firestore.firestore().collection("users")
-				.document(userId)
-				.collection("assessments")
-				.document()
-		}
-		documentReference.setData(assessmentData) { [weak self] error in
-			self?.isLoading = false
+			
+		assessmentsCollection.limit(to: 1).getDocuments { [weak self] snapshot, error in
+			guard let self = self else { return }
+			
+			
 			
 			if let error = error {
-				self?.errorMessage = error.localizedDescription
+				self.isLoading = false
+				self.errorMessage = error.localizedDescription
+				return}
+			
+			if let document = snapshot?.documents.first {
+				//update existing one
+				document.reference.setData(assessmentData, merge: true) { error in
+					self.isLoading = false
+					if let error = error {
+						self.errorMessage = error.localizedDescription
+					}
+					else {
+						navigationManager.pushMain(.profile)
+					}
+				}
 				
-			} else {
-				self?.isAssessmentCompleted = true
-				navigationManager.pushAuthentication(.healthDataScreen)
+			}
+			else {
+				assessmentsCollection
+					.document()
+					.setData(assessmentData) { error in
+						self.isLoading = false
+						if let error = error {
+							self.errorMessage = error.localizedDescription
+						}
+						else {
+							self.isAssessmentCompleted = true
+							navigationManager
+								.pushAuthentication(.healthDataScreen)
+						}
+					}
 			}
 		}
 		

@@ -1,14 +1,12 @@
 import SwiftUI
 
+
 struct HealthAssessmentScreen: View {
 	@EnvironmentObject private var navigationManager: NavigationManager
 	@StateObject private var viewModel: HealthAssessmentViewModel
-	private var assesmentId: String?
-	
-	init(assesmentId: String? = nil) {
-		self.assesmentId = assesmentId
+	init() {
 		_viewModel = StateObject(
-			wrappedValue: HealthAssessmentViewModel(assesmentId: assesmentId)
+			wrappedValue: HealthAssessmentViewModel()
 		)
 	}
 	
