@@ -45,9 +45,19 @@ struct ProfileScreen: View {
 			VStack(spacing: 15) {
 				if let userData = appState.currentUserData {
 					VStack(spacing: 15) {
-						Text("Personal information")
-							.font(.headline)
-							.fontDesign(.rounded)
+						HStack {
+							Text("Personal info")
+								.font(.headline)
+								.fontDesign(.rounded)
+							Spacer()
+							HStack{
+								Text("Edit")
+								Image(systemName: "pencil.circle")
+									.bold()
+							}.onTapGesture {
+								//Navigate to
+							}
+						}
 						ProfileData(fieldName: "Name", fieldValue: userData.fullName)
 						ProfileData(fieldName: "Age", fieldValue: "\(userData.age) -/years")
 						ProfileData(fieldName: "Height", fieldValue: "\(userData.height) -/cm")
@@ -75,9 +85,21 @@ struct ProfileScreen: View {
 		var body: some View {
 			if let healthData = appState.currentUserHealthData {
 				VStack (spacing: 15){
-					Text("Current health info")
-						.font(.headline)
-						.fontDesign(.rounded)
+					HStack {
+						Text("Health Info")
+							.font(.headline)
+							.fontDesign(.rounded)
+						
+						Spacer()
+						Text("Edit")
+						Image(systemName: "pencil.circle")
+							.bold()
+							.onTapGesture {
+							//Navigatete health info edit screen
+							}
+					}
+					
+					
 					ProfileData	(
 						fieldName: "Blood Pressure",
 						fieldValue: "\(healthData.bloodPressure)"
@@ -124,11 +146,14 @@ struct ProfileScreen: View {
 							.fontDesign(.rounded)
 						
 						Spacer()
-						Image(systemName: "pencil")
-							.bold()
-							.onTapGesture {
-								navigationManager.pushMain(.healthAssessment)
-							}
+						HStack{
+							Text("Edit")
+							Image(systemName: "chevron.right")
+								.bold()
+						}.onTapGesture {
+							navigationManager.pushMain(.healthAssessment)
+						}
+
 					}
 					
 					ProfileData(
@@ -228,3 +253,5 @@ struct ProfileData: View {
 		
 	}
 	}
+
+
