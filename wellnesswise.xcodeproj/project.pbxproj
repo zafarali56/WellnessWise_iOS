@@ -41,6 +41,7 @@
 		9EEF186D2CB6B6EC00AA8D5B /* wellnesswiseUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEF186C2CB6B6EC00AA8D5B /* wellnesswiseUITestsLaunchTests.swift */; };
 		9EEFE8652CDA9FA300A47133 /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEFE8642CDA9FA300A47133 /* ProfileScreen.swift */; };
 		9EEFE8672CDA9FC000A47133 /* VerificationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEFE8662CDA9FC000A47133 /* VerificationScreen.swift */; };
+		9EFE0AD62D481B6200BAEB14 /* WelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EFE0AD52D481B6200BAEB14 /* WelcomeScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +95,7 @@
 		9EEF186C2CB6B6EC00AA8D5B /* wellnesswiseUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wellnesswiseUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		9EEFE8642CDA9FA300A47133 /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
 		9EEFE8662CDA9FC000A47133 /* VerificationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationScreen.swift; sourceTree = "<group>"; };
+		9EFE0AD52D481B6200BAEB14 /* WelcomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 				9EEFE8662CDA9FC000A47133 /* VerificationScreen.swift */,
 				9EA772642CF6EFAC00BBEDE3 /* SettingsScreeen.swift */,
 				9EA772662CF6F18600BBEDE3 /* HealthScreen.swift */,
+				9EFE0AD52D481B6200BAEB14 /* WelcomeScreen.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -389,6 +392,7 @@
 				9E1BA6422CC5443F00DFDD3B /* SignUpViewModel.swift in Sources */,
 				9E14F5B82CB979050094EF6C /* LoginScreen.swift in Sources */,
 				9E2820AF2CCA7DF500CABA49 /* StyledTextField.swift in Sources */,
+				9EFE0AD62D481B6200BAEB14 /* WelcomeScreen.swift in Sources */,
 				9E7DCE732CD159560032AF2F /* HealthAssesmentScreen.swift in Sources */,
 				9E7BFF7B2CC149A200253D36 /* SignUpScreen.swift in Sources */,
 				9EACD1C52D231A6400C947C6 /* HealthKitViewModel.swift in Sources */,

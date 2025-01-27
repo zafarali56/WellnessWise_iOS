@@ -78,7 +78,7 @@ class EmailVerificationViewModel : ObservableObject {
 			};self.checkVerificationStatus();if self.isEmailVerified {timer.invalidate()
 				DispatchQueue.main.async {
 					NavigationManager.shared
-						.pushMain(.home)
+						.switchToMain()
 				}
 			}
 		}
