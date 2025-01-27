@@ -17,40 +17,30 @@ class HealthAssessmentViewModel: ObservableObject {
 	@Published var familyHistoryCancer: String = "no"
 	@Published var previousSurgeries: String = "no"
 	@Published var chronicDiseases: String = "no"
-	
 	// Lifestyle Habits
 	@Published var smoke: String = "no"
 	@Published var selectedAlcoholLevel = "None"
 	let alcoholConsumptionLevels = ["None", "Light", "Moderate", "Heavy", "Very Heavy"]
-	
 	@Published var selectedActivityLevel = "Moderate"
 	let physicalActivityLevels = ["Sedentary", "Light", "Moderate", "Active", "Very Active"]
-	
 	@Published var selectedDietQuality: String = "Good"
 	let dietQualityLevels = ["Poor", "Fair", "Good", "Very Good", "Excellent"]
-	
 	@Published var sleepHours: Double = 7.0
 	let sleepHoursRange = 4.0...12.0
-	
 	// Environmental Factors
 	@Published var airQualityIndex: Double = 50.0
 	let airQualityIndexRange = 1.0...500.0
-	
 	@Published var selectedPollutantExposure: String = "Low"
 	let pollutantExposureLevels = ["Low", "Moderate", "High", "Very High"]
-	
 	// Additional Information
 	@Published var selectedStressLevel: String = "Moderate"
 	let stressLevels = ["Low", "Mild", "Moderate", "High", "Severe"]
-	
 	@Published var selectedHealthcareAccess: String = "Moderate"
 	let healthcareAccessLevels = ["Poor", "Limited", "Moderate", "Good", "Excellent"]
-	
 	// State
 	@Published var isLoading = false
 	@Published var errorMessage = ""
 	@Published var isAssessmentCompleted = false
-	
 	//Helper Methods
 	func getAirQualityColor() -> Color {
 		switch airQualityIndex {
@@ -68,7 +58,6 @@ class HealthAssessmentViewModel: ObservableObject {
 				return .brown
 		}
 	}
-	
 	func getAirQualityDescription() -> String {
 		switch airQualityIndex {
 			case 0...50:
@@ -92,25 +81,20 @@ class HealthAssessmentViewModel: ObservableObject {
 			return
 		}
 		isLoading = true
-		
 		Firestore.firestore().collection("users")
 			.document(userId)
 			.collection("assessments")
 			.limit(to: 1) // Only fetch the first document
-
 			.getDocuments{ [weak self] snapshot, error in
 				self?.isLoading = false
-				
 				if let error = error {
 					self?.errorMessage = error.localizedDescription
 					return
 				}
 				//if data not found
 				guard let document = snapshot?.documents.first else {
-	
 					return
 				}
-				
 				let data = document.data()
 				// Populate the view model with the loaded data
 				if let medicalHistory = data["medicalHistory"] as? [String: Any] {
@@ -147,9 +131,7 @@ class HealthAssessmentViewModel: ObservableObject {
 			errorMessage = "User not authenticated"
 			return
 		}
-		
 		isLoading = true
-		
 		let assessmentData: [String: Any] = [
 			"medicalHistory": [
 				"familyDiabetes": familyDiabetes,
@@ -181,9 +163,6 @@ class HealthAssessmentViewModel: ObservableObject {
 			
 		assessmentsCollection.limit(to: 1).getDocuments { [weak self] snapshot, error in
 			guard let self = self else { return }
-			
-			
-			
 			if let error = error {
 				self.isLoading = false
 				self.errorMessage = error.localizedDescription
@@ -201,7 +180,6 @@ class HealthAssessmentViewModel: ObservableObject {
 						print("Data saved")
 					}
 				}
-				
 			}
 			else {
 				assessmentsCollection
@@ -214,7 +192,7 @@ class HealthAssessmentViewModel: ObservableObject {
 						else {
 							self.isAssessmentCompleted = true
 							navigationManager
-								.pushAuthentication(.healthDataScreen)
+								.pushMain(.healthDataScreen)
 						}
 					}
 			}

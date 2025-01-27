@@ -11,12 +11,10 @@ import FirebaseFirestore
 
 class HealthDataViewModel: ObservableObject {
 	@Published var healthKitViewModel : HealthKitViewModel
-	
 	init (healthKitViewModel: HealthKitViewModel)
 	{
 		self.healthKitViewModel = healthKitViewModel
 	}
-	
 	@Published var Systolic : String = ""
 	@Published var Diastolic : String = ""
 	@Published var BloodSugar : String = ""
@@ -56,8 +54,6 @@ class HealthDataViewModel: ObservableObject {
 		if Triglycerides.isEmpty {return false}
 		return true
 	}
-	
-	
 	func isError ()-> Bool {
 		if errorMessage != "" {
 			return true
@@ -66,7 +62,6 @@ class HealthDataViewModel: ObservableObject {
 			return false
 		}
 	}
-	
 	@MainActor
 	func SubmitManually (using navigationManager : NavigationManager){
 		guard let userId = Auth.auth().currentUser?.uid else {
@@ -105,13 +100,11 @@ class HealthDataViewModel: ObservableObject {
 	@MainActor
 	func SubmitByHealthKit (using navigationManager: NavigationManager)  {
 		guard let userId = Auth.auth().currentUser?.uid else {
-			
 			healthKitViewModel.errorMessage = "User not authenticated"
 			return
 		}
 		healthKitViewModel.errorMessage = ""
 		healthKitViewModel.isLoading = true
-		
 		guard let systolic = healthKitViewModel.systolicBP,
 			  let diastolic = healthKitViewModel.diastolicBP,
 			  let heartrate = healthKitViewModel.heartRate,
@@ -120,7 +113,6 @@ class HealthDataViewModel: ObservableObject {
 			healthKitViewModel.isLoading = false
 			return
 		}
-		
 		print(healthKitViewModel.errorMessage ?? "")
 		print("Systolic: \(systolic), Diastolic: \(diastolic), HeartRate: \(heartrate), BloodGlucose: \(bloodglucose)")
 		let healthData : [String: Any] = [
@@ -133,7 +125,6 @@ class HealthDataViewModel: ObservableObject {
 				"bloodSugar" : healthKitViewModel.bloodGlucose ?? 0.0,
 			],
 			"timestamp" : FieldValue.serverTimestamp()
-			
 		]
 		print(healthData)
 		Firestore.firestore().collection("users")
@@ -144,13 +135,10 @@ class HealthDataViewModel: ObservableObject {
 				if let error = error {
 					self?.healthKitViewModel.errorMessage = error.localizedDescription
 				} else {
-					navigationManager.switchToMain()
-				}
+					navigationManager.pushMain(.home)
 			}
+		}
 	}
-	
-	
-
 }
 
 

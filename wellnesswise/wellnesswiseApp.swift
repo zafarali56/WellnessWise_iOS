@@ -80,13 +80,8 @@ struct AuthenticationFlow: View {
 							SignUpScreen()
 						case .verification:
 							VerificationScreen()
-						case .healthAssessment:
-							HealthAssessmentScreen(isEditing: false)
-						case .healthDataScreen:
-							HealthDataScreen(
-								viewModel: HealthDataViewModel(
-									healthKitViewModel: HealthKitViewModel()))
-				}
+
+					}
 			}
 		}
 	}
@@ -117,7 +112,12 @@ struct MainFlow: View {
 						case .profile:
 							ProfileScreen()
 						case .healthAssessment:
-							HealthAssessmentScreen(isEditing: true)
+							HealthAssessmentScreen(isEditing: false)
+						case .healthDataScreen:
+							HealthDataScreen(
+								viewModel: HealthDataViewModel(
+									healthKitViewModel: HealthKitViewModel()))
+						
 					}
 				}
 		}
@@ -136,12 +136,12 @@ extension SignUpViewModel {
 }
 extension EmailVerificationViewModel {
 	@MainActor func handleSuccessfulVerification() {
-		NavigationManager.shared.pushAuthentication(.healthAssessment)
+		NavigationManager.shared.pushMain(.home)
 	}
 }
 extension HealthAssessmentViewModel {
 	@MainActor func handleSuccessfulAssessment() {
-		NavigationManager.shared.pushAuthentication(.healthDataScreen)
+		NavigationManager.shared.pushMain(.healthDataScreen)
 	}
 }
 extension HealthDataViewModel {
