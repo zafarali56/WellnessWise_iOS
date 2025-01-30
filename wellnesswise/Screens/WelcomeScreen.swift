@@ -35,7 +35,6 @@ struct pageInfo : Identifiable {
 
 let pages = [
 	pageInfo(lable: "Welcome to Wellness Wise", text: "Wellness is your personal Ai health navigator helping you manage your health.", image: "ddmyy"),
-	pageInfo(lable: "dummy2", text: "dummy2", image: "Dummy2")
 ]
 
 
