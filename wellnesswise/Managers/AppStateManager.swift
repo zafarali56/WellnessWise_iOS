@@ -39,6 +39,12 @@ struct HealthAssessment : Codable, Identifiable {
 	var healthCareAcces : String
 	var stresslevel : String
 }
+
+extension HealthData {
+	var isEmpty : Bool {
+		return bloodSugar.isEmpty && cholestrol.isEmpty && bloodSugar.isEmpty && heartRate.isEmpty && waistCircumference.isEmpty
+	}
+}
 @MainActor
 class AppStateManager: ObservableObject {
 	@Published var isAuthenticated = false
@@ -53,6 +59,10 @@ class AppStateManager: ObservableObject {
 		setupInitialState()
 	}
 	
+//check for empty userHealthData
+	func isUserDataEmpty ()-> Bool{
+		return ((currentUserHealthData?.isEmpty) != nil)
+	}
 	private func setupInitialState() {
 		isAuthenticated = UserDefaults.standard.bool(forKey: authStateKey)
 		

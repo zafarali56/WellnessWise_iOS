@@ -61,36 +61,41 @@ private struct Widgets: View {
 	@StateObject var appState = AppStateManager.shared
 	var body: some View {
 		VStack{
-			if let healthData = appState.currentUserHealthData{
-				HomeWidgets(
-					title: "Heart rate",
-					subtitle: "\(healthData.heartRate) -/bpm",
-					imageName: "hr",
-					backgroundColor: Color.red,
-					width: 35)
-				HStack()
-				{
+			if ((appState.currentUserHealthData?.isEmpty) != nil) {
+				if let healthData = appState.currentUserHealthData{
 					HomeWidgets(
-						title: "Blood Sugar",
-						subtitle: "\(healthData.bloodSugar)",
-						imageName: "bs",
-						backgroundColor: Color.blue,
-						width: 35
-					)
+						title: "Heart rate",
+						subtitle: "\(healthData.heartRate) -/bpm",
+						imageName: "hr",
+						backgroundColor: Color.red,
+						width: 35)
+					HStack()
+					{
+						HomeWidgets(
+							title: "Blood Sugar",
+							subtitle: "\(healthData.bloodSugar)",
+							imageName: "bs",
+							backgroundColor: Color.blue,
+							width: 35
+						)
+						HomeWidgets(
+							title: "Cholestrol",
+							subtitle: "\(healthData.cholestrol)",
+							imageName: "ch",
+							backgroundColor: Color.green,
+							width: 35
+						)
+					}
 					HomeWidgets(
-						title: "Cholestrol",
-						subtitle: "\(healthData.cholestrol)",
-						imageName: "ch",
-						backgroundColor: Color.green,
-						width: 35
-					)
+						title: "Blood pressure",
+						subtitle: "\(healthData.bloodPressure)",
+						imageName: "bp",
+						backgroundColor: Color.purple,
+						width: 40)
 				}
-				HomeWidgets(
-					title: "Blood pressure",
-					subtitle: "\(healthData.bloodPressure)",
-					imageName: "bp",
-					backgroundColor: Color.purple,
-					width: 40)
+			}
+			else {
+				Text("No user Health Data")
 			}
 		}
 	}
