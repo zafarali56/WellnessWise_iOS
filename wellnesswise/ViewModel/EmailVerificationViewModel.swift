@@ -16,10 +16,7 @@ class EmailVerificationViewModel : ObservableObject {
 	@Published var isEmailVerified = false
 	@Published var showResendAlert = false
 	@Published var isVerificationEmailSent = false
-	
 	private var verificationTimer : Timer?
-	
-	
 	init() {
 		if isVerificationEmailSent == true{
 			checkVerificationStatus()
@@ -31,7 +28,6 @@ class EmailVerificationViewModel : ObservableObject {
 	}
 	deinit {
 		verificationTimer?.invalidate()
-		
 	}
 	func checkVerificationStatus() {
 		guard let user = Auth.auth().currentUser else {
@@ -49,7 +45,6 @@ class EmailVerificationViewModel : ObservableObject {
 			}
 		}
 	}
-	
 	func sendVerificationEmail (){
 		guard let usr = Auth.auth().currentUser else {
 			errorMessage = "No authenticated user found"
@@ -57,7 +52,6 @@ class EmailVerificationViewModel : ObservableObject {
 		}
 		isLoading = true
 		errorMessage = ""
-		
 		usr.sendEmailVerification(){ [weak self] error in
 			DispatchQueue.main.async{
 				self?.isLoading = false
@@ -71,7 +65,8 @@ class EmailVerificationViewModel : ObservableObject {
 	{
 		checkVerificationStatus()
 		verificationTimer?.invalidate()
-		verificationTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] timer in
+		verificationTimer = Timer
+			.scheduledTimer(withTimeInterval: 0.0, repeats: true) { [weak self] timer in
 			guard let self = self else {
 				timer.invalidate()
 				return

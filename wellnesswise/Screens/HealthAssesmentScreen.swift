@@ -4,14 +4,11 @@ import SwiftUI
 struct HealthAssessmentScreen: View {
 	@EnvironmentObject private var navigationManager: NavigationManager
 	@StateObject private var viewModel: HealthAssessmentViewModel
-
-	
 	init(isEditing: Bool = false) {
 		_viewModel = StateObject(
 			wrappedValue: HealthAssessmentViewModel(isEditing: isEditing)
 		)
 	}
-	
 	var body: some View {
 		VStack{
 			FormContent(viewModel: viewModel)
