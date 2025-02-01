@@ -68,6 +68,7 @@ private struct HomeContent: View {
 }
 private struct Widgets: View {
 	@StateObject var appState = AppStateManager.shared
+	@ObservedObject var navigationManager = NavigationManager.shared
 	var body: some View {
 		VStack{
 			if ((appState.currentUserHealthData?.isEmpty) != nil) {
@@ -104,9 +105,29 @@ private struct Widgets: View {
 				}
 			}
 			else {
-				Text("No user Health Data")
-			}
+				
+				Button (
+					action: {navigationManager.pushMain(.healthAssessment)
+					}){
+					HStack{
+						Text("Create Health profile")
+							
+						Image(systemName: "plus.app")
+							
+					}
+					.font(.headline)
+					.padding()
+					.background(Color.accentColor)
+					.foregroundStyle(Color.white)
+					.clipShape(.capsule)
+					
+				
+				}
+
+
+					}
 		}
+		
 	}
 }
 
