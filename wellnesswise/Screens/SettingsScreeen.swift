@@ -11,6 +11,9 @@ struct SettingsScreeen: View {
 	@EnvironmentObject private var navigationManager : NavigationManager
 	@EnvironmentObject private var appStateManager : AppStateManager
 	@State private var showDeleteComformations = false
+	@State private var email = ""
+	
+	@State private var password = ""
 	var body: some View {
 		NavigationView(){
 			VStack{
@@ -30,8 +33,19 @@ struct SettingsScreeen: View {
 				"Delete Account",
 				isPresented: $showDeleteComformations
 			){
+				TextField("Email", text: $email)
+					.textFieldStyle(RoundedBorderTextFieldStyle())
+				
+				TextField("Email", text: $password)
+					.textFieldStyle(RoundedBorderTextFieldStyle())
+				
 				Button("Delete" , role: .destructive){
-					appStateManager.deleteUser(using: navigationManager)
+					appStateManager
+						.deleteUser(
+							email:email,
+							password:password,
+							using: navigationManager
+						)
 				}
 				Button ("Cancel", role: .cancel) {
 					showDeleteComformations = false

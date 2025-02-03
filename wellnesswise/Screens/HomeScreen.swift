@@ -50,9 +50,9 @@ private struct HomeContent: View {
 						Task {
 							if let userId = Auth.auth().currentUser?.uid {
 								await authManager.fetchHealthData(userId: userId)
+							}
 						}
 					}
-				}
 			}
 		}
 		.padding(.horizontal)
@@ -61,7 +61,7 @@ private struct HomeContent: View {
 	}
 	
 }
- struct HomeScreen: View {
+struct HomeScreen: View {
 	var body: some View {
 		MainTabContainer()
 	}
@@ -109,23 +109,19 @@ private struct Widgets: View {
 				Button (
 					action: {navigationManager.pushMain(.healthAssessment)
 					}){
-					HStack{
-						Text("Create Health profile")
+						HStack{
+							Text("Create Health profile")
 							
-						Image(systemName: "plus.app")
+							Image(systemName: "plus.app")
 							
+						}
+						.font(.headline)
+						.padding()
+						.background(Color.accentColor)
+						.foregroundStyle(Color.white)
+						.clipShape(.capsule)
 					}
-					.font(.headline)
-					.padding()
-					.background(Color.accentColor)
-					.foregroundStyle(Color.white)
-					.clipShape(.capsule)
-					
-				
-				}
-
-
-					}
+			}
 		}
 		
 	}

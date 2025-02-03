@@ -59,7 +59,7 @@ class AppStateManager: ObservableObject {
 		setupInitialState()
 	}
 	
-//check for empty userHealthData
+	//check for empty userHealthData
 	func isUserDataEmpty ()-> Bool{
 		return ((currentUserHealthData?.isEmpty) != nil)
 	}
@@ -253,65 +253,81 @@ class AppStateManager: ObservableObject {
 		}
 	}
 	
-	func deleteUser(using navigationManager: NavigationManager) {
+	func deleteUser(email: String, password : String ,using navigationManager: NavigationManager) {
 		guard let user = Auth.auth().currentUser else {
 			print("No user is currently signed in")
 			return
 		}
+		let reAuthUser = EmailAuthProvider.credential(
+			withEmail: email,
+			password: password
+		)
 		let userId = user.uid
 		let db = Firestore.firestore()
 		
-		//Sub collection deletions
-		deleteSubcollection(db.collection("users").document(userId).collection("healthData"))
-		deleteSubcollection(db.collection("users").document(userId).collection("assessments"))
-
 		
-		//user document deletion
-		let userRef = db.collection("users").document(userId)
-		userRef.delete { error in
-			if let error = error {
-				print("Error deleting user document \(error.localizedDescription)")
-			} else {
-				print("successfully deleted user DOC")
-				user.delete { error in
-					if error == nil {
-						print("firebase data sucessfully deleted")
-						navigationManager.switchToAuth()
-						
-					} else {
-						print("Error deleting firebase user")
+		user.reauthenticate(with: reAuthUser) {result, error in
+			if let error = error{
+				print("Authentican failed :\(error.localizedDescription)")
+				
+			}
+			
+			print("User re-authenticated successfully.")
+			
+			//Sub collection deletions
+			deleteSubcollection(db.collection("users").document(userId).collection("healthData"))
+			deleteSubcollection(db.collection("users").document(userId).collection("assessments"))
+			
+			
+			//user document deletion
+			let userRef = db.collection("users").document(userId)
+			user.delete	{ error in
+				if let error = error {
+					print("Error deleting user \(error.localizedDescription)")
+				} else {
+					print("successfully deleted user")
+					userRef.delete()  { error in
+						if error == nil {
+							print("firebase data sucessfully deleted")
+							navigationManager.switchToAuth()
+							
+						} else {
+							print(
+								"Error deleting firebase doc \(error?.localizedDescription ?? "Error in deleting your data")"
+							)
+						}
+					}
+				}
+			}
+			
+		}
+		
+		func deleteSubcollection(_ collection: CollectionReference) {
+			collection.getDocuments { snapshot, error in
+				if let error = error {
+					print("Error fetching subcollection documents: \(error.localizedDescription)")
+					return
+				}
+				
+				guard let documents = snapshot?.documents else {
+					print("No documents found in subcollection")
+					return
+				}
+				
+				for document in documents {
+					document.reference.delete { error in
+						if let error = error {
+							print("Error deleting document \(document.documentID): \(error.localizedDescription)")
+						} else {
+							print("Document \(document.documentID) successfully deleted")
+						}
 					}
 				}
 			}
 		}
+		
+		
 	}
-	
-	func deleteSubcollection(_ collection: CollectionReference) {
-		collection.getDocuments { snapshot, error in
-			if let error = error {
-				print("Error fetching subcollection documents: \(error.localizedDescription)")
-				return
-			}
-			
-			guard let documents = snapshot?.documents else {
-				print("No documents found in subcollection")
-				return
-			}
-			
-			for document in documents {
-				document.reference.delete { error in
-					if let error = error {
-						print("Error deleting document \(document.documentID): \(error.localizedDescription)")
-					} else {
-						print("Document \(document.documentID) successfully deleted")
-					}
-				}
-			}
-		}
-	}
-	
 	
 }
-
-
 

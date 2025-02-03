@@ -24,7 +24,6 @@ class EmailVerificationViewModel : ObservableObject {
 		else {
 			sendVerificationEmail()
 		}
-		
 	}
 	deinit {
 		verificationTimer?.invalidate()

@@ -135,7 +135,7 @@ class HealthDataViewModel: ObservableObject {
 				if let error = error {
 					self?.healthKitViewModel.errorMessage = error.localizedDescription
 				} else {
-					navigationManager.pushMain(.home)
+					navigationManager.switchToMain()
 			}
 		}
 	}
