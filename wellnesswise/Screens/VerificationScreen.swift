@@ -62,6 +62,7 @@ struct VerificationScreen: View {
 			Text("Please check your email inbox and verify your account.")
 		}
 		.navigationBarBackButtonHidden()
+		.onDisappear{viewModel.cleanUp()}
 	}
 }
 

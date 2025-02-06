@@ -64,8 +64,7 @@ class EmailVerificationViewModel : ObservableObject {
 	{
 		checkVerificationStatus()
 		verificationTimer?.invalidate()
-		verificationTimer = Timer
-			.scheduledTimer(withTimeInterval: 0.0, repeats: true) { [weak self] timer in
+		verificationTimer = Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { [weak self] timer in
 			guard let self = self else {
 				timer.invalidate()
 				return
@@ -76,5 +75,12 @@ class EmailVerificationViewModel : ObservableObject {
 				}
 			}
 		}
+	}
+	
+	func cleanUp() {
+		errorMessage = ""
+	isLoading = false
+
+		verificationTimer?.invalidate()
 	}
 }
