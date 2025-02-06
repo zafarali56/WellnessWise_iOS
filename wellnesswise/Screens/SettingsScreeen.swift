@@ -31,17 +31,18 @@ struct SettingsScreeen: View {
 				}
 				
 			}
-			// Show a confirmation sheet when "Delete Account" is tapped
 			.sheet(isPresented: $showDeleteConfirmation) {
+				
 				deleteAccountView(
 					email: $email,
 					password: $password,
 					onDelete: {
-						appStateManager.deleteUser(
+						Task{	await appStateManager.deleteUser(
 							email: email,
 							password: password,
 							using: navigationManager
 						)
+						}
 					},
 					onCancel: {
 						showDeleteConfirmation = false
