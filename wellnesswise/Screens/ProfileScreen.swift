@@ -4,6 +4,7 @@ import FirebaseAuth
 struct ProfileScreen: View {
 	@EnvironmentObject private var authManager: AppStateManager
 	@EnvironmentObject private var navigationManager: NavigationManager
+	@State private var isUserDataEditable : Bool = false
 	var body: some View {
 		ScrollView {
 			Image("MyProfileWhite")
@@ -15,7 +16,7 @@ struct ProfileScreen: View {
 					Circle().stroke(Color.white, lineWidth: 4)
 				)
 				.shadow(radius: 10)
-			Personal_Data()
+			Personal_Data(isPersonalDataEditable: $isUserDataEditable)
 				.onAppear {
 					Task {
 						if let userId = Auth.auth().currentUser?.uid {
@@ -39,6 +40,7 @@ struct ProfileScreen: View {
 	}
 	
 	private struct Personal_Data: View {
+		@Binding  var isPersonalDataEditable : Bool
 		@StateObject var appState = AppStateManager.shared
 		
 		var body: some View {
@@ -53,9 +55,10 @@ struct ProfileScreen: View {
 							HStack{
 								Text("Edit")
 								Image(systemName: "pencil.circle")
+								
 									.bold()
 							}.onTapGesture {
-								//Navigate to
+								isPersonalDataEditable.toggle()
 							}
 						}
 						ProfileData(fieldName: "Name", fieldValue: userData.fullName)
@@ -75,6 +78,10 @@ struct ProfileScreen: View {
 					Text("No user data available")
 						.foregroundStyle(.gray)
 				}
+			}
+			.sheet(isPresented: $isPersonalDataEditable ){
+				ProfileEditScreen()
+				
 			}
 		}
 	}

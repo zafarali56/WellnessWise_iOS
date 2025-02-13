@@ -90,6 +90,15 @@ class SignUpViewModel: ObservableObject {
 		}
 	}
 	
+	private func updateUserProfile (user: FirebaseAuth.User, completion: @escaping(Bool) -> Void){
+		let userData : [String : Any ] = [
+			"fullName": self.fullName,
+			"age" : self.age,
+			"weight" : self.weight,
+			"updatedAt": FieldValue.serverTimestamp()
+		]
+	}
+	
 	private func createUserProfile(user: FirebaseAuth.User, completion: @escaping (Bool) -> Void) {
 		let userData: [String: Any] = [
 			"fullName": self.fullName,

@@ -196,6 +196,7 @@ struct HealthKitDataView: View {
 					.foregroundColor(.red)
 					.padding()
 			} else {
+
 				if let heartRate = viewModel.healthKitViewModel.heartRate,
 				   let systolic = viewModel.healthKitViewModel.systolicBP,
 				   let diastolic = viewModel.healthKitViewModel.diastolicBP,
@@ -208,7 +209,9 @@ struct HealthKitDataView: View {
 				
 			}
 		}
+
 		.task {
+			
 			await viewModel.healthKitViewModel.fetchAllData()
 		}
 		.padding()
