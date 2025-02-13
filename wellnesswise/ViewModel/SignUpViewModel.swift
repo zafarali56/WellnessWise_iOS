@@ -90,6 +90,24 @@ class SignUpViewModel: ObservableObject {
 		}
 	}
 	
+	@MainActor
+	func userProfileUpdation (using navigationManager: NavigationManager){
+		guard isValidAge || isValidWeight else {
+			errorMessage = "Please fill the fields correctly"
+			return
+		}
+		isLoading = true
+		errorMessage = ""
+		if let user = Auth.auth().currentUser{
+			self.updateUserProfile(user: user){ success in
+				if success {
+					navigationManager.pushMain(.profile)
+				}
+			}
+		}
+	}
+	
+	
 	private func updateUserProfile (user: FirebaseAuth.User, completion: @escaping(Bool) -> Void){
 		let userData : [String : Any ] = [
 			"fullName": self.fullName,
@@ -97,6 +115,17 @@ class SignUpViewModel: ObservableObject {
 			"weight" : self.weight,
 			"updatedAt": FieldValue.serverTimestamp()
 		]
+		Firestore.firestore().collection("users").document(user.uid).updateData(userData){ error in
+			DispatchQueue.main.async {
+				if let error = error {
+					self.errorMessage = error.localizedDescription
+					completion(true)
+				}
+				else {
+					completion(false)
+				}
+			}
+		}
 	}
 	
 	private func createUserProfile(user: FirebaseAuth.User, completion: @escaping (Bool) -> Void) {
