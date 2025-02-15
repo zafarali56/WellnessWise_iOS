@@ -10,7 +10,7 @@ import SwiftUI
 struct VerificationScreen: View {
 	@StateObject private var viewModel = EmailVerificationViewModel ()
 	@EnvironmentObject private var navigationManager : NavigationManager
-	
+
 	var body: some View {
 		
 		VStack (spacing : 20){
@@ -22,7 +22,7 @@ struct VerificationScreen: View {
 				.font(.title2)
 				.fontWeight(.bold)
 			
-			Text("We've sent a verification email to your registered email address. Please verify to continue.")
+			Text("Verification email will be sent your email inbox, please click on the link to verify it.")
 				.multilineTextAlignment(.center)
 				.foregroundStyle(.secondary)
 				.padding(.horizontal)
@@ -33,7 +33,7 @@ struct VerificationScreen: View {
 				Button(action: {
 					viewModel.sendVerificationEmail()
 				}){
-					Text ("Resend Verification Email")
+					Text ("Send Verification Email")
 						.font(.headline)
 						.foregroundStyle(.white)
 						.frame(maxWidth: 250)
@@ -42,20 +42,17 @@ struct VerificationScreen: View {
 						.clipShape(.capsule)
 				}
 			}
-			
 			if !viewModel.errorMessage.isEmpty {
 				Text(viewModel.errorMessage)
 					.foregroundStyle(.red)
 					.font(.caption)
 			}
-			
 		}
 		.padding()
 		.onAppear{
 			viewModel
 				.startVerificationEmailCheck(using: navigationManager)
 		}
-		
 		.alert("Email Sent", isPresented: $viewModel.isVerificationEmailSent) {
 			Button("OK", role: .cancel) { }
 		} message: {

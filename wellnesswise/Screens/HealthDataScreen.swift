@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-
 struct HealthDataScreen: View {
 	@State var isHealthInputManual: Bool = true
 	@StateObject var viewModel : HealthDataViewModel
@@ -21,7 +20,6 @@ struct HealthDataScreen: View {
 				.navigationTitle("Health Data")
 				.toolbar{
 					ToolbarItem(placement: .topBarTrailing){
-						
 						Button(action: {
 							isHealthInputManual.toggle()
 						}) {
@@ -37,7 +35,6 @@ struct HealthDataScreen: View {
 						.tint(.black)
 						.disabled(viewModel.isLoading)
 					}
-					
 					ToolbarItem(placement: .bottomBar){
 						BottomBarContent(
 							isHealthInputManual: $isHealthInputManual,
@@ -57,7 +54,6 @@ private struct FormContent : View {
 	@Binding var isHealthInputManual : Bool
 	@ObservedObject var viewModel : HealthDataViewModel
 	@EnvironmentObject private var navigationManager : NavigationManager
-	
 	var body: some View {
 		VStack(spacing: 5){
 			if isHealthInputManual {
@@ -93,9 +89,7 @@ private struct FormContent : View {
 		}
 	}
 }
-
 private struct EnterManual : View {
-	
 	@StateObject var viewModel : HealthDataViewModel
 	var body: some View {
 		VStack{

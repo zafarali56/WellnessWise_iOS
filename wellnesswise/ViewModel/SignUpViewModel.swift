@@ -101,7 +101,7 @@ class SignUpViewModel: ObservableObject {
 		if let user = Auth.auth().currentUser{
 			self.updateUserProfile(user: user){ success in
 				if success {
-					navigationManager.pushMain(.profile)
+					navigationManager.popToRoot()
 				}
 			}
 		}

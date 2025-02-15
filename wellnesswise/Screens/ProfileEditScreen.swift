@@ -17,7 +17,7 @@ struct ProfileEditScreen: View {
 				.fontWeight(.bold)
 			StyledTextField(title: "Name", placeholder: "Update Name", text: $viewModel.fullName)
 			StyledTextField(title: "Age", placeholder: "Update Age", text: $viewModel.age)
-				StyledTextField(title: "Weight", placeholder: "Update weight", text: $viewModel.weight)
+			StyledTextField(title: "Weight", placeholder: "Update weight", text: $viewModel.weight)
 
 			Button {
 				viewModel.userProfileUpdation(using: navigationManager)
