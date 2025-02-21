@@ -12,7 +12,7 @@ struct SettingsScreeen: View {
 	@EnvironmentObject private var appStateManager: AppStateManager
 	
 	@State private var showDeleteConfirmation = false
-	@State private var email = ""
+
 	@State private var password = ""
 
 	var body: some View {
@@ -34,11 +34,9 @@ struct SettingsScreeen: View {
 			.sheet(isPresented: $showDeleteConfirmation) {
 				
 				deleteAccountView(
-					email: $email,
 					password: $password,
 					onDelete: {
 						Task{	await appStateManager.deleteUser(
-							email: email,
 							password: password,
 							using: navigationManager
 						)
@@ -60,7 +58,6 @@ struct SettingsScreeen: View {
 
 
 struct deleteAccountView : View {
-	@Binding var email : String
 	@Binding var password : String
 	var onDelete: () -> Void
 	var onCancel: () -> Void
@@ -78,12 +75,7 @@ struct deleteAccountView : View {
 					.foregroundColor(.secondary)
 					.padding(.horizontal)
 				
-				TextField("Email", text: $email)
-					.textFieldStyle(RoundedBorderTextFieldStyle())
-					.keyboardType(.emailAddress)
-					.autocapitalization(.none)
-					.padding(.horizontal)
-				
+			
 				SecureField("Password", text: $password)
 					.textFieldStyle(RoundedBorderTextFieldStyle())
 					.padding(.horizontal)

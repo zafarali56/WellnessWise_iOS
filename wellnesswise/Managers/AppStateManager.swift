@@ -253,14 +253,16 @@ class AppStateManager: ObservableObject {
 		}
 	}
 	
-	func deleteUser(email: String, password: String, using navigationManager: NavigationManager) async {
+	func deleteUser( password: String, using navigationManager: NavigationManager) async {
 		guard let user = Auth.auth().currentUser else {
 			print("No user is currently signed in")
 			return
+
 		}
-		
+		let email = Auth.auth().currentUser?.email
+		print("currentUserEmail is =>",email ?? "")
 		let reAuthUser = EmailAuthProvider.credential(
-			withEmail: email,
+			withEmail: email ?? "",
 			password: password
 		)
 		let userId = user.uid

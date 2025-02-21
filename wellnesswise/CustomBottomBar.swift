@@ -9,7 +9,6 @@ import SwiftUI
 
 enum TabItem: String, CaseIterable{
 	case home, health, profile, settings
-	
 	var icon: String {
 		switch self  {
 			case .home: return "house.fill"
@@ -18,7 +17,6 @@ enum TabItem: String, CaseIterable{
 			case .health: return "heart.fill"
 		}
 	}
-	
 	var title : String {
 		return self.rawValue.capitalized
 	}
@@ -41,7 +39,6 @@ struct CustomBottomBar: View {
 							.font(.system( size: 24))
 						Text(tab.title)
 							.font(.caption2)
-						
 					}
 					.foregroundStyle(selectedTab == tab ? .black : .gray)
 					.frame(maxWidth: .infinity)
@@ -58,7 +55,6 @@ struct CustomBottomBar: View {
 
 struct MainTabView: View {
 	@State private var selectedTab: TabItem = .home
-	
 	var body: some View {
 		ZStack(alignment: .bottom){
 			TabView(selection: $selectedTab){
