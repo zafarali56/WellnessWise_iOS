@@ -42,6 +42,9 @@ struct ProfileScreen: View {
 	private struct Personal_Data: View {
 		@Binding  var isPersonalDataEditable : Bool
 		@StateObject var appState = AppStateManager.shared
+		@State showEditingView : Bool = false
+		
+
 		
 		var body: some View {
 			VStack(spacing: 15) {
@@ -80,7 +83,7 @@ struct ProfileScreen: View {
 				}
 			}
 			.sheet(isPresented: $isPersonalDataEditable ){
-				ProfileEditScreen()
+				ProfileEditScreen(onCancel: {})
 				
 			}
 		}

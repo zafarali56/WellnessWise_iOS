@@ -188,4 +188,7 @@ class HealthKitManager {
 			healthStore.execute(query)
 		}
 	}
+	
+	
+	
 }

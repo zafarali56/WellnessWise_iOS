@@ -10,15 +10,16 @@ import SwiftUI
 struct ProfileEditScreen: View {
 	@StateObject private var viewModel = SignUpViewModel()
 	@EnvironmentObject private var navigationManager : NavigationManager
-    var body: some View {
-		VStack {
-			Text("Edit User data")
+	var onCancel: () -> Void
+	var body: some View {
+		NavigationView(){	
+		
+		Text("Edit User data")
 				.font(.title)
 				.fontWeight(.bold)
 			StyledTextField(title: "Name", placeholder: "Update Name", text: $viewModel.fullName)
 			StyledTextField(title: "Age", placeholder: "Update Age", text: $viewModel.age)
 			StyledTextField(title: "Weight", placeholder: "Update weight", text: $viewModel.weight)
-
 			Button {
 				viewModel.userProfileUpdation(using: navigationManager)
 			} label: {
@@ -27,13 +28,18 @@ struct ProfileEditScreen: View {
 					.fontWeight(.medium)
 					.padding(.bottom, 10)
 			}
-			
-		}.padding(.all, 30)
-		
-		
+		}
+		.navigationBarTitleDisplayMode(.inline)
+		.toolbar{
+			ToolbarItem(placement: .navigationBarLeading){
+				Button("Close"){
+					onCancel()
+				}
+			}	
+		}
     }
 }
 
 #Preview {
-	ProfileEditScreen()
+	ProfileEditScreen(onCancel: {})
 }
