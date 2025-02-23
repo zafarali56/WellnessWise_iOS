@@ -19,6 +19,7 @@
 		9E511B472CC37FE10072A470 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 9E511B462CC37FE10072A470 /* FirebaseDatabase */; };
 		9E511B492CC37FE10072A470 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 9E511B482CC37FE10072A470 /* FirebaseFirestore */; };
 		9E511B4B2CC37FE10072A470 /* FirebaseFunctions in Frameworks */ = {isa = PBXBuildFile; productRef = 9E511B4A2CC37FE10072A470 /* FirebaseFunctions */; };
+		9E606F6D2D6B07D300920CA7 /* ProfileEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E606F6C2D6B07D300920CA7 /* ProfileEditViewModel.swift */; };
 		9E640CE92D1F29060080F945 /* HealthKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E640CE82D1F29060080F945 /* HealthKitManager.swift */; };
 		9E7BFF7B2CC149A200253D36 /* SignUpScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7BFF7A2CC149A200253D36 /* SignUpScreen.swift */; };
 		9E7DCE732CD159560032AF2F /* HealthAssesmentScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7DCE722CD159560032AF2F /* HealthAssesmentScreen.swift */; };
@@ -70,6 +71,7 @@
 		9E1BA6412CC5443F00DFDD3B /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		9E1BA6432CC5444C00DFDD3B /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		9E2820AE2CCA7DF500CABA49 /* StyledTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StyledTextField.swift; path = wellnesswise/StyledTextField.swift; sourceTree = SOURCE_ROOT; };
+		9E606F6C2D6B07D300920CA7 /* ProfileEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEditViewModel.swift; sourceTree = "<group>"; };
 		9E640CE62D1F265D0080F945 /* wellnesswise.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = wellnesswise.entitlements; sourceTree = "<group>"; };
 		9E640CE82D1F29060080F945 /* HealthKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthKitManager.swift; sourceTree = "<group>"; };
 		9E7BFF7A2CC149A200253D36 /* SignUpScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpScreen.swift; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 				9E7DCE782CD1599C0032AF2F /* HealthDataViewModel.swift */,
 				9EDBF7392CE914EE0001A54C /* EmailVerificationViewModel.swift */,
 				9EACD1C42D231A6400C947C6 /* HealthKitViewModel.swift */,
+				9E606F6C2D6B07D300920CA7 /* ProfileEditViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -395,6 +398,7 @@
 				9EDBF7412CE922D70001A54C /* NavigationManager.swift in Sources */,
 				9E1BA6422CC5443F00DFDD3B /* SignUpViewModel.swift in Sources */,
 				9E14F5B82CB979050094EF6C /* LoginScreen.swift in Sources */,
+				9E606F6D2D6B07D300920CA7 /* ProfileEditViewModel.swift in Sources */,
 				9E2820AF2CCA7DF500CABA49 /* StyledTextField.swift in Sources */,
 				9EFE0AD62D481B6200BAEB14 /* WelcomeScreen.swift in Sources */,
 				9E7DCE732CD159560032AF2F /* HealthAssesmentScreen.swift in Sources */,
