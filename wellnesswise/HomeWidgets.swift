@@ -81,7 +81,6 @@ struct HomeWidgetsPreview: View {
 				backgroundColor: Color.green,
 				width: 50
 			)
-			
 			HomeWidgets(
 				title: "Blood Pressure",
 				subtitle: "120/80",
