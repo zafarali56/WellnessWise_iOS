@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C3EC8FC2D73820300FC6E44 /* VisualizationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3EC8FB2D73820300FC6E44 /* VisualizationViewModel.swift */; };
+		1C3EC8FE2D73824600FC6E44 /* HealthPredictionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3EC8FD2D73824600FC6E44 /* HealthPredictionScreen.swift */; };
+		1C3EC9002D73825400FC6E44 /* DataVisualizationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3EC8FF2D73825400FC6E44 /* DataVisualizationViewModel.swift */; };
 		1CEC79352D6CBE6A00B57985 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1CEC79342D6CBE6A00B57985 /* GoogleService-Info.plist */; };
 		1CF2B45D2D6CD9D90066B7FE /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 1CF2B45C2D6CD9D90066B7FE /* FirebaseAuth */; };
 		1CF2B45F2D6CDC020066B7FE /* HealthPredictionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF2B45E2D6CDC020066B7FE /* HealthPredictionViewModel.swift */; };
@@ -63,6 +66,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1C3EC8FB2D73820300FC6E44 /* VisualizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizationViewModel.swift; sourceTree = "<group>"; };
+		1C3EC8FD2D73824600FC6E44 /* HealthPredictionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthPredictionScreen.swift; sourceTree = "<group>"; };
+		1C3EC8FF2D73825400FC6E44 /* DataVisualizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataVisualizationViewModel.swift; sourceTree = "<group>"; };
 		1CEC79342D6CBE6A00B57985 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1CF2B45E2D6CDC020066B7FE /* HealthPredictionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthPredictionViewModel.swift; sourceTree = "<group>"; };
 		9E0804C52D11E7E1008AA15A /* HomeWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomeWidgets.swift; path = wellnesswise/HomeWidgets.swift; sourceTree = SOURCE_ROOT; };
@@ -151,6 +157,8 @@
 				9EA772662CF6F18600BBEDE3 /* HealthScreen.swift */,
 				9EFE0AD52D481B6200BAEB14 /* WelcomeScreen.swift */,
 				9E1955BE2D5DCF0E0091CA08 /* ProfileEditScreen.swift */,
+				1C3EC8FD2D73824600FC6E44 /* HealthPredictionScreen.swift */,
+				1C3EC8FF2D73825400FC6E44 /* DataVisualizationViewModel.swift */,
 			);
 			path = Screens;
 			sourceTree = "<group>";
@@ -176,6 +184,7 @@
 				9EACD1C42D231A6400C947C6 /* HealthKitViewModel.swift */,
 				9E606F6C2D6B07D300920CA7 /* ProfileEditViewModel.swift */,
 				1CF2B45E2D6CDC020066B7FE /* HealthPredictionViewModel.swift */,
+				1C3EC8FB2D73820300FC6E44 /* VisualizationViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -391,6 +400,7 @@
 				1CF2B45F2D6CDC020066B7FE /* HealthPredictionViewModel.swift in Sources */,
 				9E0BD0762CF0B2C2009A9B84 /* AppStateManager.swift in Sources */,
 				9E1955BF2D5DCF0E0091CA08 /* ProfileEditScreen.swift in Sources */,
+				1C3EC9002D73825400FC6E44 /* DataVisualizationViewModel.swift in Sources */,
 				9EEFE8672CDA9FC000A47133 /* VerificationScreen.swift in Sources */,
 				9E7DCE752CD159740032AF2F /* HealthDataScreen.swift in Sources */,
 				9EDBF73A2CE914EE0001A54C /* EmailVerificationViewModel.swift in Sources */,
@@ -409,9 +419,11 @@
 				9E606F6D2D6B07D300920CA7 /* ProfileEditViewModel.swift in Sources */,
 				9E2820AF2CCA7DF500CABA49 /* StyledTextField.swift in Sources */,
 				9EFE0AD62D481B6200BAEB14 /* WelcomeScreen.swift in Sources */,
+				1C3EC8FE2D73824600FC6E44 /* HealthPredictionScreen.swift in Sources */,
 				9E7DCE732CD159560032AF2F /* HealthAssesmentScreen.swift in Sources */,
 				9E7BFF7B2CC149A200253D36 /* SignUpScreen.swift in Sources */,
 				9EACD1C52D231A6400C947C6 /* HealthKitViewModel.swift in Sources */,
+				1C3EC8FC2D73820300FC6E44 /* VisualizationViewModel.swift in Sources */,
 				9E0804C62D11E7E1008AA15A /* HomeWidgets.swift in Sources */,
 				9EA772672CF6F18600BBEDE3 /* HealthScreen.swift in Sources */,
 			);
