@@ -45,7 +45,6 @@
 		9EEF186D2CB6B6EC00AA8D5B /* wellnesswiseUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEF186C2CB6B6EC00AA8D5B /* wellnesswiseUITestsLaunchTests.swift */; };
 		9EEFE8652CDA9FA300A47133 /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEFE8642CDA9FA300A47133 /* ProfileScreen.swift */; };
 		9EEFE8672CDA9FC000A47133 /* VerificationScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EEFE8662CDA9FC000A47133 /* VerificationScreen.swift */; };
-		9EFE0AD62D481B6200BAEB14 /* WelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EFE0AD52D481B6200BAEB14 /* WelcomeScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -105,7 +104,6 @@
 		9EEF186C2CB6B6EC00AA8D5B /* wellnesswiseUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = wellnesswiseUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		9EEFE8642CDA9FA300A47133 /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreen.swift; sourceTree = "<group>"; };
 		9EEFE8662CDA9FC000A47133 /* VerificationScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationScreen.swift; sourceTree = "<group>"; };
-		9EFE0AD52D481B6200BAEB14 /* WelcomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,7 +153,6 @@
 				9EEFE8662CDA9FC000A47133 /* VerificationScreen.swift */,
 				9EA772642CF6EFAC00BBEDE3 /* SettingsScreen.swift */,
 				9EA772662CF6F18600BBEDE3 /* HealthScreen.swift */,
-				9EFE0AD52D481B6200BAEB14 /* WelcomeScreen.swift */,
 				9E1955BE2D5DCF0E0091CA08 /* ProfileEditScreen.swift */,
 				1C3EC8FD2D73824600FC6E44 /* HealthPredictionScreen.swift */,
 				1C3EC8FF2D73825400FC6E44 /* DataVisualizationViewModel.swift */,
@@ -418,7 +415,6 @@
 				9E14F5B82CB979050094EF6C /* LoginScreen.swift in Sources */,
 				9E606F6D2D6B07D300920CA7 /* ProfileEditViewModel.swift in Sources */,
 				9E2820AF2CCA7DF500CABA49 /* StyledTextField.swift in Sources */,
-				9EFE0AD62D481B6200BAEB14 /* WelcomeScreen.swift in Sources */,
 				1C3EC8FE2D73824600FC6E44 /* HealthPredictionScreen.swift in Sources */,
 				9E7DCE732CD159560032AF2F /* HealthAssesmentScreen.swift in Sources */,
 				9E7BFF7B2CC149A200253D36 /* SignUpScreen.swift in Sources */,
@@ -590,6 +586,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"wellnesswise/Preview Content\"";
+				DEVELOPMENT_TEAM = 86C76FU9S9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_FILE[sdk=*]" = "";
@@ -601,6 +598,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -623,6 +621,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"wellnesswise/Preview Content\"";
+				DEVELOPMENT_TEAM = 86C76FU9S9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "Wellness wise";
@@ -633,6 +632,7 @@
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
