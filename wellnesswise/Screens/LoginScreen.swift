@@ -80,7 +80,7 @@ private struct ActionSection: View {
 		@ObservedObject var viewModel: LoginViewModel
 		
 		var body: some View {
-			VStack(spacing: 16) {
+			VStack(spacing: 10) {
 				StyledTextField(
 					title: "Email",
 					placeholder: "Enter your email",
@@ -96,7 +96,7 @@ private struct ActionSection: View {
 					isSecure: true,
 					isValid: viewModel.isValidPassword,
 					errorMessage: "Password must be at least 6 characters"
-				)
+                )
 				
 				Button {
 					
@@ -106,8 +106,8 @@ private struct ActionSection: View {
 						.fontWeight(.medium)
 				}
 				.frame(maxWidth: .infinity, alignment: .trailing)
-				.padding(.top, 4)
-			}
+            
+            } 
 		}
 	}
 	private struct LogoSection: View {

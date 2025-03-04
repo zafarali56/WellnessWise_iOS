@@ -31,14 +31,19 @@ struct StyledTextField: View {
 						SecureField(placeholder, text: $text)
 							.textInputAutocapitalization(.never)
 							.autocorrectionDisabled()
+                            .ignoresSafeArea(.keyboard, edges: .bottom)
 					} else if isNumber {
 						TextField(placeholder, text: $text)
 							.keyboardType(.numberPad)
 							.autocorrectionDisabled()
+                            .ignoresSafeArea(.keyboard, edges: .bottom)
+                           
 					} else {
 						TextField(placeholder, text: $text)
 							.textInputAutocapitalization(.never)
 							.autocorrectionDisabled()
+                         .ignoresSafeArea(.keyboard, edges: .bottom)
+                           
 					}
 				}
 				.textFieldStyle(.plain)
@@ -79,7 +84,7 @@ struct StyledTextField: View {
 	
 	private var borderColor: Color {
 		if isFocused {
-			return .blue
+            return .black
 		}
 		if let isValid = isValid, !text.isEmpty {
 			return isValid ? .green : .red
