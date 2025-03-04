@@ -20,15 +20,36 @@ struct LoginScreen: View {
 			VStack(spacing: 15) {
 				LogoSection()
 				FormSection(viewModel: viewModel)
-				ActionSection(viewModel: viewModel)
+                Button {
+                    navigationManager.pushAuthentication(.signup)
+                } label: {
+                    Text("Don't have an account? Sign up")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                }
+				
 			}
 			.padding(.horizontal, 30)
 		}
+        .toolbar{
+            ToolbarItem(placement: .topBarTrailing, content: {
+                ActionSection(viewModel: viewModel)
+            })
+        }
 		.navigationTitle("Login")
 		.navigationBarTitleDisplayMode(.large)
 		.navigationBarBackButtonHidden()
+        .alert("Error", isPresented: $viewModel.isError)
+        {
+            Button("OK", role: .cancel) {}
+        }message: {
+            Text("\(viewModel.errorMessage)")
+        }
+            
+            
 	}
 }
+
 
 
 private struct ActionSection: View {
@@ -37,40 +58,27 @@ private struct ActionSection: View {
 	
 	var body: some View {
 		VStack(spacing: 16) {
-			if !viewModel.errorMessage.isEmpty {
-				Text(viewModel.errorMessage)
-					.font(.footnote)
-					.foregroundStyle(.red)
-					.padding(.horizontal)
-					.transition(.opacity)
-			}
+
 			
 			Button(action: { viewModel.login(using: navigationManager) }) {
 				if viewModel.isLoading {
 					ProgressView()
 						.tint(.white)
 				} else {
-					Text("Login")
+					Text("Login to your account")
 						.font(.headline)
 						.fontWeight(.semibold)
 						.foregroundStyle(.white)
-						.frame(maxWidth: .infinity)
-						.frame(height: 30)
+
 				}
 			}
-			.clipShape(.capsule)
-			.buttonStyle(.borderedProminent)
-			.tint(.black)
+            .buttonStyle(.borderedProminent)
+            .clipShape(.capsule)
+            .tint(.black)
 			.disabled(viewModel.isLoading || !viewModel.isFormValid)
 			
 			
-			Button {
-				navigationManager.pushAuthentication(.signup)
-			} label: {
-				Text("Don't have an account? Sign up")
-					.font(.subheadline)
-					.fontWeight(.medium)
-			}
+
 		}
 		.padding(.vertical)
 	}

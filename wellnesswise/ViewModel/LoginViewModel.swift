@@ -8,6 +8,7 @@ class LoginViewModel: ObservableObject {
 	
 	@Published var errorMessage = ""
 	@Published var isLoading = false
+    @Published var isError: Bool =  false
 	
 	var isValidEmail: Bool? {
 		if email.isEmpty { return nil }
@@ -42,17 +43,19 @@ class LoginViewModel: ObservableObject {
 				
 				if let error = error {
 					self.errorMessage = self.handleAuthError(error)
+                    self.isError = true
 				} else {
 					navigationManager.switchToMain()
 				}
 			}
 		}
 	}
-	
+    
 	private func handleAuthError(_ error: Error) -> String {
 		let nsError = error as NSError
 		
 		switch nsError.code {
+            
 			case AuthErrorCode.wrongPassword.rawValue:
 				return "Incorrect password. Please try again."
 			case AuthErrorCode.invalidEmail.rawValue:
@@ -69,6 +72,8 @@ class LoginViewModel: ObservableObject {
 				return "Too many attempts. Please try again later."
 			case AuthErrorCode.wrongPassword.rawValue:
 				return "Wrong email or password."
+ 
+            
 			default:
 				return "An error occurred. Please try again."
 		}
