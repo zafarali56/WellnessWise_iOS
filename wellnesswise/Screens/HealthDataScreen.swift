@@ -179,7 +179,7 @@ private struct BottomBarContent: View {
 }
 struct HealthKitDataView: View {
 	@ObservedObject var viewModel: HealthDataViewModel
-	
+    @State private var hasDataFetched : Bool = false
 	var body: some View {
 		VStack {
 			if viewModel.healthKitViewModel.isLoading {
@@ -190,7 +190,6 @@ struct HealthKitDataView: View {
 					.foregroundColor(.red)
 					.padding()
 			} else {
-
 				if let heartRate = viewModel.healthKitViewModel.heartRate,
 				   let systolic = viewModel.healthKitViewModel.systolicBP,
 				   let diastolic = viewModel.healthKitViewModel.diastolicBP,
@@ -200,20 +199,21 @@ struct HealthKitDataView: View {
 					HealthKitFieldView(fieldName: "Systolic", fieldValue: "\(systolic) mmHg")
 					HealthKitFieldView(fieldName: "Diastolic", fieldValue: "\(diastolic) mmHg")
 				}
-				
 			}
-		}
-
-		.task {
-			
-			await viewModel.healthKitViewModel.fetchAllData()
 		}
 		.padding()
 		.background(
 			RoundedRectangle(cornerRadius: 20)
 				.fill(Color.white.opacity(0.8))
 		)
-		
+        .onAppear{
+            if !hasDataFetched {
+                hasDataFetched = true
+                Task {
+                    await viewModel.healthKitViewModel.fetchAllData()
+                }
+            }
+        }
 	}
 }
 

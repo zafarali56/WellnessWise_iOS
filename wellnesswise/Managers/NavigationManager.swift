@@ -24,7 +24,7 @@ class NavigationManager: ObservableObject {
 	@Published var authenticationPath = NavigationPath()
 	@Published var mainPath = NavigationPath()
 	
-	private init() {}
+	 init() {}
 	
 	func switchToMain() {
 		DispatchQueue.main.async { [weak self] in
