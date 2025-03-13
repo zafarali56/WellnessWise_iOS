@@ -4,9 +4,6 @@
 //
 //  Created by Zafar Ali on 16/11/2024.
 //
-
-
-
 import SwiftUI
 import FirebaseAuth
 
@@ -90,7 +87,7 @@ private struct Widgets: View {
 						)
 						HomeWidgets(
 							title: "Cholestrol",
-							subtitle: "\(healthData.cholestrol)",
+							subtitle: "\(healthData.cholesterol)",
 							imageName: "ch",
 							backgroundColor: Color.green,
 							width: 35

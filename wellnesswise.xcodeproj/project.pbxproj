@@ -10,6 +10,8 @@
 		1C3EC8FC2D73820300FC6E44 /* VisualizationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3EC8FB2D73820300FC6E44 /* VisualizationViewModel.swift */; };
 		1C3EC8FE2D73824600FC6E44 /* HealthPredictionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3EC8FD2D73824600FC6E44 /* HealthPredictionScreen.swift */; };
 		1C3EC9002D73825400FC6E44 /* DataVisualizationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C3EC8FF2D73825400FC6E44 /* DataVisualizationViewModel.swift */; };
+		1CADBBA02D829A85001A8F0F /* HealthEditScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CADBB9F2D829A85001A8F0F /* HealthEditScreen.swift */; };
+		1CADBBA22D829AA3001A8F0F /* HealthEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CADBBA12D829AA3001A8F0F /* HealthEditViewModel.swift */; };
 		1CEC79352D6CBE6A00B57985 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1CEC79342D6CBE6A00B57985 /* GoogleService-Info.plist */; };
 		1CF2B45D2D6CD9D90066B7FE /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 1CF2B45C2D6CD9D90066B7FE /* FirebaseAuth */; };
 		1CF2B45F2D6CDC020066B7FE /* HealthPredictionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF2B45E2D6CDC020066B7FE /* HealthPredictionViewModel.swift */; };
@@ -68,6 +70,8 @@
 		1C3EC8FB2D73820300FC6E44 /* VisualizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualizationViewModel.swift; sourceTree = "<group>"; };
 		1C3EC8FD2D73824600FC6E44 /* HealthPredictionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthPredictionScreen.swift; sourceTree = "<group>"; };
 		1C3EC8FF2D73825400FC6E44 /* DataVisualizationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataVisualizationViewModel.swift; sourceTree = "<group>"; };
+		1CADBB9F2D829A85001A8F0F /* HealthEditScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthEditScreen.swift; sourceTree = "<group>"; };
+		1CADBBA12D829AA3001A8F0F /* HealthEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthEditViewModel.swift; sourceTree = "<group>"; };
 		1CEC79342D6CBE6A00B57985 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		1CF2B45E2D6CDC020066B7FE /* HealthPredictionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthPredictionViewModel.swift; sourceTree = "<group>"; };
 		9E0804C52D11E7E1008AA15A /* HomeWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HomeWidgets.swift; path = wellnesswise/HomeWidgets.swift; sourceTree = SOURCE_ROOT; };
@@ -150,6 +154,7 @@
 				9E7DCE722CD159560032AF2F /* HealthAssesmentScreen.swift */,
 				9E7DCE742CD159740032AF2F /* HealthDataScreen.swift */,
 				9EEFE8642CDA9FA300A47133 /* ProfileScreen.swift */,
+				1CADBB9F2D829A85001A8F0F /* HealthEditScreen.swift */,
 				9EEFE8662CDA9FC000A47133 /* VerificationScreen.swift */,
 				9EA772642CF6EFAC00BBEDE3 /* SettingsScreen.swift */,
 				9EA772662CF6F18600BBEDE3 /* HealthScreen.swift */,
@@ -182,6 +187,7 @@
 				9E606F6C2D6B07D300920CA7 /* ProfileEditViewModel.swift */,
 				1CF2B45E2D6CDC020066B7FE /* HealthPredictionViewModel.swift */,
 				1C3EC8FB2D73820300FC6E44 /* VisualizationViewModel.swift */,
+				1CADBBA12D829AA3001A8F0F /* HealthEditViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -402,6 +408,7 @@
 				9E7DCE752CD159740032AF2F /* HealthDataScreen.swift in Sources */,
 				9EDBF73A2CE914EE0001A54C /* EmailVerificationViewModel.swift in Sources */,
 				9EA772652CF6EFAC00BBEDE3 /* SettingsScreen.swift in Sources */,
+				1CADBBA02D829A85001A8F0F /* HealthEditScreen.swift in Sources */,
 				9EDFA1802CF398B000960194 /* CustomBottomBar.swift in Sources */,
 				9EEF18502CB6B6E800AA8D5B /* wellnesswiseApp.swift in Sources */,
 				9E640CE92D1F29060080F945 /* HealthKitManager.swift in Sources */,
@@ -415,6 +422,7 @@
 				9E14F5B82CB979050094EF6C /* LoginScreen.swift in Sources */,
 				9E606F6D2D6B07D300920CA7 /* ProfileEditViewModel.swift in Sources */,
 				9E2820AF2CCA7DF500CABA49 /* StyledTextField.swift in Sources */,
+				1CADBBA22D829AA3001A8F0F /* HealthEditViewModel.swift in Sources */,
 				1C3EC8FE2D73824600FC6E44 /* HealthPredictionScreen.swift in Sources */,
 				9E7DCE732CD159560032AF2F /* HealthAssesmentScreen.swift in Sources */,
 				9E7BFF7B2CC149A200253D36 /* SignUpScreen.swift in Sources */,

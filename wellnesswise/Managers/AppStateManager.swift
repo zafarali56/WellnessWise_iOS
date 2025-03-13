@@ -16,7 +16,7 @@ struct User: Codable, Identifiable {
 struct HealthData: Codable, Identifiable {
 	let id: String
 	let bloodSugar: String
-	let cholestrol: String
+	let cholesterol: String
 	let bloodPressure: String
 	let heartRate: String
 	let waistCircumference: String
@@ -42,7 +42,7 @@ struct HealthAssessment : Codable, Identifiable {
 
 extension HealthData {
 	var isEmpty : Bool {
-		return bloodSugar.isEmpty && cholestrol.isEmpty && bloodSugar.isEmpty && heartRate.isEmpty && waistCircumference.isEmpty
+		return bloodSugar.isEmpty && cholesterol.isEmpty && bloodSugar.isEmpty && heartRate.isEmpty && waistCircumference.isEmpty
 	}
 }
 @MainActor
@@ -151,7 +151,7 @@ class AppStateManager: ObservableObject {
 				print("Document Data: \(docData)")
 				if let nestedHealthData = docData["healthData"] as? [String: Any] {
 					let bloodSugar = nestedHealthData["bloodSugar"] as? String ?? "\(nestedHealthData["bloodSugar"] as? Int ?? 0)"
-					let cholestrol = nestedHealthData["cholestrol"] as? String ?? "\(nestedHealthData["cholestrol"] as? Int ?? 0)"
+					let cholesterol = nestedHealthData["cholesterol"] as? String ?? "\(nestedHealthData["cholesterol"] as? Int ?? 0)"
 					let diastolic = nestedHealthData["diastolic"] as? String ?? "\(nestedHealthData["diastolic"] as? Int ?? 0)"
 					let heartRate = nestedHealthData["heartRate"] as? String ?? "\(nestedHealthData["heartRate"] as? Int ?? 0)"
 					let systolic = nestedHealthData["systolic"] as? String ?? "\(nestedHealthData["systolic"] as? Int ?? 0)"
@@ -160,7 +160,7 @@ class AppStateManager: ObservableObject {
 					let healthRecord = HealthData(
 						id: document.documentID,
 						bloodSugar: bloodSugar,
-						cholestrol: cholestrol,
+                        cholesterol: cholesterol,
 						bloodPressure: bloodPressure,
 						heartRate: heartRate,
 						waistCircumference: waistCircumference
