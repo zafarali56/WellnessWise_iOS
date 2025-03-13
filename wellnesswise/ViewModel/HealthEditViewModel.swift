@@ -8,93 +8,82 @@ class HealthDataEditViewModel: ObservableObject {
     @Published var cholesterol: String = ""
     @Published var waistCircumference: String = ""
     @Published var heartRate: String = ""
-    @Published var errorMessage: String? = nil
-    @Published var isLoading: Bool = false
-
+    
     private var initialData: HealthData?
-    private var healthDataDocumentID: String? // Store existing document ID
-
+    
     var hasChanges: Bool {
-        guard let initial = initialData else {
+        if let initial = initialData {
+            return bloodPressure != "\(initial.bloodPressure)" ||
+            bloodSugar != "\(initial.bloodSugar)" ||
+            cholesterol != "\(initial.cholesterol)" ||
+            waistCircumference != "\(initial.waistCircumference)" ||
+            heartRate != "\(initial.heartRate)"
+        } else {
+            // No initial data—if any field is non-empty, consider it as "changed"
             return !bloodPressure.isEmpty ||
-                   !bloodSugar.isEmpty ||
-                   !cholesterol.isEmpty ||
-                   !waistCircumference.isEmpty ||
-                   !heartRate.isEmpty
+            !bloodSugar.isEmpty ||
+            !cholesterol.isEmpty ||
+            !waistCircumference.isEmpty ||
+            !heartRate.isEmpty
         }
-
-        return bloodPressure != "\(initial.bloodPressure)" ||
-               bloodSugar != "\(initial.bloodSugar)" ||
-               cholesterol != "\(initial.cholesterol)" ||
-               waistCircumference != "\(initial.waistCircumference)" ||
-               heartRate != "\(initial.heartRate)"
     }
-
-    /// **Load existing health data and store the document ID**
-    func loadInitialData(healthData: HealthData, documentID: String? = nil) {
+    
+    func loadInitialData(healthData: HealthData) {
         self.initialData = healthData
-        self.healthDataDocumentID = documentID
-
         self.bloodPressure = "\(healthData.bloodPressure)"
         self.bloodSugar = "\(healthData.bloodSugar)"
         self.cholesterol = "\(healthData.cholesterol)"
         self.waistCircumference = "\(healthData.waistCircumference)"
         self.heartRate = "\(healthData.heartRate)"
     }
-
-    /// **Save or update existing document**
+    
     func saveChanges(completion: @escaping () -> Void) {
         guard let userId = Auth.auth().currentUser?.uid else {
-            errorMessage = "No user available."
-            return
-        }
-
-        guard hasChanges else {
-            errorMessage = "No changes detected, skipping update."
+            print("No user available.")
             return
         }
         
-        isLoading = true
-        errorMessage = nil
-
-        let updateFields: [String: Any] = [
-            "bloodPressure": bloodPressure,
-            "bloodSugar": bloodSugar,
-            "cholesterol": cholesterol,
-            "waistCircumference": waistCircumference,
-            "heartRate": heartRate,
-            "updatedAt": FieldValue.serverTimestamp() // Keep track of updates
-        ]
-
-        let healthDataRef = Firestore.firestore()
-            .collection("users")
+        let updateFields: [String: Any]
+        if let initial = initialData {
+            // Use new value if provided; otherwise, fallback to original.
+            let updatedBloodPressure = bloodPressure.isEmpty ? "\(initial.bloodPressure)" : bloodPressure
+            let updatedBloodSugar = bloodSugar.isEmpty ? "\(initial.bloodSugar)" : bloodSugar
+            let updatedCholestrol = cholesterol.isEmpty ? "\(initial.cholesterol)" : cholesterol
+            let updatedWaistCircumference = waistCircumference.isEmpty ? "\(initial.waistCircumference)" : waistCircumference
+            let updatedHeartRate = heartRate.isEmpty ? "\(initial.heartRate)" : heartRate
+            
+            updateFields = [
+                "bloodPressure": updatedBloodPressure,
+                "bloodSugar": updatedBloodSugar,
+                "cholestrol": updatedCholestrol,
+                "waistCircumference": updatedWaistCircumference,
+                "heartRate": updatedHeartRate
+            ]
+        } else {
+            // No initial data: just use current field values.
+            updateFields = [
+                "bloodPressure": bloodPressure,
+                "bloodSugar": bloodSugar,
+                "cholesterol": cholesterol,
+                "waistCircumference": waistCircumference,
+                "heartRate": heartRate
+            ]
+        }
+        
+        print("Updating health data for user \(userId) with fields: \(updateFields)")
+        
+        // Use setData with merge:true so that it creates the document if needed.
+        Firestore.firestore().collection("users")
             .document(userId)
             .collection("healthData")
-
-        if let existingDocID = healthDataDocumentID {
-            // ✅ **Update the existing document**
-            healthDataRef.document(existingDocID)
-                .setData(updateFields, merge: true) { [weak self] error in
-                    self?.isLoading = false
-                    if let error = error {
-                        self?.errorMessage = "Error updating health data: \(error.localizedDescription)"
-                    } else {
-                        print("Health data updated successfully.")
-                        completion()
-                    }
-                }
-        } else {
-            // ✅ **No existing document? Create a new one and store the ID**
-            healthDataRef.addDocument(data: updateFields) { [weak self] documentRef, error in
-                self?.isLoading = false
+            .document("latest")
+            .setData(updateFields, merge: true) { error in
                 if let error = error {
-                    self?.errorMessage = "Error creating health data: \(error.localizedDescription)"
-                } else if let newDocID = documentRef?.documentID {
-                    self?.healthDataDocumentID = newDocID
-                    print("New health data created with ID: \(newDocID)")
+                    print("Error updating health data: \(error)")
+                } else {
+                    print("Health data updated successfully.")
                     completion()
                 }
             }
-        }
     }
 }
