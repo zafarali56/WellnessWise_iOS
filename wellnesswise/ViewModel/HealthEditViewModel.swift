@@ -8,8 +8,11 @@ class HealthDataEditViewModel: ObservableObject {
     @Published var cholesterol: String = ""
     @Published var waistCircumference: String = ""
     @Published var heartRate: String = ""
+    @Published var errorMessage: String? = nil
+    @Published var isLoading = false
     
     private var initialData: HealthData?
+    weak var appState: AppStateManager?
     
     var hasChanges: Bool {
         if let initial = initialData {
@@ -19,7 +22,6 @@ class HealthDataEditViewModel: ObservableObject {
             waistCircumference != "\(initial.waistCircumference)" ||
             heartRate != "\(initial.heartRate)"
         } else {
-            // No initial data—if any field is non-empty, consider it as "changed"
             return !bloodPressure.isEmpty ||
             !bloodSugar.isEmpty ||
             !cholesterol.isEmpty ||
@@ -30,58 +32,84 @@ class HealthDataEditViewModel: ObservableObject {
     
     func loadInitialData(healthData: HealthData) {
         self.initialData = healthData
-        self.bloodPressure = "\(healthData.bloodPressure)"
-        self.bloodSugar = "\(healthData.bloodSugar)"
-        self.cholesterol = "\(healthData.cholesterol)"
-        self.waistCircumference = "\(healthData.waistCircumference)"
-        self.heartRate = "\(healthData.heartRate)"
+        self.bloodPressure = healthData.bloodPressure
+        self.bloodSugar = healthData.bloodSugar
+        self.cholesterol = healthData.cholesterol
+        self.waistCircumference = healthData.waistCircumference
+        self.heartRate = healthData.heartRate
     }
     
     func saveChanges(completion: @escaping () -> Void) {
         guard let userId = Auth.auth().currentUser?.uid else {
-            print("No user available.")
+            errorMessage = "No user available."
             return
         }
         
-        let updateFields: [String: Any]
-        if let initial = initialData {
-            // Use new value if provided; otherwise, fallback to original.
-            let updatedBloodPressure = bloodPressure.isEmpty ? "\(initial.bloodPressure)" : bloodPressure
-            let updatedBloodSugar = bloodSugar.isEmpty ? "\(initial.bloodSugar)" : bloodSugar
-            let updatedCholestrol = cholesterol.isEmpty ? "\(initial.cholesterol)" : cholesterol
-            let updatedWaistCircumference = waistCircumference.isEmpty ? "\(initial.waistCircumference)" : waistCircumference
-            let updatedHeartRate = heartRate.isEmpty ? "\(initial.heartRate)" : heartRate
-            
-            updateFields = [
-                "bloodPressure": updatedBloodPressure,
-                "bloodSugar": updatedBloodSugar,
-                "cholestrol": updatedCholestrol,
-                "waistCircumference": updatedWaistCircumference,
-                "heartRate": updatedHeartRate
-            ]
-        } else {
-            // No initial data: just use current field values.
-            updateFields = [
-                "bloodPressure": bloodPressure,
-                "bloodSugar": bloodSugar,
-                "cholesterol": cholesterol,
-                "waistCircumference": waistCircumference,
-                "heartRate": heartRate
-            ]
+        // Validate Blood Pressure format
+        let bpComponents = bloodPressure.components(separatedBy: "/")
+        guard bpComponents.count == 2 else {
+            errorMessage = "Blood pressure must be in 'systolic/diastolic' format."
+            return
         }
         
-        print("Updating health data for user \(userId) with fields: \(updateFields)")
+        let systolicStr = bpComponents[0].trimmingCharacters(in: .whitespaces)
+        let diastolicStr = bpComponents[1].trimmingCharacters(in: .whitespaces)
+        guard let systolic = Int(systolicStr), let diastolic = Int(diastolicStr) else {
+            errorMessage = "Systolic and diastolic must be valid numbers."
+            return
+        }
         
-        // Use setData with merge:true so that it creates the document if needed.
-        Firestore.firestore().collection("users")
+        // Validate other numeric fields
+        guard let bloodSugarVal = Int(bloodSugar) else {
+            errorMessage = "Blood sugar must be a number."
+            return
+        }
+        guard let cholesterolVal = Int(cholesterol) else {
+            errorMessage = "Cholesterol must be a number."
+            return
+        }
+        guard let waistCircumferenceVal = Int(waistCircumference) else {
+            errorMessage = "Waist circumference must be a number."
+            return
+        }
+        guard let heartRateVal = Int(heartRate) else {
+            errorMessage = "Heart rate must be a number."
+            return
+        }
+        
+        isLoading = true
+        
+        // Prepare health data dictionary with correct types
+        let healthData: [String: Any] = [
+            "systolic": systolic,
+            "diastolic": diastolic,
+            "bloodSugar": bloodSugarVal,
+            "cholesterol": cholesterolVal,
+            "waistCircumference": waistCircumferenceVal,
+            "heartRate": heartRateVal
+        ]
+        
+        let fullData: [String: Any] = [
+            "healthData": healthData,
+            "timestamp": FieldValue.serverTimestamp()
+        ]
+        
+        // Save new health data document
+        Firestore.firestore()
+            .collection("users")
             .document(userId)
             .collection("healthData")
-            .document("latest")
-            .setData(updateFields, merge: true) { error in
+            .addDocument(data: fullData) { [weak self] error in
+                guard let self = self else { return }
+                self.isLoading = false
+                
                 if let error = error {
-                    print("Error updating health data: \(error)")
+                    self.errorMessage = "Error saving data: \(error.localizedDescription)"
                 } else {
-                    print("Health data updated successfully.")
+                    // Refresh health data in AppState
+                    Task {
+                        await self.appState?.fetchHealthData(userId: userId)
+                    }
                     completion()
                 }
             }

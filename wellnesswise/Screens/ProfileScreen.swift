@@ -88,7 +88,7 @@ struct PersonalDataView: View {
 struct HealthDataView: View {
     @EnvironmentObject private var appState: AppStateManager
     @State private var showHealthEditSheet: Bool = false
-    
+   
     var body: some View {
         if let healthData = appState.currentUserHealthData {
             VStack(spacing: 15) {

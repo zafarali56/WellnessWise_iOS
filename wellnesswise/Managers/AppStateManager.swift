@@ -14,12 +14,12 @@ struct User: Codable, Identifiable {
 	let gender: String
 }
 struct HealthData: Codable, Identifiable {
-	let id: String
-	let bloodSugar: String
-	let cholesterol: String
-	let bloodPressure: String
-	let heartRate: String
-	let waistCircumference: String
+    let id: String
+    let bloodSugar: String
+    let cholesterol: String
+    let bloodPressure: String
+    let heartRate: String
+    let waistCircumference: String
 }
 
 struct HealthAssessment : Codable, Identifiable {
@@ -138,44 +138,51 @@ class AppStateManager: ObservableObject {
 			print("Error fetching user data: \(error.localizedDescription)")
 		}
 	}
-	func fetchHealthData(userId: String) async {
-		do {
-			let snapshot = try await Firestore.firestore()
-				.collection("users")
-				.document(userId)
-				.collection("healthData")
-				.getDocuments()
-			var fetchedHealthData = [HealthData]()
-			for document in snapshot.documents {
-				let docData = document.data()
-				print("Document Data: \(docData)")
-				if let nestedHealthData = docData["healthData"] as? [String: Any] {
-					let bloodSugar = nestedHealthData["bloodSugar"] as? String ?? "\(nestedHealthData["bloodSugar"] as? Int ?? 0)"
-					let cholesterol = nestedHealthData["cholesterol"] as? String ?? "\(nestedHealthData["cholesterol"] as? Int ?? 0)"
-					let diastolic = nestedHealthData["diastolic"] as? String ?? "\(nestedHealthData["diastolic"] as? Int ?? 0)"
-					let heartRate = nestedHealthData["heartRate"] as? String ?? "\(nestedHealthData["heartRate"] as? Int ?? 0)"
-					let systolic = nestedHealthData["systolic"] as? String ?? "\(nestedHealthData["systolic"] as? Int ?? 0)"
-					let waistCircumference = nestedHealthData["waistCircumference"] as? String ?? "\(nestedHealthData["waistCircumference"] as? Int ?? 0)"
-					let bloodPressure : String = ("\(systolic) / \(diastolic)")
-					let healthRecord = HealthData(
-						id: document.documentID,
-						bloodSugar: bloodSugar,
-                        cholesterol: cholesterol,
-						bloodPressure: bloodPressure,
-						heartRate: heartRate,
-						waistCircumference: waistCircumference
-					)
-					fetchedHealthData.append(healthRecord)
-				} else {
-					print("No health data found in document.")
-				}
-			}
-			print("Fetched Health Data: \(fetchedHealthData)")
-			self.currentUserHealthData = fetchedHealthData.first
-		} catch {
-			print("Error fetching health data: \(error.localizedDescription)")
-		}
-	}
+    func fetchHealthData(userId: String) async {
+        do {
+            let snapshot = try await Firestore.firestore()
+                .collection("users")
+                .document(userId)
+                .collection("healthData")
+                .order(by: "timestamp", descending: true)
+                .limit(to: 1)
+                .getDocuments()
+            
+            var fetchedHealthData = [HealthData]()
+            
+            for document in snapshot.documents {
+                let docData = document.data()
+                if let nestedHealthData = docData["healthData"] as? [String: Any] {
+                    // Parse numeric values from Firestore
+                    let systolic = nestedHealthData["systolic"] as? Int ?? 0
+                    let diastolic = nestedHealthData["diastolic"] as? Int ?? 0
+                    let bloodSugar = nestedHealthData["bloodSugar"] as? Int ?? 0
+                    let cholesterol = nestedHealthData["cholesterol"] as? Int ?? 0
+                    let heartRate = nestedHealthData["heartRate"] as? Int ?? 0
+                    let waistCircumference = nestedHealthData["waistCircumference"] as? Int ?? 0
+                   
+                    print("Debug: Cholestrol : ",cholesterol,"Debug: Waist circumference",waistCircumference)
+        
+                    // Construct blood pressure string
+                    let bloodPressure = "\(systolic)/\(diastolic)"
+                    
+                    let healthRecord = HealthData(
+                        id: document.documentID,
+                        bloodSugar: "\(bloodSugar)",
+                        cholesterol: "\(cholesterol)",
+                        bloodPressure: bloodPressure,
+                        heartRate: "\(heartRate)",
+                        waistCircumference: "\(waistCircumference)"
+                    )
+                    fetchedHealthData.append(healthRecord)
+                }
+            }
+            
+            self.currentUserHealthData = fetchedHealthData.first
+        } catch {
+            print("Error fetching health data: \(error.localizedDescription)")
+        }
+    }
 	func fetchHealthAssesment(userId: String) async {
 		do {
 			let snapShot = try await Firestore.firestore()

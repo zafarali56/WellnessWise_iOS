@@ -32,7 +32,8 @@ class ProfileEditViewModel: ObservableObject {
     /// Saves the changes to Firestore.
     /// If a field is left empty, the existing value is used so that it doesn't reset.
     func saveChanges(completion: @escaping () -> Void) {
-        guard let userId = Auth.auth().currentUser?.uid, let initial = initialData else { return }
+        guard let userId = Auth.auth().currentUser?.uid,
+              let initial = initialData else { return }
         
         // Use the current value if not empty; otherwise, fallback to the original value.
         let updatedFullName = fullName.isEmpty ? initial.fullName : fullName

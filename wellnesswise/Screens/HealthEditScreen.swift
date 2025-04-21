@@ -13,7 +13,7 @@ struct HealthEditScreen: View {
                     .bold()
                 ) {
                     StyledTextField(title: "Blood Pressure",
-                                    placeholder: "Update Blood Pressure",
+                                    placeholder: "e.g., 120/80",
                                     text: $viewModel.bloodPressure)
                     StyledTextField(title: "Blood Sugar",
                                     placeholder: "Update Blood Sugar",
@@ -32,18 +32,15 @@ struct HealthEditScreen: View {
                                     text: $viewModel.heartRate,
                                     isNumber: true)
                 }
+                
                 Section {
-                    Button(action: {
+                    Button("Update") {
                         viewModel.saveChanges {
                             dismiss()
                         }
-                    }) {
-                        Text("Update")
-                            .font(.subheadline)
-                            .fontWeight(.medium)
-                            .frame(maxWidth: .infinity)
                     }
                     .disabled(!viewModel.hasChanges)
+                    .frame(maxWidth: .infinity)
                 }
             }
             .navigationTitle("Edit Health Data")
@@ -53,10 +50,9 @@ struct HealthEditScreen: View {
                     Button("Close") { dismiss() }
                 }
             }
-            .scrollDismissesKeyboard(.interactively)
             .onAppear {
+                viewModel.appState = appState // Inject AppState into ViewModel
                 if let healthData = appState.currentUserHealthData {
-                    // Original function that doesn't require documentID
                     viewModel.loadInitialData(healthData: healthData)
                 }
             }

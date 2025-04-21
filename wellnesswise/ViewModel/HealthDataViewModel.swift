@@ -87,6 +87,9 @@ class HealthDataViewModel: ObservableObject {
             healthKitViewModel.errorMessage = "User not authenticated"
             return
         }
+        print(userId)
+        
+        
         healthKitViewModel.errorMessage = nil
         healthKitViewModel.isLoading = true
 
