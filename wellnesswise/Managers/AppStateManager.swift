@@ -157,12 +157,12 @@ class AppStateManager: ObservableObject {
                     let systolic = nestedHealthData["systolic"] as? Int ?? 0
                     let diastolic = nestedHealthData["diastolic"] as? Int ?? 0
                     let bloodSugar = nestedHealthData["bloodSugar"] as? Int ?? 0
-                    let cholesterol = nestedHealthData["cholesterol"] as? Int ?? 0
+                    let cholesterol = nestedHealthData["cholesterol"] as? String ?? ""
                     let heartRate = nestedHealthData["heartRate"] as? Int ?? 0
-                    let waistCircumference = nestedHealthData["waistCircumference"] as? Int ?? 0
+                    let waistCircumference = nestedHealthData["waistCircumference"] as? String ?? ""
                    
                     print("Debug: Cholestrol : ",cholesterol,"Debug: Waist circumference",waistCircumference)
-        
+                    
                     // Construct blood pressure string
                     let bloodPressure = "\(systolic)/\(diastolic)"
                     
